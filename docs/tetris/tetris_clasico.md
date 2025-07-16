@@ -134,11 +134,9 @@ El diseño del tablero debe incluir los siguientes elementos:
   <img src="https://github.com/trinidadperea/final_IA_tetris/raw/main/docs/tetris/images/interfaz.png" style="width: 77%; height: auto;"  />
 </p>
 
-#### 1. Matriz 
+#### 1. Matriz **
 
 Es el tablero donde se juega. Tiene dimensiones estándar de 10 columnas de ancho × 20 filas de alto. Es el área donde caen y se colocan las piezas.
-
-----------
 
 #### 2. Tetriminó en juego
 
@@ -155,8 +153,6 @@ Es la pieza actual que el jugador controla. Se puede:
     -   **Hard Drop**: baja instantáneamente y se bloquea al tocar superficie.
         
 
-----------
-
 #### 3. Cola de próximas piezas (Next Queue)
 
 Muestra las próximas piezas que aparecerán. Debe estar en la parte superior derecha de la matriz.
@@ -167,28 +163,22 @@ Muestra las próximas piezas que aparecerán. Debe estar en la parte superior de
     
 -   Las piezas deben mostrarse con orientación **"facing North"** (rotación estándar).
     
-IMAGEN (facing north)
-
-----------
 
 #### 4. Pieza Fantasma (Ghost Piece)
 
 Es una sombra o contorno transparente de la pieza en juego que indica dónde caerá si se suelta en ese momento.  
 Ayuda al jugador a planificar mejor sus movimientos.
 
-----------
 
 #### 5. Gráfico de fondo (Background Graphic)
 
 Fondo visual del juego. Puede dar estilo y estética, pero no debe interferir con la visibilidad de las piezas ni del tablero.
 
-----------
 
 #### 6. Bloques iniciales (Starting Blocks)
 
 Algunas variantes permiten que el juego comience con filas prellenadas en la parte inferior de la matriz, aumentando la dificultad desde el inicio.
 
-----------
 
 #### 7. Información del juego (Game Info)
 
@@ -207,8 +197,6 @@ Datos que se muestran en pantalla, como:
 -   Nombre del jugador y su ranking
     
 
-----------
-
 #### 8. Cola de retención (Hold Queue)
 
 Permite guardar una pieza para usarla más adelante.
@@ -219,7 +207,7 @@ Permite guardar una pieza para usarla más adelante.
     
 -   Las piezas deben mostrarse también con orientación "North Facing".
 
-## Generación de Tetriminós
+## Generación de Tetrominós
 
 Cada Tetriminó en Tetris está compuesto por cuatro Minos, y cada Mino tiene exactamente el tamaño de una celda de la matriz (el tablero).
 
@@ -283,7 +271,6 @@ Solo un Tetriminó puede estar activo en el tablero a la vez. El jugador puede:
     
 -   Guardarla en el Hold
 
------------
 
 ### Movimiento
 
@@ -295,7 +282,6 @@ Solo un Tetriminó puede estar activo en el tablero a la vez. El jugador puede:
     
 -   No se permite mover dentro de celdas ya ocupadas, ni más allá de los bordes o suelo.
 
-----------
 
 ### Repetición automática
 
@@ -304,9 +290,7 @@ Solo un Tetriminó puede estar activo en el tablero a la vez. El jugador puede:
 -   Esto permite mover la pieza de un extremo al otro en menos de 0.5 segundos, algo crucial en niveles rápidos.
     
 -   Si se cambia de dirección mientras se mantiene Auto-Repeat, el movimiento se reinicia con el mismo retraso.
-
--------------
-
+  
 ### Rotación
 
 -   Las piezas pueden rotar 90 grados en sentido horario o antihorario.
@@ -314,15 +298,14 @@ Solo un Tetriminó puede estar activo en el tablero a la vez. El jugador puede:
 -   Se usa el sistema llamado Super Rotation System (SRS), que permite rotar incluso cuando la pieza está contra una pared o bloque.
     
 -   Se puede rotar la pieza mientras está en movimiento lateral con Auto-Repeat (movimiento rápido), pero no hay Auto-Repeat para la rotación (es decir, cada rotación requiere que se pulse la tecla).
-
----------
+  
 ### Hard drop
 -   El comando Hard Drop hace que la pieza caiga instantáneamente hasta el primer lugar donde pueda bloquearse.
     
 -   La caída es prácticamente inmediata (0.0001 segundos).
     
 -   No hay Auto-Repeat para Hard Drop; cada uso debe ser una acción individual.
-------
+
 
 ### Soft Drop (Caída suave)
 
@@ -334,7 +317,7 @@ Solo un Tetriminó puede estar activo en el tablero a la vez. El jugador puede:
     
 -   **Importante:** Si se usa Soft Drop hasta que la pieza toca el suelo, el bloqueo (Lock Down) no ocurre inmediatamente, sino cuando termina el temporizador de Lock Down (usualmente 0.5 segundos).
     
-----------
+
 
 ### Hold (Guardar pieza)
 
@@ -346,7 +329,7 @@ Solo un Tetriminó puede estar activo en el tablero a la vez. El jugador puede:
     
 -   Debe ocurrir un Lock Down entre usos del Hold, es decir, no se puede guardar la misma pieza repetidamente sin que la pieza actual quede bloqueada primero.
 
----
+
 ### Extended Placement Lock Down (Bloqueo con colocación extendida)
 
 -   Es el modo por defecto en las opciones del juego.
@@ -365,7 +348,7 @@ Solo un Tetriminó puede estar activo en el tablero a la vez. El jugador puede:
     
 -   Si la pieza no toca superficie, puede seguir moviéndose y rotándose hasta que baje más.
 
------
+
 ### Infinite Placement Lock Down (Bloqueo con colocación infinita)
 
 -   También comienza el temporizador de 0.5 segundos cuando la pieza toca una superficie.
@@ -376,7 +359,7 @@ Solo un Tetriminó puede estar activo en el tablero a la vez. El jugador puede:
     
 -   Solo cuando el temporizador llegue a cero sin movimiento o rotación, la pieza se bloquea.
 
----
+
 ### Classic Lock Down (Bloqueo Clásico)
 
 -   Este modo se usa si no están activados ni el Infinite Placement ni el Extended Placement.
@@ -389,7 +372,7 @@ Solo un Tetriminó puede estar activo en el tablero a la vez. El jugador puede:
     
 -   Esto significa que una vez que la pieza toca superficie, tiene solo ese medio segundo para moverse o rotar antes de bloquearse, a menos que baje más.
 
----
+
 ##  Jugadas Especiales (T-Spins y Mini T-Spins)
 
 Consisten en rotar un T-Tetriminó dentro de un espacio cerrado llamado T-Slot. Estas jugadas otorgan bonificaciones de puntos y pueden formar parte de secuencias Back-to-Back.
@@ -405,7 +388,7 @@ Consisten en rotar un T-Tetriminó dentro de un espacio cerrado llamado T-Slot. 
 
 - Si se cumplen las condiciones pero no se eliminan líneas, puede contarse como Mini T-Spin en lugar de un T-Spin completo.
 
-----
+
 ### Reconocimiento
 
 En los siguientes diagrama, cada letra corresponde al lado de un mino en el tetrominó:
@@ -671,55 +654,27 @@ El juego termina (Game Over) cuando alguna de las siguientes situaciones ocurre:
 
 	-   **Lock Down - Normal (Juego no terminado):**  
     El Tetrimino queda bloqueado completamente _por debajo_ de la Skyline. Esto es lo usual y el juego continúa.
-
-    <p align="center">
-  <img src="https://github.com/trinidadperea/final_IA_tetris/raw/main/docs/tetris/images/ld_normal.png" style="width: 77%; height: auto;"  />
-</p>
     
 	-   **Lock Down - Peeking (Juego no terminado):**  
     El Tetrimino queda bloqueado parcialmente _por encima y por debajo_ de la Skyline, pero sigue dentro de límites aceptables, así que el juego continúa.
 
-    <p align="center">
-  <img src="https://github.com/trinidadperea/final_IA_tetris/raw/main/docs/tetris/images/ld_peeking.png" style="width: 77%; height: auto;"  />
-</p>
     
 	-   **Jugar por encima de la Skyline (Juego no terminado):**  
     El jugador puede mover o rotar la pieza _por encima_ de la Skyline, en la zona de Buffer, sin que eso signifique un Game Over.
-
-    <p align="center">
-  <img src="https://github.com/trinidadperea/final_IA_tetris/raw/main/docs/tetris/images/above_skyline.png" style="width: 77%; height: auto;"  />
-</p>
     
 	-   **Bloques existentes forzados hacia arriba (Juego no terminado):**  
     Si bloques en el tablero son empujados _por encima_ de la Skyline, pero aún _dentro_ de la Buffer Zone, el juego sigue.
 
-    <p align="center">
-  <img src="https://github.com/trinidadperea/final_IA_tetris/raw/main/docs/tetris/images/existing_blocks_fu.png" style="width: 77%; height: auto;"  />
-</p>
     
 	-   **Top Out (Juego terminado):**  
     Cuando bloques son empujados _más allá_ de la Buffer Zone por un ataque del oponente, el juego termina.  
     Es muy raro que pase, porque normalmente el Lock Out o Block Out ocurren antes.
-
-    <p align="center">
-  <img src="https://github.com/trinidadperea/final_IA_tetris/raw/main/docs/tetris/images/top_out.png" style="width: 77%; height: auto;"  />
-</p>
     
 	-   **Lock Out (Juego terminado):**  
     Cuando un Tetrimino queda bloqueado completamente _por encima_ de la Skyline. Esto provoca el fin del juego.
-    
-    <p align="center">
-  <img src="https://github.com/trinidadperea/final_IA_tetris/raw/main/docs/tetris/images/lock_out.png" style="width: 77%; height: auto;"  />
-</p>
 
 	-   **Block Out (Juego terminado):**  
     Cuando la siguiente pieza no puede generarse porque su espacio inicial está ocupado, el juego termina.
-
-    <p align="center">
-  <img src="https://github.com/trinidadperea/final_IA_tetris/raw/main/docs/tetris/images/block_out.png" style="width: 77%; height: auto;"  />
-</p>
-
-IMAGENES
 
 ## Bibliografía
 
