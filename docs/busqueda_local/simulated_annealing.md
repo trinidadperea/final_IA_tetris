@@ -113,7 +113,7 @@ El agente puede usar Simulated Annealing para:
 	- Escapar de malas decisiones locales.
 	- Explorar posibilidades que, a primera vista, parecen malas pero llevan a mejores resultados a futuro.
 
-
+![Imagen algoritmo genético](../../images/graficoSA.png)
 ## Bibliografía
 
 Talbi, E.-G. (2009). _Metaheuristics: From design to implementation_. Wiley.
