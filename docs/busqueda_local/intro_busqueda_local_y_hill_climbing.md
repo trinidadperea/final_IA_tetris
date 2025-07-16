@@ -2,6 +2,10 @@
 
 La búsqueda local es un método de optimización que consiste en el desplazamiento iterativo de una solución a otra vecina. Para ello, se evalúan las soluciones basándose en una función heurística, que proporciona una medida de la calidad de la solución. Estos algoritmos buscan encontrar la mejor solución en las proximidades del estado actual, en lugar de explorar todo el espacio de soluciones. Esta estrategia de exploración local es lo que los hace especialmente valiosos.
 
+<p align="center">
+  <img src="https://github.com/trinidadperea/final_IA_tetris/raw/main/docs/busqueda_local/images/LS.png" style="width: 77%; height: auto;"  />
+</p>
+
 Los problemas de optimización implican encontrar la mejor solución entre un conjunto de soluciones factibles con base en una función objetivo definida. Estos problemas surgen en diversos campos, como la investigación de operaciones, la ingeniería, las finanzas y aprendizaje automático. Las características clave de los problemas de optimización incluyen:
 
 **Función objetivo:** Función matemática que cuantifica la calidad de una solución.
@@ -64,6 +68,10 @@ Hill Climbing es un algoritmo de búsqueda heurística utilizado principalmente 
 
 El Hill Climbing es un concepto fundamental en IA debido a su simplicidad, eficiencia y eficacia en determinados escenarios, especialmente cuando se trata de problemas de optimización o se encuentran soluciones en grandes espacios de búsqueda.
 
+<p align="center">
+  <img src="https://github.com/trinidadperea/final_IA_tetris/raw/main/docs/busqueda_local/images/LS1.png" style="width: 77%; height: auto;"  />
+</p>
+
 El proceso comienza con una solución inicial, que se mejora iterativamente mediante pequeños cambios incrementales. Estos cambios se evalúan mediante una función heurística para determinar la calidad de la solución. El algoritmo continúa realizando estos ajustes hasta alcanzar un máximo local , un punto en el que ya no se pueden realizar mejoras con el conjunto actual de movimientos.
 
 El algoritmo Hill Climbing emplea un enfoque voraz, lo que significa que, en cada paso, se mueve en la dirección que optimiza la función objetivo. Esta estrategia busca encontrar la solución óptima de forma eficiente, tomando la mejor decisión inmediata sin considerar el contexto general del problema.
@@ -83,6 +91,10 @@ En optimización matemática, el método de Hill Climbing se aplica comúnmente 
 **Terminación**: se repite este proceso hasta que ningún estado vecino sea mejor que el actual. En este punto, habrá alcanzado un máximo o mínimo local (dependiendo de si está maximizando o minimizando).
 
 ## Variantes
+
+<p align="center">
+  <img src="https://github.com/trinidadperea/final_IA_tetris/raw/main/docs/busqueda_local/images/typesHC.png" style="width: 77%; height: auto;"  />
+</p>
 
 ## Simple Hill Climbing
 
