@@ -87,7 +87,7 @@ Los algoritmos genéticos representan una gran herramienta de optimización insp
 
 - Condiciones especiales e hibridas: por ej. Si hay restricciones duras, aunque cumpla el criterio de parada, puede continuar con el algoritmo hasta que se haya satisfecho estas restricciones. También pueden combinarse criterios anteriores.
 
-![Imagen algoritmo genético](../../images/imagen1_AG.png)
+![Imagen algoritmo genético](images/imagen1_AG.png)
 
 
 
@@ -149,7 +149,7 @@ Los algoritmos genéticos se utilizan aquí para evolucionar funciones de evalua
 
 El fitness de cada individuo se mide al simular partidas con esa configuración y registrar el puntaje, líneas eliminadas y duración del juego. A través de operadores de selección, cruzamiento y mutación, se generan nuevas configuraciones que progresivamente pueden mejorar el desempeño del agente.
 
-![Imagen Juego Tetris](../../images/imagen2_AG.png)
+![Imagen Juego Tetris](images/imagen2_AG.png)
 
 ## Bibliografía
 Talbi, E.-G. (2009). _Metaheuristics: From design to implementation_. Wiley.
