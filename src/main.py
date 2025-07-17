@@ -1,4 +1,5 @@
 from tetris import *
+from pieces import *
 
 def main():
     pass

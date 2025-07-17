@@ -1,6 +1,7 @@
 from typing import List
 from tablero import *
 from tetromino import *
+import random
 
 
 
@@ -37,7 +38,9 @@ class Tetris:
         pass
 
     def determinarNextQueue(self):
-        pass
+        nueva = Tetronimo(random.choice(Tetronimo.piezas))
+        #falta codigo aca para actualizar
+        return nueva
 
     def actualizarVelCaida(self):
         pass
