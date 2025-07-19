@@ -1,6 +1,7 @@
 from typing import List
 from tetromino import *
-from tetris import *
+
+
 class Tablero:
     def __init__(self, filas: int, columnas:int, bloque: int):
         self.filas = filas
@@ -45,13 +46,21 @@ class Tablero:
         return lineas_completas
 
     def hay_colision(self, pieza: Tetromino) -> bool:
-        for x, y in pieza.obtenerFormaActual():
-            # Fuera de los límites
+        # dir = 0 -> vertical
+        # dir = 1 -> derecha
+        # dir = -1 -> izquierda
+        for offset_x, offset_y in pieza.obtenerFormaActual():
+
+            x = offset_x
+            y = offset_y + 1
+
             if x < 0 or x >= self.columnas or y < 0 or y >= self.filas:
                 return True
+            
             # Colisión con otro bloque
             if self.estado_actual[y][x] != 0:
                 return True
+            
         return False
 
     def fijar_pieza(self, pieza: Tetromino):
@@ -64,23 +73,3 @@ class Tablero:
                 colision_techo = True
         return self.eliminarLineas(), colision_techo
     
-
-    '''def hay_colision(self, pieza: Tetromino) -> bool:
-        for fila in range(len(pieza.forma)):
-            for col in range(len(pieza.forma[0])):
-                if pieza.forma[fila][col] == 0:
-                    continue
-
-                x = pieza.x + col
-                y = pieza.y + fila
-
-                # Fuera de los límites del tablero
-                if x < 0 or x >= self.columnas or y >= self.filas:
-                    return True
-
-                # Colisión con otro bloque en el tablero
-                if y >= 0 and self.estado_actual[y][x] != 0:
-                    return True
-
-        return False'''
-

@@ -7,19 +7,19 @@ import pygame
 def main():
     pygame.init()
     
-    ancho = 300  # 10 columnas * 30px (ajustá según tu tablero)
+    ancho = 300 + 150 # 10 columnas * 30px + 150 del panel
     alto = 660   # 20 filas * 30px
     
     screen = pygame.display.set_mode((ancho, alto))
     pygame.display.set_caption("Tetris")
     
-    # Crear tablero y juego
     tablero = Tablero(22,10,30) 
     tablero.estadoActual = tablero.generarMatriz()
     juego = Tetris(tablero)
     juego.actualizar_estado()
     
-    # Crear interfaz (asumiendo que la tenés)
+    #tiempo_inicio = pygame.time.get_ticks()
+
     interfaz = Interfaz(juego, screen)
     
     reloj = pygame.time.Clock()
@@ -35,12 +35,13 @@ def main():
                 lineas_borradas, game_over = juego.tablero.fijar_pieza(juego.pieza_actual)
                 juego.determinarPuntosJE(lineas_borradas)
                 # print("Puntaje:", juego.puntaje) 
-                juego.pieza_actual = juego.crear_pieza_nueva()
+                juego.pieza_actual = juego.agregar_pieza_nueva()
                 if game_over == True:
                     #print("Game over")
                     corriendo = False
                 else:
-                    juego.pieza_actual = juego.crear_pieza_nueva()
+                    juego.pieza_actual = juego.agregar_pieza_nueva()
+                    juego.actualizar_pieza_fantasma()
             tiempo_ultimo_movimiento = ahora
 
         for evento in pygame.event.get():
@@ -53,8 +54,12 @@ def main():
                 #    juego.pieza_actual.mover_si_valido(0,-1,juego.tablero) 
                 if evento.key == pygame.K_LEFT:
                     juego.pieza_actual.mover_si_valido(-1,0,juego.tablero)
+                    nueva_fantasma = juego.actualizar_pieza_fantasma()
+                    interfaz.dibujar_pieza(nueva_fantasma, True)
                 if evento.key == pygame.K_RIGHT:
                     juego.pieza_actual.mover_si_valido(1,0,juego.tablero)
+                    nueva_fantasma = juego.actualizar_pieza_fantasma()
+                    interfaz.dibujar_pieza(nueva_fantasma, True)
                 # si quiero rotar la pieza toco espacio
                 if evento.key == pygame.K_SPACE:
                     juego.pieza_actual.rotar_si_valido(juego.tablero)
@@ -63,8 +68,13 @@ def main():
         # Actualizá lógica del juego (bajar pieza, colisiones, etc)
         # juego.actualizar()  # Si tenés un método así
         
-        # Dibujá todo
-        interfaz.dibujar_gui()  # Implementá esto en tu clase Interfaz
+        
+        """tiempo_actual = pygame.time.get_ticks()
+        
+        if tiempo_actual - tiempo_inicio > juego.tetris.vel_caida:
+            pass"""
+
+        interfaz.dibujar_gui() 
         
         pygame.display.update()
         reloj.tick(60)  # 60 FPS

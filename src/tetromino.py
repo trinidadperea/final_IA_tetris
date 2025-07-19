@@ -1,6 +1,5 @@
 from typing import List
 import piezas
-import copy
 
 class Tetromino():
     def __init__ (self, pieza: str):
@@ -11,6 +10,10 @@ class Tetromino():
         #self.forma = [(x + self.x, y + self.y) for (x, y) in formas[self.rotacion]]
         self.color = piezas.COLORES[self.pieza]
     
+    """def forma(self):
+        formas = piezas.PIEZAS[self.pieza]
+        return [(x + self.x, y + self.y) for (x, y) in formas[self.rotacion]] """
+
     def obtenerFormaActual(self):
         forma_relativa = self.formas[self.rotacion]
         return [(x + self.x, y + self.y) for (x, y) in forma_relativa]
@@ -46,6 +49,8 @@ class Tetromino():
 
     def copy(self):
         copia = Tetromino(self.pieza)
+        copia.x = self.x
+        copia.y = self.y
         copia.rotacion = self.rotacion
         return copia
 

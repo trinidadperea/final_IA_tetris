@@ -14,7 +14,8 @@ class Interfaz:
         self.dibujar_tablero()
         self.dibujar_pieza(self.tetris.pieza_actual, False)
         self.dibujar_pieza(self.tetris.pieza_fantasma, True)
-        self.dibujar_cuadricula()
+        #self.dibujar_panel()
+        #self.dibujar_cuadricula()
         pygame.display.update()
         
 
@@ -51,14 +52,24 @@ class Interfaz:
             else:
                 pygame.draw.rect(self.screen, pieza.color, (px, py, self.tamaño_bloque, self.tamaño_bloque))
 
-    '''def dibujar_pieza(self, pieza: Tetromino, fantasma: bool):
-        
-        for x, y in pieza.forma:
-            px = x * self.tamaño_bloque #pasamos las coordenadas a pixeles
-            py = y * self.tamaño_bloque
+    
+    """def dibujar_panel(self): #ARREGLAR
+        pieza_siguiente = Tetromino(self.tetris.next_queue[0])
 
-            
-            if fantasma:
-                pygame.draw.rect(self.screen, (200, 200, 255), (px, py, self.tamaño_bloque, self.tamaño_bloque), width = 2)
-            else:
-                pygame.draw.rect(self.screen, pieza.color, (px, py, self.tamaño_bloque, self.tamaño_bloque))'''
+        font = pygame.font.SysFont("Arial", 20)
+
+        # ---------- next tetromino
+
+        texto = font.render("Próxima pieza", True, (255, 255, 255))
+        self.screen.blit(texto, (300, 20))
+
+        pos_pieza = pieza_siguiente.forma()
+
+        for x,y in pos_pieza:
+            pygame.draw.rect(self.screen, pieza_siguiente.color, (300 + 10 + x * 30, 60 + y * 30, 30, 30))
+
+        #---------puntuacion
+
+        texto = font.render(f"Puntuación: {self.tetris.puntuacion}", True, (255, 255, 255))
+        self.screen.blit(texto, (300 + 10, 200))
+    """
