@@ -43,7 +43,7 @@ class Interfaz:
                 pygame.draw.rect(self.screen,(50,50,50), rect, width=1)'''
 
     def dibujar_pieza(self, pieza: Tetromino, fantasma: bool):
-        for x, y in pieza.obtenerFormaActual():
+        for x, y in pieza.obtener_forma_actual():
             px = x * self.tamaño_bloque  # coordenadas en píxeles
             py = y * self.tamaño_bloque
 

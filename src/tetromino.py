@@ -7,17 +7,18 @@ class Tetromino():
         self.rotacion = 0
         (self.x, self.y) = piezas.OFFSET[self.pieza]
         self.formas = piezas.PIEZAS[self.pieza]
-        #self.forma = [(x + self.x, y + self.y) for (x, y) in formas[self.rotacion]]
+        #self.forma = [(x + self.x, y + self.y) for (x, y) in self.formas[self.rotacion]]
         self.color = piezas.COLORES[self.pieza]
     
     """def forma(self):
         formas = piezas.PIEZAS[self.pieza]
         return [(x + self.x, y + self.y) for (x, y) in formas[self.rotacion]] """
 
-    def obtenerFormaActual(self):
+    def obtener_forma_actual(self):
         forma_relativa = self.formas[self.rotacion]
         return [(x + self.x, y + self.y) for (x, y) in forma_relativa]
     
+    """
     def rotar_si_valido(self, tablero):
         self.rotar()
         for x, y in self.obtenerFormaActual():
@@ -30,11 +31,13 @@ class Tetromino():
                 self.rotacionInversa()
                 return False
         return True
+    """
+    
     
     def rotar(self):
         self.rotacion = (self.rotacion + 1) % len(self.formas)
     
-    def rotacionInversa(self):
+    def rotacion_inversa(self):
         self.rotacion = (self.rotacion - 1) % len(self.formas)
     
     def getPieza(self):
@@ -59,7 +62,13 @@ class Tetromino():
         for fila in formaActual:
             print(fila)
 
-    def mover_si_valido(self, dx, dy, tablero):
+    def mover(self, dx, dy):
+        # Intentar mover la pieza
+        self.x += dx
+        self.y += dy
+
+
+    """ def mover_si_valido(self, dx, dy, tablero):
         # Intentar mover la pieza
         self.x += dx
         self.y += dy
@@ -78,7 +87,9 @@ class Tetromino():
                 return False
 
         # Movimiento válido
-        return True
+        return True """
+    
+
     '''   
     #orientaciones = {"N", "S", "E", "W"}
     piezas = ["O", "I", "T", "L", "J", "S", "Z"]

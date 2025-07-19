@@ -27,7 +27,7 @@ class Tablero:
     def mostrarNextQueue(self, listaPiezas: List[Tetromino]):
         pass
 
-    def eliminarLineas(self):
+    def eliminar_lineas(self):
         nuevas_filas = []
         lineas_completas = 0
         
@@ -45,15 +45,14 @@ class Tablero:
         
         return lineas_completas
 
-    def hay_colision(self, pieza: Tetromino) -> bool:
+    def hay_colision(self, pieza: Tetromino, x0 = None, y0 = None) -> bool:
         # dir = 0 -> vertical
         # dir = 1 -> derecha
         # dir = -1 -> izquierda
-        for offset_x, offset_y in pieza.obtenerFormaActual():
-
-            x = offset_x
-            y = offset_y + 1
-
+        for dx, dy in pieza.obtener_forma_actual():
+            x = dx if x0 is None else dx
+            y = dy + 1 if y0 is None else dy
+            
             if x < 0 or x >= self.columnas or y < 0 or y >= self.filas:
                 return True
             
@@ -61,15 +60,18 @@ class Tablero:
             if self.estado_actual[y][x] != 0:
                 return True
             
+            
+            
         return False
 
     def fijar_pieza(self, pieza: Tetromino):
         coilision_techo = False
-        for x, y in pieza.obtenerFormaActual():
+        for x, y in pieza.obtener_forma_actual():
             if 0 <= y < self.filas and 0 <= x < self.columnas:
                 self.estado_actual[y][x] = pieza.color
                 colision_techo = False
             if y < 0:
                 colision_techo = True
-        return self.eliminarLineas(), colision_techo
+
+        return colision_techo
     
