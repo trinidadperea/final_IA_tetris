@@ -5,7 +5,7 @@ import random
 import piezas
 
 class Tetris:
-    def __init__(self, tablero: Tablero, bag: List[Tetromino]):
+    def __init__(self, tablero: Tablero, bag: List[Tetromino] = ["O", "I", "T", "L", "J", "S", "Z"]):
         self.tablero = tablero
         self.puntuacion = 0
         self.time = 0 #tiempo de juego
@@ -20,13 +20,25 @@ class Tetris:
         self.bag = bag
         #self.pieza_actual = self.generarPieza() #pieza actual
         self.pieza_actual = None
-        #self.next_queue = self.generarCola()
+        self.pieza_fantasma = None
+        self.next_queue = []
 
-    def actualizarEstado(self): #actualiza nivel, puntuacion, lineas eliminadas,...
-        pass
+    def actualizar_estado(self): #actualiza nivel, puntuacion, lineas eliminadas,...
+        self.generar_cola()
+        self.pieza_actual = Tetromino(self.next_queue.pop(0))
+        self.actualizar_pieza_fantasma()
+        
 
-    def piezaFantasma(self): #mostrar pieza fantasma en el tablero
-        pass
+    def actualizar_pieza_fantasma(self): #hay que llamarlo cada vez que se rote, mueva o cambie de pieza
+        self.pieza_fantasma = self.pieza_actual.copy()
+
+        while not self.tablero.hay_colision(self.pieza_fantasma):
+            self.pieza_fantasma.y += 1
+
+        self.pieza_fantasma.y -= 1 #para recuperar la posicion correcta  
+        
+        print(self.pieza_fantasma.y)
+        return self.pieza_fantasma
 
     def moverPieza(self):
         # roto pieza temporalmente
@@ -50,6 +62,13 @@ class Tetris:
                 if celda == 'O':
                     posiciones.append((pieza.x + j, pieza.y + i))
         return posiciones
+    
+    def generar_cola(self): #implementar control de generacion de queue
+        
+        for i in range(6):
+            num = random.randint(0,6)
+            self.next_queue.append(self.bag[num])
+
 
     def esJugadaEspecial(self) -> bool:
         pass

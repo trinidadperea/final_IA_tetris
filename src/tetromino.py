@@ -1,22 +1,24 @@
 from typing import List
 import piezas
+import copy
 
 class Tetromino():
-    def __init__ (self,pieza: str, x: int = 5, y: int = 0):
+    def __init__ (self, pieza: str):
         self.pieza = pieza.upper()
         self.rotacion = 0
-        self.x = x
-        self.y = y
-        self.formas = piezas.PIEZAS[self.pieza]
+        (self.x, self.y) = piezas.OFFSET[self.pieza]
+        formas = piezas.PIEZAS[self.pieza]
+        self.forma = [(x + self.x, y + self.y) for (x, y) in formas[self.rotacion]]
+        self.color = piezas.COLORES[self.pieza]
     
     def obtenerFormaActual(self):
-        return self.formas[self.rotacion]
+        return self.forma[self.rotacion]
     
     def rotar(self):
-        self.rotacion = (self.rotacion + 1) % len(self.formas)
+        self.rotacion = (self.rotacion + 1) % len(self.forma)
     
     def rotacionInversa(self):
-        self.rotacion = (self.rotacion - 1) % len(self.formas)
+        self.rotacion = (self.rotacion - 1) % len(self.forma)
     
     def getPieza(self):
         return self.pieza
@@ -29,14 +31,17 @@ class Tetromino():
         self.y = y
 
     def copy(self):
-        copia = Tetromino(self.pieza, self.x, self.y)
+        copia = Tetromino(self.pieza)
         copia.rotacion = self.rotacion
         return copia
 
     def imprimir_pieza(self):
-        formaActual = self.formas[self.rotacion]
+        formaActual = self.forma[self.rotacion]
         for fila in formaActual:
             print(fila)
+
+    
+
 
 
     '''   
