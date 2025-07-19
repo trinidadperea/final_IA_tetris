@@ -7,18 +7,32 @@ class Tetromino():
         self.pieza = pieza.upper()
         self.rotacion = 0
         (self.x, self.y) = piezas.OFFSET[self.pieza]
-        formas = piezas.PIEZAS[self.pieza]
-        self.forma = [(x + self.x, y + self.y) for (x, y) in formas[self.rotacion]]
+        self.formas = piezas.PIEZAS[self.pieza]
+        #self.forma = [(x + self.x, y + self.y) for (x, y) in formas[self.rotacion]]
         self.color = piezas.COLORES[self.pieza]
     
     def obtenerFormaActual(self):
-        return self.forma[self.rotacion]
+        forma_relativa = self.formas[self.rotacion]
+        return [(x + self.x, y + self.y) for (x, y) in forma_relativa]
+    
+    def rotar_si_valido(self, tablero):
+        self.rotar()
+        for x, y in self.obtenerFormaActual():
+            # Verificamos si está fuera de los límites del tablero
+            if x < 0 or x >= tablero.columnas or y >= tablero.filas:
+                self.rotacionInversa()
+                return False
+            # Verificamos si choca con otra pieza ya colocada
+            if tablero.estadoActual[y][x] != 0:
+                self.rotacionInversa()
+                return False
+        return True
     
     def rotar(self):
-        self.rotacion = (self.rotacion + 1) % len(self.forma)
+        self.rotacion = (self.rotacion + 1) % len(self.formas)
     
     def rotacionInversa(self):
-        self.rotacion = (self.rotacion - 1) % len(self.forma)
+        self.rotacion = (self.rotacion - 1) % len(self.formas)
     
     def getPieza(self):
         return self.pieza
@@ -40,10 +54,26 @@ class Tetromino():
         for fila in formaActual:
             print(fila)
 
-    
+    def mover_si_valido(self, dx, dy, tablero):
+        # Intentar mover la pieza
+        self.x += dx
+        self.y += dy
 
+        # Verificar si hay colisión con el tablero
+        for x, y in self.obtenerFormaActual():
+            if x < 0 or x >= tablero.columnas or y >= tablero.filas or y < 0:
+                # movimiento invalido
+                self.x -= dx
+                self.y -= dy
+                return False
+            if tablero.estado_actual[y][x] != 0:
+                # Colisión con bloque ya fijo
+                self.x -= dx
+                self.y -= dy
+                return False
 
-
+        # Movimiento válido
+        return True
     '''   
     #orientaciones = {"N", "S", "E", "W"}
     piezas = ["O", "I", "T", "L", "J", "S", "Z"]

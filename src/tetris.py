@@ -7,7 +7,7 @@ import piezas
 class Tetris:
     def __init__(self, tablero: Tablero, bag: List[Tetromino] = ["O", "I", "T", "L", "J", "S", "Z"]):
         self.tablero = tablero
-        self.puntuacion = 0
+        self.puntaje = 0
         self.time = 0 #tiempo de juego
         self.lineasEliminadas = 0
         self.nivel = 1
@@ -68,13 +68,23 @@ class Tetris:
         for i in range(6):
             num = random.randint(0,6)
             self.next_queue.append(self.bag[num])
-
+    def crear_pieza_nueva(self):
+        tipos = list(piezas.PIEZAS.keys())
+        nuevo_tipo = random.choice(tipos)
+        return Tetromino(nuevo_tipo)
 
     def esJugadaEspecial(self) -> bool:
         pass
 
-    def determinarPuntosJE(self) -> int:
-        pass
+    def determinarPuntosJE(self,lineas_borradas) -> int:
+        if lineas_borradas == 1:
+            self.puntaje += 100
+        elif lineas_borradas == 2:
+            self.puntaje += 200
+        elif lineas_borradas == 3:
+            self.puntaje += 400
+        elif lineas_borradas == 4:
+            self.puntaje += 800
 
     def determinarNextQueue(self):
         pass
