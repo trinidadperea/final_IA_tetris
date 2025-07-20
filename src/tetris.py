@@ -7,54 +7,40 @@ import random
 
 class Tetris:
     def __init__(self, tablero: Tablero, bag: List[Tetromino] = ["O", "I", "T", "L", "J", "S", "Z"]):
+        self.tiempo_inicio = None
         self.tablero = tablero
-        self.puntaje = 0
-        self.time = 0 #tiempo de juego
-        self.lineasEliminadas = 0
-        self.nivel = 1
-        self.tetrises = 0
-        self.tspins = 0
-        self.b2b = 0
-        self.vel_caida = 800
-        self.temporizador = 0
-        self.gameOver = False
-        self.bag = bag
-        #self.pieza_actual = self.generarPieza() #pieza actual
         self.pieza_actual = None
         self.pieza_fantasma = None
+        self.bag = bag
         self.next_queue = []
+        self.vel_caida = None
+        self.nivel = 1
+        self.lineas_eliminadas = 0
+        self.puntaje = 0
+        #self.tetrises = 0
+        #self.tspins = 0
+        #self.b2b = 0
+        self.game_over = False
 
     def actualizar_estado(self): #actualiza nivel, puntuacion, lineas eliminadas,...
+        if not self.mover_si_valido(self.pieza_actual,0,1):
+            self.tablero.fijar_pieza(self.pieza_actual)
+            lineas = self.tablero.eliminar_lineas()
+            if lineas != 0:
+                self.lineas_eliminadas += lineas
+                self.actualizar_puntos()
+                self.actualizar_nivel()
             
-
-        if not self.mover_si_valido(0,1):
-            game_over = self.tablero.fijar_pieza(self.pieza_actual)
-            lineas_eliminadas = self.tablero.eliminar_lineas()
-            self.determinarPuntosJE(lineas_eliminadas)
-            # print("Puntaje:", juego.puntaje) 
-            self.agregar_pieza_nueva()
-            if game_over == True:
-                #print("Game over")
-                corriendo = False
-            else:
+            if not self.is_game_over():
                 self.agregar_pieza_nueva()
-                self.actualizar_pieza_fantasma()
-            
+            else:
+                self.game_over = True
 
-    def actualizar_pieza_fantasma(self): #hay que llamarlo cada vez que se rote, mueva o cambie de pieza
-        self.pieza_fantasma = self.pieza_actual.copy()
-
-        while not self.tablero.hay_colision(self.pieza_fantasma):
-            self.pieza_fantasma.y += 1
-            
-        return self.pieza_fantasma
-    
-    def mover_si_valido(self, dx, dy):
-
-        self.pieza_actual.mover(dx, dy)
-
-        if self.tablero.hay_colision(self.pieza_actual, dx, dy):
-            self.pieza_actual.mover(-dx, -dy)
+    # Operaciones con piezas ---------------------------------------------------
+    def mover_si_valido(self, pieza: Tetromino, dx, dy):
+        pieza.mover(dx, dy)
+        if self.tablero.hay_colision(pieza):
+            pieza.mover(-dx, -dy)
             return False
         return True
     
@@ -71,42 +57,21 @@ class Tetris:
                 return False
         return True
     
-    """def moverPieza(self):
-        # roto pieza temporalmente
-        pieza_temp = self.pieza_actual.copy()
-        pieza_temp.rotar()
-
-        posiciones = self.obtener_posiciones_pieza(pieza_temp)
-
-        if self.tablero.es_valida(posiciones):
-            # solo si se puede la roto
-            self.pieza_actual.rotar()
-            self.actualizar_pieza_fantasma()
-            return True
-        else:
-            return False
-    """
-        
-    def obtener_posiciones_pieza(self, pieza: Tetromino):
+    """def obtener_posiciones_pieza(self, pieza: Tetromino):
         posiciones = []
         forma = pieza.obtener_forma_actual()
         for i, fila in enumerate(forma):
             for j, celda in enumerate(fila):
                 if celda == 'O':
                     posiciones.append((pieza.x + j, pieza.y + i))
-        return posiciones
+        return posiciones"""
     
-    """def bajar_pieza(self, pieza: Tetromino):
-        pieza.y += 1
-        pieza.forma()"""
-
+    # Generar piezas (actual y fantasma) ----------------------------------------
+    def generar_cola(self): 
+        nums = random.sample(range(0,7),7) 
+        for i in range(7):
+            self.next_queue.append(self.bag[nums[i]])
     
-    def generar_cola(self): #implementar control de generacion de queue
-        for i in range(6):
-            num = random.randint(0,6)
-            self.next_queue.append(self.bag[num])
-        
-
     def agregar_pieza_nueva(self):
         if len(self.next_queue) < 2:
             self.generar_cola()
@@ -114,28 +79,51 @@ class Tetris:
         self.pieza_actual = Tetromino(self.next_queue.pop(0))
         self.actualizar_pieza_fantasma()
     
+    def actualizar_pieza_fantasma(self):
+        self.pieza_fantasma = self.pieza_actual.copy()
+
+        while self.mover_si_valido(self.pieza_fantasma, 0, 1):
+            continue
+        return self.pieza_fantasma
+    
+    # Caida Pieza ---------------------------------------------------
     def get_vel_caida(self):
         return self.vel_caida
     
-    def set_vel_caida(self):
-        self.vel_caida = (0.8 - ((self.nivel - 1) * 0.007)) ^ (self.nivel - 1)
+    def set_vel_caida(self, tipo: str = None):
+        if tipo is None:
+            self.vel_caida = ((0.8 - ((self.nivel - 1) * 0.007)) ** (self.nivel - 1)) * 1000
+        
+        if tipo == "soft":
+            self.vel_caida = self.vel_caida / 20000
 
+        if tipo == "hard":
+            self.vel_caida = 0.0001
+
+    # Niveles -------------------------------------------------------
     def get_nivel(self):
         return self.nivel
+    
+    def actualizar_nivel(self):
+        if self.lineas_eliminadas == 10:
+            self.nivel += 1
+            self.lineas_eliminadas = 0
 
-    def set_nivel(self, nivel):
-        self.nivel = nivel
-
-
-    def esJugadaEspecial(self) -> bool:
-        pass
-
-    def determinarPuntosJE(self,lineas_borradas) -> int:
-        if lineas_borradas == 1:
+    # Puntaje -------------------------------------------------------
+    def actualizar_puntos(self):
+        if self.lineas_eliminadas == 1:
             self.puntaje += 100
-        elif lineas_borradas == 2:
+        elif self.lineas_eliminadas == 2:
             self.puntaje += 200
-        elif lineas_borradas == 3:
+        elif self.lineas_eliminadas == 3:
             self.puntaje += 400
-        elif lineas_borradas == 4:
+        elif self.lineas_eliminadas == 4:
             self.puntaje += 800
+
+    #Game Over --------------------------------------------------------
+    def is_game_over(self):
+        for _, y in self.pieza_actual.obtener_forma_actual():
+            if y < 0:
+                return True
+        return False
+

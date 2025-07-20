@@ -7,25 +7,10 @@ class Tablero:
         self.filas = filas
         self.columnas = columnas
         self.bloque = bloque #pixeles
-        self.estado_actual = self.generarMatriz()
+        self.estado_actual = self.generar_matriz()
     
-    def generarMatriz(self):
-        # Creo matriz vacía
+    def generar_matriz(self):
         return [[0 for _ in range(self.columnas)] for _ in range(self.filas)]
-
-    def es_valida(self, posiciones: list) -> bool:
-        for x, y in posiciones:
-            if x < 0 or x >= self.columnas or y < 0 or y >= self.filas:
-                return False
-            if self.estado_actual[y][x] != 0:
-                return False
-        return True
-    
-    def actualizar(self): #agrega piezas
-        pass
-
-    def mostrarNextQueue(self, listaPiezas: List[Tetromino]):
-        pass
 
     def eliminar_lineas(self):
         nuevas_filas = []
@@ -45,33 +30,26 @@ class Tablero:
         
         return lineas_completas
 
-    def hay_colision(self, pieza: Tetromino, x0 = None, y0 = None) -> bool:
-        # dir = 0 -> vertical
-        # dir = 1 -> derecha
-        # dir = -1 -> izquierda
-        for dx, dy in pieza.obtener_forma_actual():
-            x = dx if x0 is None else dx
-            y = dy + 1 if y0 is None else dy
-            
+    def hay_colision(self, pieza: Tetromino) -> bool:
+        for x, y in pieza.obtener_forma_actual():
+                        
             if x < 0 or x >= self.columnas or y < 0 or y >= self.filas:
                 return True
             
             # Colisión con otro bloque
             if self.estado_actual[y][x] != 0:
                 return True
-            
-            
-            
         return False
+    
+    """def es_valida(self, posiciones: list) -> bool:
+        for x, y in posiciones:
+            if x < 0 or x >= self.columnas or y < 0 or y >= self.filas:
+                return False
+            if self.estado_actual[y][x] != 0:
+                return False
+        return True"""
 
     def fijar_pieza(self, pieza: Tetromino):
-        coilision_techo = False
         for x, y in pieza.obtener_forma_actual():
             if 0 <= y < self.filas and 0 <= x < self.columnas:
                 self.estado_actual[y][x] = pieza.color
-                colision_techo = False
-            if y < 0:
-                colision_techo = True
-
-        return colision_techo
-    
