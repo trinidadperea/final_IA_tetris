@@ -58,11 +58,11 @@ class Interfaz:
         panel_x = 300
         bloque_size = self.tamaño_bloque
 
-        pygame.draw.line(self.screen, (80, 80, 80), (300, 0), (300, 500), 2)
+        pygame.draw.line(self.screen, (80,80,80), (300, 0), (300, 800), 2)
 
         # ---------- TÍTULO PRÓXIMA PIEZA ----------
         texto = font.render("Próxima pieza", True, (255, 255, 255))
-        self.screen.blit(texto, (panel_x + 10, 20))
+        self.screen.blit(texto, (panel_x + 40, 24))
 
         pieza_siguiente = Tetromino(self.tetris.next_queue[0])
         pos_pieza = pieza_siguiente.obtener_forma_actual()
@@ -76,7 +76,7 @@ class Interfaz:
         ancho = max_x - min_x 
         alto = max_y - min_y + 1
 
-        cx = panel_x + (4 * bloque_size - ancho * bloque_size) // 2
+        cx = panel_x + (5 * bloque_size - ancho * bloque_size) // 2
         cy = 60 + (4 * bloque_size - alto * bloque_size) // 2
 
         # ---------- DIBUJAR PIEZA ----------
@@ -88,7 +88,7 @@ class Interfaz:
 
 
         # ---------- LÍNEA DIVISORIA ----------
-        pygame.draw.line(self.screen, (200, 200, 200), (panel_x, 190), (panel_x + 150, 190), 1)
+        pygame.draw.line(self.screen, (200, 200, 200), (panel_x, 190), (panel_x + 200, 190), 1)
 
         # ---------- PUNTUACIÓN ----------
         texto = font.render(f"Puntuación: {self.tetris.puntaje}", True, (255, 255, 255))

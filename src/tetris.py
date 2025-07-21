@@ -14,7 +14,7 @@ class Tetris:
         self.bag = bag
         self.next_queue = []
         self.vel_caida = None
-        self.nivel = 1
+        self.nivel = None
         self.lineas_eliminadas = 0
         self.puntaje = 0
         #self.tetrises = 0
@@ -28,7 +28,7 @@ class Tetris:
             lineas = self.tablero.eliminar_lineas()
             if lineas != 0:
                 self.lineas_eliminadas += lineas
-                self.actualizar_puntos()
+                self.actualizar_puntos(lineas)
                 self.actualizar_nivel()
             
             if not self.is_game_over():
@@ -104,21 +104,29 @@ class Tetris:
     def get_nivel(self):
         return self.nivel
     
+    def set_nivel(self, nivel: int):
+        self.nivel = nivel
+
     def actualizar_nivel(self):
         if self.lineas_eliminadas == 10:
             self.nivel += 1
             self.lineas_eliminadas = 0
 
     # Puntaje -------------------------------------------------------
-    def actualizar_puntos(self):
-        if self.lineas_eliminadas == 1:
-            self.puntaje += 100
-        elif self.lineas_eliminadas == 2:
-            self.puntaje += 200
-        elif self.lineas_eliminadas == 3:
-            self.puntaje += 400
-        elif self.lineas_eliminadas == 4:
-            self.puntaje += 800
+    def actualizar_puntos(self, lineas):
+            if lineas < 4:
+                if lineas == 1:
+                    self.puntaje += 100
+                elif lineas == 2:
+                    self.puntaje += 200
+                elif lineas == 3:
+                    self.puntaje += 400
+                return
+            else: 
+                self.puntaje += 800
+                self.actualizar_puntos(lineas - 4)
+            
+        
 
     #Game Over --------------------------------------------------------
     def is_game_over(self):

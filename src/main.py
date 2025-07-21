@@ -8,7 +8,7 @@ def main():
     pygame.init()
     
     # Screen
-    ancho = 300 + 150 # 10 columnas * 30px + 150 del panel
+    ancho = 300 + 200 # 10 columnas * 30px + 150 del panel
     alto = 660   # 20 filas * 30px
     screen = pygame.display.set_mode((ancho, alto))
     pygame.display.set_caption("Tetris")
@@ -18,6 +18,7 @@ def main():
     tablero.estado_actual = tablero.generar_matriz()
     juego = Tetris(tablero)
     juego.agregar_pieza_nueva()
+    juego.set_nivel(1)
     
     # Interfaz
     interfaz = Interfaz(juego, screen)
