@@ -14,13 +14,13 @@ El tablero implementado es una matriz de 22 filas por 10 columnas donde las 2 pr
  # Tetrominos
 
 Para las piezas implementamos los siete tipos del tetris clásico : I, O, T, L, J, S, Z. Cada uno con su forma y color correspondiente.
-	- O : Amarillo
-	- T : Purpura
-	- I : Celeste
-	- L : Naranja
-	- J : Azul
-	- S : Verde
-	- Z : Rojo
+- O : Amarillo
+- T : Purpura
+- I : Celeste
+- L : Naranja
+- J : Azul
+- S : Verde
+- Z : Rojo
 
 <img src="images/colored_tetrominos.png" alt="tetromino" width="500">
 
