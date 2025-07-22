@@ -1,5 +1,3 @@
-Implementación Tetris
-
 **Tetris en Python**
 
 Se implementó el juego "Tetris Clásico" en Python. El código se
@@ -57,7 +55,7 @@ Se implementó la versión básica de Tetris con:
   - Tetronimo utilizados: O (amarillo), I (celeste), T (purpura), L
     (naranja), J (azul), S (verde), Z (rojo).
 
-> ![](media/image1.png){width="6.1375in" height="0.6458333333333334in"}
+ ![imagen tetronimos](images/colored_tetronimos.png)
 
 - Pieza
 
@@ -83,13 +81,11 @@ Se implementó la versión básica de Tetris con:
 
   - Tablero al inicio del juego:
 
-> ![](media/image2.png){width="2.3958333333333335in"
-> height="3.2847222222222223in"}
+![Juego inicio](images/juegoInicio.png)
 
 - Tablero luego de varias jugadas:
 
-> ![](media/image3.png){width="2.3541666666666665in"
-> height="3.298611111111111in"}
+![Juego avanzado](images/juegoAvanzado.png)
 
 - Tetris: Clase con el control principal
 
@@ -105,19 +101,18 @@ Se implementó la versión básica de Tetris con:
     tipos, caída normal, caída "soft" que se acelera al tocar la tecla
     para bajar, y caída "hard" que simula una caída casi instantánea.
 
-  - Calculo velocidad de la caída:
-
-> ![](media/image4.png){width="4.988888888888889in"
-> height="0.2222222222222222in"}
-
-- actualizar_puntos(): método mediante el cual se actualizan los puntos
+  - actualizar_puntos(): método mediante el cual se actualizan los puntos
   del jugador, el cual va aumentando dependiendo cuantas elimina, si
   elimina 1 sola línea se le colocan 100 puntos, luego si elimina 2 se
   obtiene 200 puntos, si elimina 3 líneas se obtiene 400 puntos, y luego
   si elimina más de 3 se obtienen 800 puntos. En esta función vamos
   calculando y acumulando al puntaje que va obteniendo el jugador.
 
-- game_over(): Al tocar el "techo" se corta el juego, y pierde
+  - game_over(): Al tocar el "techo" se corta el juego, y pierde
+    
+  - Calculo velocidad de la caída:
+
+![velocidad](images/velocidadCaida.png)
 
 <!-- -->
 
