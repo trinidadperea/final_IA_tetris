@@ -4,7 +4,7 @@
 
 La interfaz cuenta con un tablero donde se representan y ubican las piezas según el flujo del juego y un panel del lado derecho donde se muestra la siguiente pieza e informacion adicional como nivel, puntuación, tiempo de juego y líneas eliminadas por nivel
 
-<img src="images/juegoInicio.png" alt="Interfaz" width="300">
+<img src="images/juegoInicio.png" alt="interfaz" width="300">
 
 
 # Tablero
@@ -22,7 +22,7 @@ Para las piezas implementamos los siete tipos del tetris clásico : I, O, T, L, 
 	- S : Verde
 	- Z : Rojo
 
-<img src="images/colored_tetronimos.png" alt="Tablero" width="300">
+<img src="images/colored_tetrominos.png" alt="tetromino" width="500">
 
 ## Ubicación y orientación incial 
 
