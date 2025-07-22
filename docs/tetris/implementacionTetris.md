@@ -55,7 +55,7 @@ Se implementó la versión básica de Tetris con:
   - Tetronimo utilizados: O (amarillo), I (celeste), T (purpura), L
     (naranja), J (azul), S (verde), Z (rojo).
 
- ![imagen tetronimos](images/colored_tetronimos.png)
+ ![imagen tetronimos](images/colored_tetrominos.png)
 
 - Pieza
 
