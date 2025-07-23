@@ -1,3 +1,4 @@
+from busqueda_local import *
 from tetris import Tetris
 from tetromino import Tetromino
 from tablero import Tablero

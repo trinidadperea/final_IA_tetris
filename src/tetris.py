@@ -6,12 +6,12 @@ import random
 
 
 class Tetris:
-    def __init__(self, tablero: Tablero, bag: List[Tetromino] = ["O", "I", "T", "L", "J", "S", "Z"]):
+    def __init__(self, tablero: Tablero):
         self.tiempo_inicio = None
         self.tablero = tablero
         self.pieza_actual = None
         self.pieza_fantasma = None
-        self.bag = bag
+        self.bag = ["O", "I", "T", "L", "J", "S", "Z"]
         self.next_queue = []
         self.vel_caida = None
         self.nivel = None
@@ -134,4 +134,19 @@ class Tetris:
             if y < 0:
                 return True
         return False
-
+    
+    # Copiar tablero -----------------------------------------------
+    def copy(self):
+        copia = Tetris(self.tablero)
+        copia.tiempo_inicio = self.tiempo_inicio
+        copia.pieza_actual = self.pieza_actual
+        copia.pieza_fantasma = self.pieza_fantasma
+        copia.bag = self.bag
+        copia.next_queue = self.next_queue
+        copia.vel_caida = self.vel_caida
+        copia.nivel = self.nivel
+        copia.lineas_eliminadas = self.lineas_eliminadas
+        copia.puntaje = self.puntaje
+        copia.game_over = self.game_over
+        return copia
+    

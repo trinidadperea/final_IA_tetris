@@ -7,7 +7,7 @@ class Tablero:
         self.filas = filas
         self.columnas = columnas
         self.bloque = bloque #pixeles
-        self.estado_actual = self.generar_matriz()
+        self.estado_actual = None
     
     def generar_matriz(self):
         return [[0 for _ in range(self.columnas)] for _ in range(self.filas)]
@@ -53,3 +53,9 @@ class Tablero:
         for x, y in pieza.obtener_forma_actual():
             if 0 <= y < self.filas and 0 <= x < self.columnas:
                 self.estado_actual[y][x] = pieza.color
+
+    # Copiar tablero -----------------------------------------------
+    def copy(self):
+        copia = Tablero(self.filas, self.columnas, self.bloque)
+        copia.estado_actual = self.estado_actual
+        return copia
