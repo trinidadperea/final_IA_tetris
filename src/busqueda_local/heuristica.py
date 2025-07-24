@@ -1,6 +1,6 @@
 from tetris import * 
 
-def heuristic(juego: Tetris):
+def heuristica(juego: Tetris):
     # Que valores deben tener los pesos para que la funcion me devuelva la mejor posición posible?? 
 
     peso_altura = 0.5
@@ -8,7 +8,7 @@ def heuristic(juego: Tetris):
     peso_desnivel = 0.5
     limite_altura_maxima = 6
     
-    # estado actual
+    # se copia el estado actual para no modificar el tablero del hillC
     juego_copia = juego.copy() 
     
     # posible estado -------------------------------------------
@@ -29,8 +29,7 @@ def heuristic(juego: Tetris):
     if altura_maxima > limite_altura_maxima:
         nro_lineas = altura_maxima - limite_altura_maxima
         puntaje -= peso_altura * nro_lineas
-    
-    
+        
     # desnivel 
     desnivel = calcular_desnivel(alturas_por_columnas)
     puntaje -= peso_desnivel * desnivel

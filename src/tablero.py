@@ -60,7 +60,7 @@ class Tablero:
         for x in range(self.columnas):
             colision = False
             for y in range(self.filas):
-                if self.estado[x][y] != 0:
+                if self.estado_actual[y][x] != 0:
                     colision = True
                 elif colision:
                     huecos += 1
