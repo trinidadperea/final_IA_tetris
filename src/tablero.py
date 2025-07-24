@@ -7,6 +7,7 @@ class Tablero:
         self.filas = filas
         self.columnas = columnas
         self.bloque = bloque #pixeles
+        self.cant_huecos = 0
         self.estado_actual = None
     
     def generar_matriz(self):
@@ -53,9 +54,24 @@ class Tablero:
         for x, y in pieza.obtener_forma_actual():
             if 0 <= y < self.filas and 0 <= x < self.columnas:
                 self.estado_actual[y][x] = pieza.color
+    
+    def contar_huecos(self):
+        huecos = 0
+        for x in range(self.columnas):
+            colision = False
+            for y in range(self.filas):
+                if self.estado[x][y] != 0:
+                    colision = True
+                elif colision:
+                    huecos += 1
+        return huecos
+    
+    def get_huecos(self):
+        return self.contar_huecos()
 
     # Copiar tablero -----------------------------------------------
     def copy(self):
         copia = Tablero(self.filas, self.columnas, self.bloque)
+        copia.cant_huecos = self.get_huecos()
         copia.estado_actual = self.estado_actual
         return copia

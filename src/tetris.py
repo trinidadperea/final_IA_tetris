@@ -25,6 +25,7 @@ class Tetris:
     def actualizar_estado(self): #actualiza nivel, puntuacion, lineas eliminadas,...
         if not self.mover_si_valido(self.pieza_actual,0,1):
             self.tablero.fijar_pieza(self.pieza_actual)
+            self.tablero.get_huecos()
             lineas = self.tablero.eliminar_lineas()
             if lineas != 0:
                 self.lineas_eliminadas += lineas
@@ -135,7 +136,7 @@ class Tetris:
                 return True
         return False
     
-    # Copiar tablero -----------------------------------------------
+    # Copiar juego -----------------------------------------------
     def copy(self):
         copia = Tetris(self.tablero)
         copia.tiempo_inicio = self.tiempo_inicio

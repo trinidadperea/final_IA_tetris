@@ -1,6 +1,8 @@
 from tetris import * 
 
 def heuristic(juego: Tetris):
+    # Que valores deben tener los pesos para que la funcion me devuelva la mejor posición posible?? 
+
     peso_altura = 0.5
     peso_hueco = 0.2
     peso_desnivel = 0.5
@@ -10,13 +12,14 @@ def heuristic(juego: Tetris):
     juego_copia = juego.copy() 
     
     # posible estado -------------------------------------------
-    juego_copia.actualizar_estado()
+    juego_copia.actualizar_estado()    
 
     #Puntaje por líneas eliminadas
     puntaje = juego_copia.puntaje - juego.puntaje 
 
     # huecos
-    cant_huecos = abs(calcular_huecos(juego) - calcular_huecos(juego_copia))
+    cant_huecos = abs(juego.tablero.cant_huecos - juego_copia.tablero.cant_huecos)
+
     puntaje -= peso_hueco * cant_huecos
 
     # altura
@@ -33,9 +36,6 @@ def heuristic(juego: Tetris):
     puntaje -= peso_desnivel * desnivel
 
     return puntaje
-
-def calcular_huecos(juego: Tetris):
-    pass
 
 def calcular_altura_por_columna(juego: Tetris):
     alturas = []
