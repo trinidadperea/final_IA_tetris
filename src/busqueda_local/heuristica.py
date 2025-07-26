@@ -2,7 +2,7 @@ from tetris import *
 
 def heuristica(juego: Tetris):
     # Que valores deben tener los pesos para que la funcion me devuelva la mejor posición posible?? 
-
+    
     peso_altura = 0.5
     peso_hueco = 0.2
     peso_desnivel = 0.5
@@ -41,15 +41,18 @@ def calcular_altura_por_columna(juego: Tetris):
     columnas = juego.tablero.columnas
     filas = juego.tablero.filas
 
+    
+
     for x in range(columnas):
+        altura = 0
         for y in range(filas):
-            if juego.tablero[x][y] == 0:
+            if juego.tablero.estado_actual[y][x] == 0:
                 altura += 1
             else:
                 break
         
         alturas.append(columnas - altura)
-        altura = 0
+        
     
     return alturas
 

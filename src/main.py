@@ -3,6 +3,7 @@ from tetris import Tetris
 from tetromino import Tetromino
 from tablero import Tablero
 from interfaz import *
+from agente import *
 import pygame
 
 def main():
@@ -32,11 +33,22 @@ def main():
     juego.set_vel_caida()
     intervalo_bajada = juego.get_vel_caida()  # ms
 
+    # agente
+    jugador = Agente()
+
     while corriendo:
         
         ahora = pygame.time.get_ticks()
         if ahora - tiempo_ultimo_movimiento > intervalo_bajada:
             
+
+            if juego.nueva_pieza:
+                jugador.jugar(juego)
+                juego.nueva_pieza = False
+            
+
+            nueva_fantasma = juego.actualizar_pieza_fantasma()
+            interfaz.dibujar_pieza(nueva_fantasma, True)
             juego.actualizar_estado()
             
             if juego.game_over:
@@ -44,7 +56,7 @@ def main():
 
             tiempo_ultimo_movimiento = ahora
                         
-            
+        """    
         for evento in pygame.event.get():
             if evento.type == pygame.QUIT:
                 corriendo = False
@@ -55,12 +67,6 @@ def main():
                     juego.set_vel_caida("soft")
                     intervalo_bajada = juego.get_vel_caida()
                     juego.mover_si_valido(juego.pieza_actual,0,-1) 
-                    
-                """if evento.key == pygame.K_SPACE:
-                    juego.set_vel_caida("hard")
-                    intervalo_bajada = juego.get_vel_caida()
-                    juego.mover_si_valido(juego.pieza_actual,0,-1)
-                    tiempo_ultimo_movimiento = pygame.time.get_ticks() """
                     
                 if evento.key == pygame.K_LEFT:
                     juego.mover_si_valido(juego.pieza_actual,-1,0)
@@ -80,6 +86,7 @@ def main():
                 if evento.key == pygame.K_DOWN:
                     juego.set_vel_caida()
                     intervalo_bajada = juego.get_vel_caida()
+        """
                 
         interfaz.dibujar_gui() 
         pygame.display.update()

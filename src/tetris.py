@@ -21,6 +21,7 @@ class Tetris:
         #self.tspins = 0
         #self.b2b = 0
         self.game_over = False
+        self.nueva_pieza = True
 
     def actualizar_estado(self): #actualiza nivel, puntuacion, lineas eliminadas,...
         if not self.mover_si_valido(self.pieza_actual,0,1):
@@ -34,6 +35,7 @@ class Tetris:
             
             if not self.is_game_over():
                 self.agregar_pieza_nueva()
+                self.nueva_pieza = True
             else:
                 self.game_over = True
 
@@ -137,13 +139,22 @@ class Tetris:
         return False
     
     # Copiar juego -----------------------------------------------
-    def copy(self):
-        copia = Tetris(self.tablero)
+    def copy(self): #copiamos los objetos por separado, sino se duplican las piezas
+        
+        # copia del tablero --
+        copia = Tetris(self.tablero.copy())
+
+        # copia pieza actual ------
+        copia.pieza_actual = self.pieza_actual.copy()
+        
+        # copia pieza fantasma -----
+        copia.pieza_fantasma = self.pieza_fantasma.copy()
+        
+        # -------------
         copia.tiempo_inicio = self.tiempo_inicio
-        copia.pieza_actual = self.pieza_actual
-        copia.pieza_fantasma = self.pieza_fantasma
-        copia.bag = self.bag
-        copia.next_queue = self.next_queue
+        copia.bag = self.bag[:]
+        copia.next_queue = self.next_queue[:]
+
         copia.vel_caida = self.vel_caida
         copia.nivel = self.nivel
         copia.lineas_eliminadas = self.lineas_eliminadas

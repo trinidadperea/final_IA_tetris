@@ -4,21 +4,33 @@ from busqueda_local.hill_climbing import *
 
 class Agente():
 
-    def __init__ (self, juego: Tetris):
-        self.juego = juego
+    def jugar(self, juego: Tetris):
+        (mejor_pos,mejor_rot) = hill_climbing1(juego)
 
-    def jugar(self):
-        (mejor_rot, mejor_pos) = hill_climbing(self.juego)
+        
+        print(f"Agente: moviendo a x={mejor_pos}, rot={mejor_rot}")
 
-        pos_actual = self.juego.pieza_actual.x
+
+        cont = 0
+        while juego.pieza_actual.rotacion != mejor_rot and cont < len(juego.pieza_actual.formas):
+            if juego.rotar_si_valido():
+                cont += 1
+            else:
+                break
+                
+        pos_actual = juego.pieza_actual.x
 
         while pos_actual > mejor_pos:
-            self.juego.pieza_actual.mover(-1,0)
+            if not juego.mover_si_valido(juego.pieza_actual,-1,0):
+                break
             pos_actual -= 1
-
+        
         while pos_actual < mejor_pos:
-            self.juego.pieza_actual.mover(1,0)
+            if not juego.mover_si_valido(juego.pieza_actual, 1,0):
+                break
             pos_actual += 1
         
-        while self.juego.pieza_actual.rotacion != mejor_rot:
-            self.juego.pieza_actual.rotar()
+        print(f"Pos actual: {juego.pieza_actual.x}, rot: {juego.pieza_actual.rotacion}")
+
+        
+
