@@ -6,12 +6,12 @@ import random
 
 
 class Tetris:
-    def __init__(self, tablero: Tablero, bag: List[Tetromino] = ["O", "I", "T", "L", "J", "S", "Z"]):
+    def __init__(self, tablero: Tablero):
         self.tiempo_inicio = None
         self.tablero = tablero
         self.pieza_actual = None
         self.pieza_fantasma = None
-        self.bag = bag
+        self.bag = ["O", "I", "T", "L", "J", "S", "Z"]
         self.next_queue = []
         self.vel_caida = None
         self.nivel = None
@@ -21,9 +21,12 @@ class Tetris:
         #self.tspins = 0
         #self.b2b = 0
         self.game_over = False
+        self.nueva_pieza = True
 
     def actualizar_estado(self): #actualiza nivel, puntuacion, lineas eliminadas,...
-        if not self.mover_si_valido(self.pieza_actual,0,1):
+        
+        if not self.mover_si_valido(self.pieza_actual,0,1, "vertical"):
+            
             self.tablero.fijar_pieza(self.pieza_actual)
             lineas = self.tablero.eliminar_lineas()
             if lineas != 0:
@@ -33,13 +36,14 @@ class Tetris:
             
             if not self.is_game_over():
                 self.agregar_pieza_nueva()
+                self.nueva_pieza = True
             else:
                 self.game_over = True
 
     # Operaciones con piezas ---------------------------------------------------
-    def mover_si_valido(self, pieza: Tetromino, dx, dy):
+    def mover_si_valido(self, pieza: Tetromino, dx, dy, mov):
         pieza.mover(dx, dy)
-        if self.tablero.hay_colision(pieza):
+        if self.tablero.hay_colision(pieza, mov):
             pieza.mover(-dx, -dy)
             return False
         return True
@@ -57,20 +61,14 @@ class Tetris:
                 return False
         return True
     
-    """def obtener_posiciones_pieza(self, pieza: Tetromino):
-        posiciones = []
-        forma = pieza.obtener_forma_actual()
-        for i, fila in enumerate(forma):
-            for j, celda in enumerate(fila):
-                if celda == 'O':
-                    posiciones.append((pieza.x + j, pieza.y + i))
-        return posiciones"""
-    
     # Generar piezas (actual y fantasma) ----------------------------------------
-    def generar_cola(self): 
-        nums = random.sample(range(0,7),7) 
+    def generar_cola(self): # COMENTO ESTO PARA PROBAR HC -----------------
+        #nums = random.sample(range(0,7),7) 
+        #for i in range(7):
+            #self.next_queue.append(self.bag[nums[i]])
+        
         for i in range(7):
-            self.next_queue.append(self.bag[nums[i]])
+            self.next_queue.append(self.bag[i])
     
     def agregar_pieza_nueva(self):
         if len(self.next_queue) < 2:
@@ -82,7 +80,7 @@ class Tetris:
     def actualizar_pieza_fantasma(self):
         self.pieza_fantasma = self.pieza_actual.copy()
 
-        while self.mover_si_valido(self.pieza_fantasma, 0, 1):
+        while self.mover_si_valido(self.pieza_fantasma, 0, 1, "vertical"):
             continue
         return self.pieza_fantasma
     
@@ -125,13 +123,35 @@ class Tetris:
             else: 
                 self.puntaje += 800
                 self.actualizar_puntos(lineas - 4)
-            
-        
-
+    
     #Game Over --------------------------------------------------------
     def is_game_over(self):
         for _, y in self.pieza_actual.obtener_forma_actual():
             if y < 0:
                 return True
         return False
+    
+    # Copiar juego -----------------------------------------------
+    def copy(self): #copiamos los objetos por separado, sino se duplican las piezas
+        
+        # copia del tablero --
+        copia = Tetris(self.tablero.copy())
 
+        # copia pieza actual ------
+        copia.pieza_actual = self.pieza_actual.copy()
+        
+        # copia pieza fantasma -----
+        copia.pieza_fantasma = self.pieza_fantasma.copy()
+        
+        # -------------
+        copia.tiempo_inicio = self.tiempo_inicio
+        copia.bag = self.bag[:]
+        copia.next_queue = self.next_queue[:]
+
+        copia.vel_caida = self.vel_caida
+        copia.nivel = self.nivel
+        copia.lineas_eliminadas = self.lineas_eliminadas
+        copia.puntaje = self.puntaje
+        copia.game_over = self.game_over
+        return copia
+    
