@@ -49,6 +49,8 @@ def hill_climbing(juego:Tetris):
                     
     puntaje_max = max(vecinos.values())
     
+    print("")
+    
     print(f"vecinos: {vecinos}")
     print("")
     
