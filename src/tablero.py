@@ -31,10 +31,15 @@ class Tablero:
         
         return lineas_completas
 
-    def hay_colision(self, pieza: Tetromino) -> bool:
+    def hay_colision(self, pieza: Tetromino, mov: str) -> bool:
         for x, y in pieza.obtener_forma_actual():
                         
-            if x < 0 or x >= self.columnas or y < 0 or y >= self.filas:
+            if (x < 0 or x >= self.columnas) and mov == "horizontal": 
+                print(f"colisión borde horizontal en x={x}, columna={pieza.x}, pieza={pieza.pieza}, rot={pieza.rotacion}")
+                return True
+            
+            if (y < 0 or y >= self.filas) and mov == "vertical":
+                #print(f"hay colision {mov}, x = {x}, y = {y}")
                 return True
             
             # Colisión con otro bloque
@@ -42,18 +47,12 @@ class Tablero:
                 return True
         return False
     
-    """def es_valida(self, posiciones: list) -> bool:
-        for x, y in posiciones:
-            if x < 0 or x >= self.columnas or y < 0 or y >= self.filas:
-                return False
-            if self.estado_actual[y][x] != 0:
-                return False
-        return True"""
-
     def fijar_pieza(self, pieza: Tetromino):
         for x, y in pieza.obtener_forma_actual():
             if 0 <= y < self.filas and 0 <= x < self.columnas:
                 self.estado_actual[y][x] = pieza.color
+        
+        self.set_huecos()
     
     def contar_huecos(self):
         huecos = 0
@@ -67,11 +66,14 @@ class Tablero:
         return huecos
     
     def get_huecos(self):
-        return self.contar_huecos()
+        return self.cant_huecos
+    
+    def set_huecos(self):
+        self.cant_huecos = self.contar_huecos()
 
     # Copiar tablero -----------------------------------------------
     def copy(self):
         copia = Tablero(self.filas, self.columnas, self.bloque)
         copia.cant_huecos = self.get_huecos()
-        copia.estado_actual = self.estado_actual
+        copia.estado_actual = [fila[:] for fila in self.estado_actual]
         return copia

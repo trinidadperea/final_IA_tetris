@@ -24,9 +24,10 @@ class Tetris:
         self.nueva_pieza = True
 
     def actualizar_estado(self): #actualiza nivel, puntuacion, lineas eliminadas,...
-        if not self.mover_si_valido(self.pieza_actual,0,1):
+        
+        if not self.mover_si_valido(self.pieza_actual,0,1, "vertical"):
+            
             self.tablero.fijar_pieza(self.pieza_actual)
-            self.tablero.get_huecos()
             lineas = self.tablero.eliminar_lineas()
             if lineas != 0:
                 self.lineas_eliminadas += lineas
@@ -40,9 +41,9 @@ class Tetris:
                 self.game_over = True
 
     # Operaciones con piezas ---------------------------------------------------
-    def mover_si_valido(self, pieza: Tetromino, dx, dy):
+    def mover_si_valido(self, pieza: Tetromino, dx, dy, mov):
         pieza.mover(dx, dy)
-        if self.tablero.hay_colision(pieza):
+        if self.tablero.hay_colision(pieza, mov):
             pieza.mover(-dx, -dy)
             return False
         return True
@@ -60,20 +61,14 @@ class Tetris:
                 return False
         return True
     
-    """def obtener_posiciones_pieza(self, pieza: Tetromino):
-        posiciones = []
-        forma = pieza.obtener_forma_actual()
-        for i, fila in enumerate(forma):
-            for j, celda in enumerate(fila):
-                if celda == 'O':
-                    posiciones.append((pieza.x + j, pieza.y + i))
-        return posiciones"""
-    
     # Generar piezas (actual y fantasma) ----------------------------------------
-    def generar_cola(self): 
-        nums = random.sample(range(0,7),7) 
+    def generar_cola(self): # COMENTO ESTO PARA PROBAR HC -----------------
+        #nums = random.sample(range(0,7),7) 
+        #for i in range(7):
+            #self.next_queue.append(self.bag[nums[i]])
+        
         for i in range(7):
-            self.next_queue.append(self.bag[nums[i]])
+            self.next_queue.append(self.bag[i])
     
     def agregar_pieza_nueva(self):
         if len(self.next_queue) < 2:
@@ -85,7 +80,7 @@ class Tetris:
     def actualizar_pieza_fantasma(self):
         self.pieza_fantasma = self.pieza_actual.copy()
 
-        while self.mover_si_valido(self.pieza_fantasma, 0, 1):
+        while self.mover_si_valido(self.pieza_fantasma, 0, 1, "vertical"):
             continue
         return self.pieza_fantasma
     
@@ -128,9 +123,7 @@ class Tetris:
             else: 
                 self.puntaje += 800
                 self.actualizar_puntos(lineas - 4)
-            
-        
-
+    
     #Game Over --------------------------------------------------------
     def is_game_over(self):
         for _, y in self.pieza_actual.obtener_forma_actual():

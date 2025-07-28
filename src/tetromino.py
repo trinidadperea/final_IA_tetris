@@ -27,6 +27,7 @@ class Tetromino():
     # Op pieza--------------------------------------------------------
     def rotar(self):
         self.rotacion = (self.rotacion + 1) % len(self.formas)
+        #print(f"rotacion= {self.rotacion}")
     
     def rotacion_inversa(self):
         self.rotacion = (self.rotacion - 1) % len(self.formas)

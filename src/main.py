@@ -41,7 +41,6 @@ def main():
         ahora = pygame.time.get_ticks()
         if ahora - tiempo_ultimo_movimiento > intervalo_bajada:
             
-
             if juego.nueva_pieza:
                 jugador.jugar(juego)
                 juego.nueva_pieza = False
@@ -50,6 +49,7 @@ def main():
             nueva_fantasma = juego.actualizar_pieza_fantasma()
             interfaz.dibujar_pieza(nueva_fantasma, True)
             juego.actualizar_estado()
+            
             
             if juego.game_over:
                 corriendo = False

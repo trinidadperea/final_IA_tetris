@@ -3,46 +3,62 @@ from tetris import *
 def heuristica(juego: Tetris):
     # Que valores deben tener los pesos para que la funcion me devuelva la mejor posición posible?? 
     
-    peso_altura = 0.5
-    peso_hueco = 0.2
-    peso_desnivel = 0.5
-    limite_altura_maxima = 6
-    
-    # se copia el estado actual para no modificar el tablero del hillC
-    juego_copia = juego.copy() 
-    
-    # posible estado -------------------------------------------
-    juego_copia.actualizar_estado()    
+    peso_lineas = 0.76
+    peso_altura = 0.8
+    peso_hueco = 1.2
+    peso_desnivel = 0.7
 
-    #Puntaje por líneas eliminadas
-    puntaje = juego_copia.puntaje - juego.puntaje 
+    lineas_eliminadas = juego.lineas_eliminadas
+    puntaje = peso_lineas * lineas_eliminadas
+    #print(f"lineas_eliminadas: {lineas_eliminadas}")
+    #print(f"puntaje (peso_lineas * lineas_eliminadas): {puntaje}")
+
+    #print(" ")
 
     # huecos
-    cant_huecos = abs(juego.tablero.cant_huecos - juego_copia.tablero.cant_huecos)
-
+    cant_huecos = juego.tablero.get_huecos()
+    
     puntaje -= peso_hueco * cant_huecos
+    #print(f"Cantidad de huecos: {cant_huecos}")
+    #print(f"puntaje = {puntaje}")
+
+    #print("")
 
     # altura
+    
     alturas_por_columnas = calcular_altura_por_columna(juego)
     altura_maxima = max(alturas_por_columnas)
+    altura_minima = min(alturas_por_columnas)
+    
+    
+    puntaje -= peso_altura * altura_maxima
+    #print(f"alturas por columna = {alturas_por_columnas}")
+    #print(f"altura_maxima: {altura_maxima}")
+    #print(f"puntaje = {puntaje}")
 
-    if altura_maxima > limite_altura_maxima:
-        nro_lineas = altura_maxima - limite_altura_maxima
-        puntaje -= peso_altura * nro_lineas
+    #print("")
         
     # desnivel 
     desnivel = calcular_desnivel(alturas_por_columnas)
     puntaje -= peso_desnivel * desnivel
+    #print(f"desnivel = {desnivel}")
+    #print(f"puntaje = {puntaje}")
+
+    altura_prom = sum(alturas_por_columnas) / len(alturas_por_columnas)
+    puntaje -= 0.8 * (altura_maxima - altura_prom)
+
+    diferencia_altura = abs(altura_maxima - altura_minima)
+
+    puntaje -= 0.8 * diferencia_altura
 
     return puntaje
+
 
 def calcular_altura_por_columna(juego: Tetris):
     alturas = []
     columnas = juego.tablero.columnas
     filas = juego.tablero.filas
-
     
-
     for x in range(columnas):
         altura = 0
         for y in range(filas):
@@ -50,10 +66,8 @@ def calcular_altura_por_columna(juego: Tetris):
                 altura += 1
             else:
                 break
+        alturas.append(filas - altura)
         
-        alturas.append(columnas - altura)
-        
-    
     return alturas
 
 def calcular_desnivel(alturas): 
