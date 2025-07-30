@@ -71,7 +71,6 @@ def hill_climbing(juego:Tetris):
     print(f"mejor_vecino = {mejor_vecino}")
     return mejor_vecino[0]
 
-
 def mover_a_columna(juego: Tetris, destino):
     x_act = juego.pieza_actual.x
     desplazamiento = destino - x_act

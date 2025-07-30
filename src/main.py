@@ -6,7 +6,9 @@ from interfaz import *
 from agente import *
 import pygame
 
+
 def main():
+   
     pygame.init()
     
     # Screen
@@ -20,6 +22,7 @@ def main():
     tablero.estado_actual = tablero.generar_matriz()
     juego = Tetris(tablero)
     juego.agregar_pieza_nueva()
+    juego.nueva_pieza = True
     juego.set_nivel(1)
     
     # Interfaz
@@ -35,14 +38,16 @@ def main():
 
     # agente
     jugador = Agente()
+    jugador.jugar(juego, metodo="SA")
 
     while corriendo:
         
         ahora = pygame.time.get_ticks()
         if ahora - tiempo_ultimo_movimiento > intervalo_bajada:
             
+
             if juego.nueva_pieza:
-                jugador.jugar(juego)
+                jugador.jugar(juego, metodo="SA")
                 juego.nueva_pieza = False
             
 
@@ -92,10 +97,12 @@ def main():
         pygame.display.update()
         reloj.tick(60)  # 60 FPS
 
+
+
     pygame.quit()    
+
 
 
 if __name__ == "__main__":
     main()
-
 

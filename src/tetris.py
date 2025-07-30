@@ -11,7 +11,7 @@ class Tetris:
         self.tablero = tablero
         self.pieza_actual = None
         self.pieza_fantasma = None
-        self.bag = ["O", "I", "T", "L", "J", "S", "Z"]
+        self.bag = ["O","I", "T", "L", "J", "S", "Z"]
         self.next_queue = []
         self.vel_caida = None
         self.nivel = None
@@ -24,7 +24,7 @@ class Tetris:
         self.nueva_pieza = True
 
     def actualizar_estado(self): #actualiza nivel, puntuacion, lineas eliminadas,...
-        
+
         if not self.mover_si_valido(self.pieza_actual,0,1, "vertical"):
             
             self.tablero.fijar_pieza(self.pieza_actual)
@@ -39,6 +39,10 @@ class Tetris:
                 self.nueva_pieza = True
             else:
                 self.game_over = True
+    '''
+    def pieza_lista_para_caer(self):
+        # El agente llama a este método cuando termina de decidir/mover la pieza
+        self.nueva_pieza = False '''
 
     # Operaciones con piezas ---------------------------------------------------
     def mover_si_valido(self, pieza: Tetromino, dx, dy, mov):
@@ -48,27 +52,27 @@ class Tetris:
             return False
         return True
     
+
     def rotar_si_valido(self):
         self.pieza_actual.rotar()
         for x, y in self.pieza_actual.obtener_forma_actual():
-            # Verificamos si está fuera de los límites del tablero
             if x < 0 or x >= self.tablero.columnas or y >= self.tablero.filas:
                 self.pieza_actual.rotacion_inversa()
                 return False
-            # Verificamos si choca con otra pieza ya colocada
-            if self.tablero.estado_actual[y][x] != 0:
+            if y >= 0 and self.tablero.estado_actual[y][x] != 0:
                 self.pieza_actual.rotacion_inversa()
                 return False
         return True
+
     
     # Generar piezas (actual y fantasma) ----------------------------------------
     def generar_cola(self): # COMENTO ESTO PARA PROBAR HC -----------------
         #nums = random.sample(range(0,7),7) 
         #for i in range(7):
-            #self.next_queue.append(self.bag[nums[i]])
+        #    self.next_queue.append(self.bag[nums[i]])
         
-        for i in range(7):
-            self.next_queue.append(self.bag[i])
+        for i in range(6):
+           self.next_queue.append(self.bag[i])
     
     def agregar_pieza_nueva(self):
         if len(self.next_queue) < 2:
