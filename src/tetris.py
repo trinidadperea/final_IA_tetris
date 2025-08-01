@@ -72,7 +72,7 @@ class Tetris:
         #    self.next_queue.append(self.bag[nums[i]])
         
         for i in range(6):
-           self.next_queue.append(self.bag[i])
+            self.next_queue.append(self.bag[i])
     
     def agregar_pieza_nueva(self):
         if len(self.next_queue) < 2:

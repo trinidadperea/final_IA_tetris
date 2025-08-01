@@ -38,8 +38,7 @@ def main():
 
     # agente
     jugador = Agente()
-    jugador.jugar(juego, metodo="SA")
-
+    
     while corriendo:
         
         ahora = pygame.time.get_ticks()
@@ -47,7 +46,7 @@ def main():
             
 
             if juego.nueva_pieza:
-                jugador.jugar(juego, metodo="SA")
+                jugador.jugar(juego)
                 juego.nueva_pieza = False
             
 

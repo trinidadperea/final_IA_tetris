@@ -3,11 +3,13 @@ from busqueda_local.hill_climbing import *
 from busqueda_local.simulated_annealing import *
 
 class Agente():
-
-    # para jugar con hill climbing
-    def jugarHC(self, juego: Tetris):
         
-        (mejor_pos,_,mejor_rot) = hill_climbing(juego)
+    # para jugar con hill climbing
+    def jugar(self, juego):
+        
+        (mejor_pos,mejor_rot) = simulated_annealing(juego)
+
+        #(mejor_pos,_,mejor_rot) = hill_climbing(juego)
 
         while juego.pieza_actual.y < 0:
                 juego.pieza_actual.mover(0,1)
@@ -37,7 +39,7 @@ class Agente():
         print(f"Pos actual: {juego.pieza_actual.x}, rot: {juego.pieza_actual.rotacion}")
 
     # para jugar con simulated annealing
-    def jugarSA(self, juego: Tetris):
+"""def jugarSA(self, juego: Tetris):
 
         movimiento = simulated_annealing(juego)
         print(f"Movimiento sugerido: ", movimiento)
@@ -65,4 +67,4 @@ class Agente():
         if metodo == "HC":
             self.jugarHC(juego)
         elif metodo == "SA":
-            self.jugarSA(juego)
+            self.jugarSA(juego)"""

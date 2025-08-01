@@ -35,7 +35,7 @@ class Tablero:
         for x, y in pieza.obtener_forma_actual():
                         
             if (x < 0 or x >= self.columnas) and mov == "horizontal": 
-                print(f"colisión borde horizontal en x={x}, columna={pieza.x}, pieza={pieza.pieza}, rot={pieza.rotacion}")
+                #print(f"colisión horizontal en x={x}, columna={pieza.x}, pieza={pieza.pieza}, rot={pieza.rotacion}")
                 return True
             
             if (y < 0 or y >= self.filas) and mov == "vertical":

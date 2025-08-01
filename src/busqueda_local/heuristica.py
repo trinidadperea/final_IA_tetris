@@ -30,7 +30,7 @@ def heuristica(juego: Tetris):
     
     alturas_por_columnas = calcular_altura_por_columna(juego)
     altura_maxima = max(alturas_por_columnas)
-    altura_minima = min(alturas_por_columnas)
+    #altura_minima = min(alturas_por_columnas)
     
     
     puntaje -= peso_altura * altura_maxima
@@ -80,3 +80,51 @@ def calcular_desnivel(alturas):
 
     return desnivel
 
+def combinaciones_validas(juego:Tetris):
+    combinaciones = []
+    for columna in range(juego.tablero.columnas):
+
+        for rotacion in range(len(juego.pieza_actual.formas)):
+            simulacion = juego.copy()
+            #pieza = juego.pieza_actual.pieza
+            
+            while simulacion.pieza_actual.y < 0:
+                simulacion.pieza_actual.mover(0,1)
+
+            for _ in range(rotacion):
+                if not simulacion.rotar_si_valido():
+                    break
+            else:
+                if mover_a_columna(simulacion, columna):
+                    bajar_pieza(simulacion)
+                    rot = simulacion.pieza_actual.rotacion
+                    pos_x = simulacion.pieza_actual.x
+                    
+                    simulacion.actualizar_estado()
+                    puntaje = heuristica(simulacion)
+                    
+                    combinaciones.append((pos_x,rot,puntaje))
+    return combinaciones
+
+def mover_a_columna(juego: Tetris, destino):
+    x_act = juego.pieza_actual.x
+    desplazamiento = destino - x_act
+
+    if desplazamiento > 0:
+        dx = 1
+    else:
+        dx = -1
+
+    for _ in range(abs(desplazamiento)):
+        #juego.tablero.bajar(juego.pieza_actual)
+        if not juego.mover_si_valido(juego.pieza_actual,dx,0, "horizontal"):
+            #print(f"No se pudo mover a columna {destino} con rotación {juego.pieza_actual.rotacion}")
+            #print(f"posiciones: destino = {destino}, desplazamiento = {desplazamiento}, x actual = {x_act}, x = {juego.pieza_actual.x}, y = {juego.pieza_actual.y}")
+            
+            return False
+        
+    return True
+
+def bajar_pieza(juego:Tetris):
+    while juego.mover_si_valido(juego.pieza_actual, 0, 1, "vertical"):
+            continue
