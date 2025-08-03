@@ -72,26 +72,6 @@ def hill_climbing(juego:Tetris):
     return mejor_vecino[0]
 
 
-def mover_a_columna(juego: Tetris, destino):
-    x_act = juego.pieza_actual.x
-    desplazamiento = destino - x_act
 
-    if desplazamiento > 0:
-        dx = 1
-    else:
-        dx = -1
 
-    for _ in range(abs(desplazamiento)):
-        #juego.tablero.bajar(juego.pieza_actual)
-        if not juego.mover_si_valido(juego.pieza_actual,dx,0, "horizontal"):
-            print(f"No se pudo mover a columna {destino} con rotación {juego.pieza_actual.rotacion}")
-            print(f"posiciones: destino = {destino}, desplazamiento = {desplazamiento}, x actual = {x_act}, x = {juego.pieza_actual.x}, y = {juego.pieza_actual.y}")
-            
-            return False
-        
-    return True
-
-def bajar_pieza(juego:Tetris):
-    while juego.mover_si_valido(juego.pieza_actual, 0, 1, "vertical"):
-            continue
 
