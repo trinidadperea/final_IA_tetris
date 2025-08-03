@@ -30,9 +30,9 @@ class Tetris:
             self.tablero.fijar_pieza(self.pieza_actual)
             lineas = self.tablero.eliminar_lineas()
             if lineas != 0:
-                self.lineas_eliminadas += lineas
+                self.actualizar_lineas_eliminadas(lineas)
                 self.actualizar_puntos(lineas)
-                self.actualizar_nivel()
+                #self.actualizar_nivel()
             
             if not self.is_game_over():
                 self.agregar_pieza_nueva()
@@ -109,10 +109,18 @@ class Tetris:
     def set_nivel(self, nivel: int):
         self.nivel = nivel
 
+    def actualizar_lineas_eliminadas(self, lineas:int):
+        total_lineas = self.lineas_eliminadas + lineas
+
+        if total_lineas >= 10:
+            self.actualizar_nivel()
+            self.lineas_eliminadas = total_lineas - 10
+        else:           
+            self.lineas_eliminadas += lineas
+
     def actualizar_nivel(self):
-        if self.lineas_eliminadas == 10:
-            self.nivel += 1
-            self.lineas_eliminadas = 0
+        self.nivel += 1
+            
 
     # Puntaje -------------------------------------------------------
     def actualizar_puntos(self, lineas):
