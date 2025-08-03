@@ -5,7 +5,7 @@ from busqueda_local.simulated_annealing import *
 class Agente():
         
     # para jugar con hill climbing
-    def jugar(self, juego):
+    def jugar(self, juego:Tetris):
         
         (mejor_pos,mejor_rot) = simulated_annealing(juego)
 
