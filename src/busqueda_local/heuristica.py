@@ -6,8 +6,11 @@ def heuristica(juego: Tetris):
     #print(" heuristica")
     #print("")
     peso_lineas = 0.76
-    peso_altura = 0.8
-    peso_hueco = 1.5
+    # peso_lineas = 0.76
+    peso_altura = 0.35
+    # peso_altura = 0.8
+    peso_hueco = 2
+    #peso_hueco = 1.5
     peso_desnivel = 0.15
 
     lineas_eliminadas = juego.lineas_eliminadas
@@ -47,7 +50,7 @@ def heuristica(juego: Tetris):
     #print(f"puntaje = {puntaje}")
 
     altura_prom = sum(alturas_por_columnas) / len(alturas_por_columnas)
-    puntaje -= 0.8 * (altura_maxima - altura_prom)
+    puntaje -= 0.5 * (altura_maxima - altura_prom)
     #print(f"altura promedio = {altura_prom}")
     #print(f"puntaje = {puntaje}")
 

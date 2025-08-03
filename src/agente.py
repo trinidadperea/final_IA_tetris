@@ -1,13 +1,16 @@
 from tetris import *
 from busqueda_local.hill_climbing import *
 from busqueda_local.simulated_annealing import *
+from busqueda_local.genetico import *
 
 class Agente():
         
     # para jugar con hill climbing
-    def jugar(self, juego):
+    def jugar(self, juego:Tetris):
         
-        (mejor_pos,mejor_rot) = simulated_annealing(juego)
+        #(mejor_pos,mejor_rot) = simulated_annealing(juego)
+
+        (mejor_pos,mejor_rot,_) = genetico(juego, 9)
 
         #(mejor_pos,_,mejor_rot) = hill_climbing(juego)
 
