@@ -60,12 +60,12 @@ class Tetris:
         
     # Generar piezas (actual y fantasma) ----------------------------------------
     def generar_cola(self): # COMENTO ESTO PARA PROBAR HC -----------------
-        #nums = random.sample(range(0,7),7) 
-        #for i in range(7):
-        #    self.next_queue.append(self.bag[nums[i]])
+        nums = random.sample(range(0,7),7) 
+        for i in range(7):
+            self.next_queue.append(self.bag[nums[i]])
         
-        for i in range(6):
-            self.next_queue.append(self.bag[i])
+        #for i in range(7):
+            #self.next_queue.append(self.bag[i])
     
     def agregar_pieza_nueva(self):
         if len(self.next_queue) < 2:
@@ -115,19 +115,20 @@ class Tetris:
 
     def actualizar_nivel(self):
         self.nivel += 1
+        self.set_vel_caida()
     
     # Puntaje -------------------------------------------------------
     def actualizar_puntos(self, lineas):
             if lineas < 4:
                 if lineas == 1:
-                    self.puntaje += 100
+                    self.puntaje += (100 * self.nivel)
                 elif lineas == 2:
-                    self.puntaje += 200
+                    self.puntaje += (200 * self.nivel)
                 elif lineas == 3:
-                    self.puntaje += 400
+                    self.puntaje += (400 * self.nivel)
                 return
             else: 
-                self.puntaje += 800
+                self.puntaje += (800 * self.nivel)
                 self.tetrises += 1
                 self.actualizar_puntos(lineas - 4)
     
