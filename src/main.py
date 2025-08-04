@@ -46,13 +46,17 @@ def main():
             
 
             if juego.nueva_pieza:
-                jugador.jugar(juego)
+                # "hc", "sa", "gen"
+                jugador.jugar(juego,"hc")
                 juego.nueva_pieza = False
             
 
             nueva_fantasma = juego.actualizar_pieza_fantasma()
             interfaz.dibujar_pieza(nueva_fantasma, True)
             juego.actualizar_estado()
+
+            if juego.vel_caida != intervalo_bajada:
+                intervalo_bajada = juego.vel_caida
             
             
             if juego.game_over:

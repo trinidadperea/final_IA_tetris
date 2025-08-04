@@ -34,14 +34,6 @@ class Interfaz:
                 pygame.draw.rect(self.screen, color, rect)
                 pygame.draw.rect(self.screen, (68,68,68), rect, 1)
 
-    '''def dibujar_tablero(self):
-        for y, fila in enumerate(self.tetris.tablero.generarMatriz()):
-            for x, color in enumerate(fila):
-                rect = pygame.Rect(x * self.tamaño_bloque, y * self.tamaño_bloque, self.tamaño_bloque, self.tamaño_bloque)
-                
-                pygame.draw.rect(self.screen, color, rect)
-                pygame.draw.rect(self.screen,(50,50,50), rect, width=1)'''
-
     def dibujar_pieza(self, pieza: Tetromino, fantasma: bool):
         for x, y in pieza.obtener_forma_actual():
             px = x * self.tamaño_bloque  # coordenadas en píxeles
@@ -90,27 +82,29 @@ class Interfaz:
         # ---------- LÍNEA DIVISORIA ----------
         pygame.draw.line(self.screen, (200, 200, 200), (panel_x, 190), (panel_x + 200, 190), 1)
 
-        # ---------- PUNTUACIÓN ----------
-        texto = font.render(f"Puntuación: {self.tetris.puntaje}", True, (255, 255, 255))
-        self.screen.blit(texto, (panel_x + 10, 500))
-
-        # ---------- NIVEL ----------
-        texto = font.render(f"Nivel: {self.tetris.nivel}", True, (255, 255, 255))
-        self.screen.blit(texto, (panel_x + 10, 540))
-
-        # ---------- LÍNEAS ELIMINADAS ----------
-        texto = font.render(f"Líneas: {self.tetris.lineas_eliminadas}", True, (255, 255, 255))
-        self.screen.blit(texto, (panel_x + 10, 580))
-        
         # ---------- TIEMPO ----------
         #pygame.draw.line(self.screen, (200, 200, 200), (panel_x, 310), (panel_x + 150, 310), 1)
         # Dibujar tiempo transcurrido
         tiempo_transcurrido = (pygame.time.get_ticks() - self.tetris.tiempo_inicio) // 1000
         texto_tiempo = font.render(f"Tiempo: {tiempo_transcurrido}s", True, (255, 255, 255))
-        self.screen.blit(texto_tiempo, (panel_x + 10, 460)) 
+        self.screen.blit(texto_tiempo, (panel_x + 10, 420)) 
 
+        # ---------- PUNTUACIÓN ----------
+        texto = font.render(f"Puntuación: {self.tetris.puntaje}", True, (255, 255, 255))
+        self.screen.blit(texto, (panel_x + 10, 460))
 
+        # ---------- NIVEL ----------
+        texto = font.render(f"Nivel: {self.tetris.nivel}", True, (255, 255, 255))
+        self.screen.blit(texto, (panel_x + 10, 500))
 
+        # ---------- LÍNEAS ELIMINADAS ----------
+        texto = font.render(f"Líneas: {self.tetris.lineas_eliminadas}", True, (255, 255, 255))
+        self.screen.blit(texto, (panel_x + 10, 540))
+
+        # ---------- TETRIS ----------
+        texto = font.render(f"Tetrises: {self.tetris.tetrises}", True, (255, 255, 255))
+        self.screen.blit(texto, (panel_x + 10, 580))
+    
     def diseño_pieza(self, px: int, py: int, pieza: Tetromino):
         sombra = (max(pieza.color[0] - 40, 0), max(pieza.color[1] - 40, 0), max(pieza.color[2] - 40, 0))
         brillo = (min(pieza.color[0] + 40, 255), min(pieza.color[1] + 40, 255), min(pieza.color[2] + 40, 255))

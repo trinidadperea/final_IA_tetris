@@ -16,10 +16,9 @@ class Tetris:
         self.vel_caida = None
         self.nivel = None
         self.lineas_eliminadas = 0
+        self.lineas_nivel = 0
         self.puntaje = 0
-        #self.tetrises = 0
-        #self.tspins = 0
-        #self.b2b = 0
+        self.tetrises = 0
         self.game_over = False
         self.nueva_pieza = True
 
@@ -30,20 +29,15 @@ class Tetris:
             self.tablero.fijar_pieza(self.pieza_actual)
             lineas = self.tablero.eliminar_lineas()
             if lineas != 0:
-                self.actualizar_lineas_eliminadas(lineas)
+                self.actualizar_lineas(lineas)
                 self.actualizar_puntos(lineas)
-                #self.actualizar_nivel()
-            
+                
             if not self.is_game_over():
                 self.agregar_pieza_nueva()
                 self.nueva_pieza = True
             else:
                 self.game_over = True
-    '''
-    def pieza_lista_para_caer(self):
-        # El agente llama a este método cuando termina de decidir/mover la pieza
-        self.nueva_pieza = False '''
-
+    
     # Operaciones con piezas ---------------------------------------------------
     def mover_si_valido(self, pieza: Tetromino, dx, dy, mov):
         pieza.mover(dx, dy)
@@ -63,16 +57,15 @@ class Tetris:
                 self.pieza_actual.rotacion_inversa()
                 return False
         return True
-
-    
+        
     # Generar piezas (actual y fantasma) ----------------------------------------
     def generar_cola(self): # COMENTO ESTO PARA PROBAR HC -----------------
-        #nums = random.sample(range(0,7),7) 
-        #for i in range(7):
-        #    self.next_queue.append(self.bag[nums[i]])
+        nums = random.sample(range(0,7),7) 
+        for i in range(7):
+            self.next_queue.append(self.bag[nums[i]])
         
-        for i in range(6):
-            self.next_queue.append(self.bag[i])
+        #for i in range(7):
+            #self.next_queue.append(self.bag[i])
     
     def agregar_pieza_nueva(self):
         if len(self.next_queue) < 2:
@@ -109,31 +102,34 @@ class Tetris:
     def set_nivel(self, nivel: int):
         self.nivel = nivel
 
-    def actualizar_lineas_eliminadas(self, lineas:int):
-        total_lineas = self.lineas_eliminadas + lineas
-
+    def actualizar_lineas(self, lineas:int):
+        total_lineas = self.lineas_nivel + lineas
+        
         if total_lineas >= 10:
             self.actualizar_nivel()
-            self.lineas_eliminadas = total_lineas - 10
-        else:           
-            self.lineas_eliminadas += lineas
+            self.lineas_nivel = total_lineas - 10
+        else:     
+            self.lineas_nivel += lineas      
+        
+        self.lineas_eliminadas += lineas
 
     def actualizar_nivel(self):
         self.nivel += 1
-            
-
+        self.set_vel_caida()
+    
     # Puntaje -------------------------------------------------------
     def actualizar_puntos(self, lineas):
             if lineas < 4:
                 if lineas == 1:
-                    self.puntaje += 100
+                    self.puntaje += (100 * self.nivel)
                 elif lineas == 2:
-                    self.puntaje += 200
+                    self.puntaje += (200 * self.nivel)
                 elif lineas == 3:
-                    self.puntaje += 400
+                    self.puntaje += (400 * self.nivel)
                 return
             else: 
-                self.puntaje += 800
+                self.puntaje += (800 * self.nivel)
+                self.tetrises += 1
                 self.actualizar_puntos(lineas - 4)
     
     #Game Over --------------------------------------------------------
