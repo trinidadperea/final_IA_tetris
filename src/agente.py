@@ -5,15 +5,19 @@ from busqueda_local.genetico import *
 
 class Agente():
         
-    # para jugar con hill climbing
-    def jugar(self, juego:Tetris):
+    
+    def jugar(self, juego:Tetris, algoritmo):
+
+        if algoritmo == "hc":
+            (mejor_pos,_,mejor_rot) = hill_climbing(juego)
         
-        #(mejor_pos,mejor_rot) = simulated_annealing(juego)
+        if algoritmo == "gen":
+            (mejor_pos,mejor_rot) = genetico(juego, 9)
 
-        (mejor_pos,mejor_rot,_) = genetico(juego, 9)
+        if algoritmo == "sa":
+            (mejor_pos,mejor_rot) = simulated_annealing(juego)
 
-        #(mejor_pos,_,mejor_rot) = hill_climbing(juego)
-
+        
         while juego.pieza_actual.y < 0:
                 juego.pieza_actual.mover(0,1)
         

@@ -54,15 +54,16 @@ def hill_climbing(juego:Tetris):
     print(f"vecinos: {vecinos}")
     print("")
     
+    # [(x,y,rot), (), ...]
     mejor_vecino = [vecino for vecino, puntaje in vecinos.items() if puntaje == puntaje_max]
 
-    mejor_y = max(vecinos.keys(), key = lambda t: t[1])[1]
+    mejor_y = max(mejor_vecino, key = lambda t: t[1])[1]
     print(f"mejor y = {mejor_y}")
 
     if len(mejor_vecino) > 1:
-        mejor_vecino = [(a,b,c) for (a,b,c) in vecinos.keys() if b == mejor_y]
+        mejor_vecino = [vecino for vecino in mejor_vecino if vecino[1] == mejor_y]
         print("")
-        print(f"vecinos con mejor y: {vecinos}")
+        print(f"vecinos con mejor y: {mejor_vecino}")
         if len(mejor_vecino) > 1:
             return mejor_vecino[random.randint(0,len(mejor_vecino)-1)]
     

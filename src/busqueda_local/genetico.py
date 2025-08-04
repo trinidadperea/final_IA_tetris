@@ -51,7 +51,7 @@ def genetico(juego:Tetris, iteraciones: int):
         h_variation.append(mejor_combinacion[:2])
         if mejor_combinacion[2] == 0:
             # return best_state, i, h_variation
-            return mejor_combinacion
+            return mejor_combinacion[:2]
             # (pos,rot,fit)
         
         poblacion = nueva_poblacion
@@ -62,7 +62,7 @@ def genetico(juego:Tetris, iteraciones: int):
 
 
     #return best_state, i, h_variation
-    return mejor_combinacion
+    return mejor_combinacion[:2]
     # (pos,rot,fit)
 
 # combinaciones = {(pos,rot,fit)}

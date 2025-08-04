@@ -46,7 +46,8 @@ def main():
             
 
             if juego.nueva_pieza:
-                jugador.jugar(juego)
+                # "hc", "sa", "gen"
+                jugador.jugar(juego,"hc")
                 juego.nueva_pieza = False
             
 
