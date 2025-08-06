@@ -65,6 +65,12 @@ class Tablero:
                     huecos += 1
         return huecos
     
+    def calcular_altura(self):
+        for fila in range(self.filas):
+            if any(self.estado_actual[fila][columna] != 0 for columna in range(self.columnas)):
+                return self.filas - fila  
+        return 0 
+    
     def get_huecos(self):
         return self.cant_huecos
     

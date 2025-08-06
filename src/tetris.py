@@ -60,12 +60,13 @@ class Tetris:
         
     # Generar piezas (actual y fantasma) ----------------------------------------
     def generar_cola(self): # COMENTO ESTO PARA PROBAR HC -----------------
-        nums = random.sample(range(0,7),7) 
-        for i in range(7):
-            self.next_queue.append(self.bag[nums[i]])
-        
+        #nums = random.sample(range(0,7),7) 
         #for i in range(7):
-            #self.next_queue.append(self.bag[i])
+        #    self.next_queue.append(self.bag[nums[i]])
+
+        # Utilizamos piezas predeterminadas para la prueba para que sea parejo para los 3 algoritmos
+        for i in range(7):
+            self.next_queue.append(self.bag[i])
     
     def agregar_pieza_nueva(self):
         if len(self.next_queue) < 2:

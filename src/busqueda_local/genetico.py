@@ -19,13 +19,13 @@ def genetico(juego:Tetris, iteraciones: int):
     h_variation = []
 
     i = 0
-    print(f"Iteraciones: {iteraciones}")
+    #print(f"Iteraciones: {iteraciones}")
     while iteraciones > 0:
         # Selecciono los individuos mas aptos 
         # Devuelve un dict con los individuos mas aptos de cada grupo
         # [(p1,r1,f1),...]
         seleccion = seleccionar_individuos(poblacion)
-        print(f"Individuos seleccionados: {seleccion}")
+        #$print(f"Individuos seleccionados: {seleccion}")
         # Genero la poblacion nueva haciendo cruce entre los mas aptos
         # [(p1,r1,f1),...]
 
@@ -34,19 +34,19 @@ def genetico(juego:Tetris, iteraciones: int):
 
         # [(p1,r1,f1),...]
         nueva_poblacion = mutacion(seleccion, juego.pieza_actual, combinaciones)
-        print(f"Mutacion: {nueva_poblacion}")
+        #print(f"Mutacion: {nueva_poblacion}")
 
         descendencia = sorted(nueva_poblacion, key=lambda x: x[2], reverse=True)[:len(nueva_poblacion) - elite_size]
-        print(f"Descendencia: {descendencia}")
+        #print(f"Descendencia: {descendencia}")
 
         elites = sorted(poblacion, key=lambda x: x[2], reverse=True)[:elite_size]
-        print(f"Elites: {elites}")
+        #print(f"Elites: {elites}")
         
         nueva_poblacion = elites + descendencia
-        print(f"Nueva poblacion(elites + descendencia): {nueva_poblacion}")
+        #print(f"Nueva poblacion(elites + descendencia): {nueva_poblacion}")
 
         mejor_combinacion = mejor_fitness(nueva_poblacion)
-        print(f"Mejor fitness: {mejor_combinacion}")
+        #print(f"Mejor fitness: {mejor_combinacion}")
 
         h_variation.append(mejor_combinacion[:2])
         if mejor_combinacion[2] == 0:
@@ -57,8 +57,8 @@ def genetico(juego:Tetris, iteraciones: int):
         poblacion = nueva_poblacion
         iteraciones -= 1
         i += 1
-        print("")
-        print(f"Iteraciones: {iteraciones}")
+        #print("")
+        #print(f"Iteraciones: {iteraciones}")
 
 
     #return best_state, i, h_variation
@@ -93,12 +93,12 @@ def seleccionar_individuos(poblacion):
     else:
         n = 3
 
-    print("AQUI")
+    #print("AQUI")
 
     grupos = agrupar_random(poblacion,n)
     # [[(pos1,rot1,fit1), (pos2,rot2,fit2)], [(), ()],...]
-    print("")
-    print(f"grupos: {grupos}")
+    #print("")
+    #print(f"grupos: {grupos}")
 
     # Se toma de cada grupo el individuo con mejor fitness
     for grupo in grupos:

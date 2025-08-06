@@ -21,7 +21,7 @@ class Agente():
         while juego.pieza_actual.y < 0:
                 juego.pieza_actual.mover(0,1)
         
-        print(f"Agente: moviendo a x={mejor_pos}, rot={mejor_rot}")
+        #print(f"Agente: moviendo a x={mejor_pos}, rot={mejor_rot}")
         
         #roto hasta la mejor pos
         cont = 0
@@ -43,7 +43,7 @@ class Agente():
                 break
             pos_actual += 1
         
-        print(f"Pos actual: {juego.pieza_actual.x}, rot: {juego.pieza_actual.rotacion}")
+        #print(f"Pos actual: {juego.pieza_actual.x}, rot: {juego.pieza_actual.rotacion}")
 
     # para jugar con simulated annealing
 """def jugarSA(self, juego: Tetris):
