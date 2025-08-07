@@ -87,23 +87,35 @@ class Interfaz:
         # Dibujar tiempo transcurrido
         tiempo_transcurrido = (pygame.time.get_ticks() - self.tetris.tiempo_inicio) // 1000
         texto_tiempo = font.render(f"Tiempo: {tiempo_transcurrido}s", True, (255, 255, 255))
-        self.screen.blit(texto_tiempo, (panel_x + 10, 420)) 
+        self.screen.blit(texto_tiempo, (panel_x + 10, 220)) 
 
         # ---------- PUNTUACIÓN ----------
         texto = font.render(f"Puntuación: {self.tetris.puntaje}", True, (255, 255, 255))
-        self.screen.blit(texto, (panel_x + 10, 460))
+        self.screen.blit(texto, (panel_x + 10, 260))
 
         # ---------- NIVEL ----------
         texto = font.render(f"Nivel: {self.tetris.nivel}", True, (255, 255, 255))
-        self.screen.blit(texto, (panel_x + 10, 500))
+        self.screen.blit(texto, (panel_x + 10, 300))
 
         # ---------- LÍNEAS ELIMINADAS ----------
         texto = font.render(f"Líneas: {self.tetris.lineas_eliminadas}", True, (255, 255, 255))
-        self.screen.blit(texto, (panel_x + 10, 540))
+        self.screen.blit(texto, (panel_x + 10, 340))
+
+        # ---------- SINGLES ----------
+        texto = font.render(f"Singles: {self.tetris.singles}", True, (255, 255, 255))
+        self.screen.blit(texto, (panel_x + 10, 380))
+
+        # ---------- DOUBLES ----------
+        texto = font.render(f"Doubles: {self.tetris.doubles}", True, (255, 255, 255))
+        self.screen.blit(texto, (panel_x + 10, 420))
+
+        # ---------- TRIPLES ----------
+        texto = font.render(f"Triples: {self.tetris.triples}", True, (255, 255, 255))
+        self.screen.blit(texto, (panel_x + 10, 460))
 
         # ---------- TETRIS ----------
         texto = font.render(f"Tetrises: {self.tetris.tetrises}", True, (255, 255, 255))
-        self.screen.blit(texto, (panel_x + 10, 580))
+        self.screen.blit(texto, (panel_x + 10, 500))
     
     def diseño_pieza(self, px: int, py: int, pieza: Tetromino):
         sombra = (max(pieza.color[0] - 40, 0), max(pieza.color[1] - 40, 0), max(pieza.color[2] - 40, 0))
@@ -120,5 +132,3 @@ class Interfaz:
         pygame.draw.line(self.screen, sombra, (px, py + self.tamaño_bloque - 1), (px + self.tamaño_bloque, py + self.tamaño_bloque - 1), 2)
         pygame.draw.line(self.screen, sombra, (px + self.tamaño_bloque - 1, py), (px + self.tamaño_bloque - 1, py + self.tamaño_bloque), 2)
 
-
-    

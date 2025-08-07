@@ -2,7 +2,6 @@ from busqueda_local import *
 from tetris import *
 from tablero import *
 
-
 def evaluar(juego: Tetris, lista_tiempos):
 
     juego = juego.copy()
@@ -13,7 +12,7 @@ def evaluar(juego: Tetris, lista_tiempos):
     altura_max = juego.tablero.calcular_altura()
     huecos = juego.tablero.contar_huecos()
     tetrises = juego.tetrises
-    nival_alcanzado = juego.nivel
+    nivel_alcanzado = juego.nivel
 
     return {
         "puntaje obtenido": puntaje,
@@ -21,7 +20,7 @@ def evaluar(juego: Tetris, lista_tiempos):
         "altura maxima": altura_max,
         "cantidad de huecos": huecos,
         "cantidad de tetrises": tetrises,
-        "nivel alcanzado": nival_alcanzado,
+        "nivel alcanzado": nivel_alcanzado,
         "tiempo promedio toma decision": tiempo_decision
     }
 

@@ -40,7 +40,7 @@ def controlador(algoritmo):
 
     # agente
     jugador = Agente()
-    contar_piezas = 0
+    #contar_piezas = 0
 
     # para calcular el tiempo en la toma de decisiones
     tiempos = []
@@ -50,7 +50,6 @@ def controlador(algoritmo):
         if ahora - tiempo_ultimo_movimiento > intervalo_bajada:
         
             if juego.nueva_pieza:
-                # "hc", "sa", "gen"
                 inicio = time.time()
                 jugador.jugar(juego,algoritmo)
                 fin = time.time()
@@ -59,9 +58,12 @@ def controlador(algoritmo):
                 juego.nueva_pieza = False
 
                 # manejo de iteraciones para pruebas
-                contar_piezas += 1
-                if contar_piezas >= 30:
-                    corriendo = False 
+                #contar_piezas += 1
+                #if contar_piezas >= 30:
+               #    corriendo = False 
+                # manejo de iteraciones por nivel para pruebas
+                if juego.nivel >= 2: 
+                    corriendo = False
             
 
             nueva_fantasma = juego.actualizar_pieza_fantasma()

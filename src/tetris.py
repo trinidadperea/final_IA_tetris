@@ -18,6 +18,9 @@ class Tetris:
         self.lineas_eliminadas = 0
         self.lineas_nivel = 0
         self.puntaje = 0
+        self.singles = 0
+        self.doubles = 0
+        self.triples = 0
         self.tetrises = 0
         self.game_over = False
         self.nueva_pieza = True
@@ -68,6 +71,9 @@ class Tetris:
         for i in range(7):
             self.next_queue.append(self.bag[i])
     
+    #implementar funcion para manejo de semillas ...
+
+
     def agregar_pieza_nueva(self):
         if len(self.next_queue) < 2:
             self.generar_cola()
@@ -161,6 +167,10 @@ class Tetris:
         copia.nivel = self.nivel
         copia.lineas_eliminadas = self.lineas_eliminadas
         copia.puntaje = self.puntaje
+        copia.singles = self.singles
+        copia.doubles = self.doubles 
+        copia.triples = self.triples
+        copia.tetrises = self.tetrises
         copia.game_over = self.game_over
         return copia
     
