@@ -2,7 +2,8 @@ import csv
 
 def comparar(resultados_totales, nombre_archivo = "resultados_algoritmos.csv"):
     cabecera = ["Algoritmo", "Puntaje total", "Lineas eliminadas", 
-                "Altura maxima", "Cantidad huecos", "Tetrises", "Nivel alcanzado", "Tiempo promedio"]
+                "Altura maxima", "Cantidad huecos", "Tetrises", "Nivel alcanzado", 
+                "Tiempo promedio", "Singles", "Dobles", "Triples"]
 
     with open(nombre_archivo, mode="w", newline="") as archivo:
         escritor = csv.writer(archivo, delimiter="|")
@@ -14,13 +15,16 @@ def comparar(resultados_totales, nombre_archivo = "resultados_algoritmos.csv"):
 
             fila = [
                 algoritmo,
-                datos["puntaje obtenido"],
-                datos["lineas eliminadas"],
-                datos["altura maxima"],
-                datos["cantidad de huecos"],
-                datos["cantidad de tetrises"],
-                datos["nivel alcanzado"],
-                datos["tiempo promedio toma decision"]
+                datos.get("puntaje obtenido",0),
+                datos.get("lineas eliminadas",0),
+                datos.get("altura maxima",0),
+                datos.get("cantidad de huecos",0),
+                datos.get("cantidad de tetrises",0),
+                datos.get("nivel alcanzado",0),
+                datos.get("tiempo promedio toma decision",0),
+                datos.get("singles",0),
+                datos.get("doubles",0),
+                datos.get("triples",0)
             ]
 
             escritor.writerow(fila)

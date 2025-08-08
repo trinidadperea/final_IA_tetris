@@ -1,4 +1,4 @@
-Algoritmo|Puntaje total|Lineas eliminadas|Altura maxima|Cantidad huecos|Tetrises|Nivel alcanzado|Tiempo promedio
-hc|800|8|5|0|0|1|0.01214751402537028
-sa|800|7|7|0|0|1|0.23515206178029377
-gen|500|5|11|1|0|1|0.010894878705342611
+Algoritmo|Puntaje total|Lineas eliminadas|Altura maxima|Cantidad huecos|Tetrises|Nivel alcanzado|Tiempo promedio|Singles|Dobles|Triples
+Hill Climbing|2000|14|3|1|0|2|0.01346486210823059|9|0|1
+Simulated Annealing|2200|15|2|0|0|2|0.01201745867729187|9|0|0
+Genetico|1400|11|8|1|0|2|0.01185784935951233|4|0|1

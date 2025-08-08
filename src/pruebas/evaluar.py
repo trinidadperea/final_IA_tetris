@@ -9,6 +9,9 @@ def evaluar(juego: Tetris, lista_tiempos):
     tiempo_decision = sum(lista_tiempos) / len(lista_tiempos)
     puntaje = juego.puntaje
     lineas_eliminadas = juego.lineas_eliminadas
+    singles = juego.singles
+    doubles = juego.doubles
+    triples = juego.triples
     altura_max = juego.tablero.calcular_altura()
     huecos = juego.tablero.contar_huecos()
     tetrises = juego.tetrises
@@ -21,7 +24,10 @@ def evaluar(juego: Tetris, lista_tiempos):
         "cantidad de huecos": huecos,
         "cantidad de tetrises": tetrises,
         "nivel alcanzado": nivel_alcanzado,
-        "tiempo promedio toma decision": tiempo_decision
+        "tiempo promedio toma decision": tiempo_decision,
+        "singles": singles,
+        "dobles": doubles, 
+        "triples": triples
     }
 
 

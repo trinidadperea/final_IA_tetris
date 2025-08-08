@@ -1,15 +1,24 @@
+import os
 import matplotlib.pyplot as plt
 import numpy as np
 
 def graficar(resultados_totales):
+    # creo carpeta
+    carpeta_dir = "images_test" 
+    os.makedirs(carpeta_dir, exist_ok=True)
 
-    #gráfico de dispersión con Puntaje vs Tiempo promedio por algoritmo.
+    #gráfico de dispersión con Puntaje vs Tiempo promedio por algoritmo. 
+    grafico_dispersion(resultados_totales, os.path.join(carpeta_dir, "puntaje_vs_tiempo.png"))
+    grafico_puntaje_total(resultados_totales, os.path.join(carpeta_dir, "puntaje_total.png"))
+    grafico_nivel_puntaje(resultados_totales, os.path.join(carpeta_dir, "nivel_vs_puntaje.png"))
+    grafico_lineas_eliminadas(resultados_totales, os.path.join(carpeta_dir, "lineas_eliminadas.png"))
 
+def grafico_dispersion(resultados, imagen):
     algoritmos = []
     puntajes = []
     tiempos = []
 
-    for nombre, datos in resultados_totales:
+    for nombre, datos in resultados:
         algoritmos.append(nombre)
         puntajes.append(datos['puntaje obtenido'])
         tiempos.append(datos['tiempo promedio toma decision'])
@@ -30,58 +39,99 @@ def graficar(resultados_totales):
     plt.tight_layout()
 
     # Guardar imagen
-    plt.savefig("puntaje_vs_tiempo.png")
+    plt.savefig(imagen)
     plt.close()
-    print("Gráfico guardado como 'puntaje_vs_tiempo.png'.")
 
-# este es un grafico con todos los datos en uno mismo
-''' 
-# grafico araña
-def graficar(resultados_totales):
-    # Métricas a mostrar (excluyendo "Algoritmo")
-    etiquetas = ["Puntaje total", "Lineas eliminadas", "Altura maxima",
-                 "Cantidad huecos", "Tetrises", "Nivel alcanzado", "Tiempo promedio"]
 
-    # Número de variables
-    num_vars = len(etiquetas)
+def grafico_puntaje_total(resultados, imagen):
+    # Datos
+    algoritmos = []
+    puntajes = []
 
-    # Ángulos para el gráfico radar (completo un círculo)
-    angulos = np.linspace(0, 2 * np.pi, num_vars, endpoint=False).tolist()
-    angulos += angulos[:1]  # para cerrar el círculo
+    for nombre, datos in resultados:
+        algoritmos.append(nombre)
+        puntajes.append(datos['puntaje obtenido'])
 
-    fig, ax = plt.subplots(figsize=(6,6), subplot_kw=dict(polar=True))
+    # Crear gráfico de barras
+    plt.figure(figsize=(8, 6))
+    plt.bar(algoritmos, puntajes, color='skyblue', edgecolor='black')
 
-    for algoritmo, datos in resultados_totales:
-        valores = [
-            datos["puntaje obtenido"],
-            datos["lineas eliminadas"],
-            datos["altura maxima"],
-            datos["cantidad de huecos"],
-            datos["cantidad de tetrises"],
-            datos["nivel alcanzado"],
-            datos["tiempo promedio toma decision"]
-        ]
-        valores += valores[:1]  # cerrar el círculo
+    # Etiquetas y título
+    plt.xlabel('Algoritmo')
+    plt.ylabel('Puntaje obtenido')
+    plt.title('Comparación de Puntaje Total por Algoritmo')
 
-        ax.plot(angulos, valores, label=algoritmo)
-        ax.fill(angulos, valores, alpha=0.25)
+    # Etiquetas encima de cada barra
+    for i, v in enumerate(puntajes):
+        plt.text(i, v + 5, str(v), ha='center', fontweight='bold')
 
-    # Configuraciones
-    ax.set_theta_offset(np.pi / 2)
-    ax.set_theta_direction(-1)
+    # Guardar imagen
+    plt.tight_layout()
+    plt.savefig(imagen)
+    plt.close()
 
-    ax.set_thetagrids(np.degrees(angulos[:-1]), etiquetas)
+def grafico_nivel_puntaje(resultados, imagen):
+    #datos
+    algoritmos = []
+    niveles = []
+    puntajes = []
 
-    # Limpiar eje radial
-    ax.set_ylim(0, max(
-        max([
-            datos["puntaje obtenido"] for _, datos in resultados_totales
-        ]) * 1.1,  # multiplicar por 1.1 para margen
-        1
-    ))
+    for nombre, datos in resultados:
+        algoritmos.append(nombre)
+        niveles.append(datos['nivel alcanzado'])
+        puntajes.append(datos['puntaje obtenido'])
 
-    ax.grid(True)
-    plt.legend(loc='upper right', bbox_to_anchor=(1.1, 1.1))
-    plt.title("Comparación de algoritmos (múltiples métricas)")
-    plt.show()
-''' 
+    # Crear gráfico
+    plt.figure(figsize=(8, 6))
+    plt.scatter(niveles, puntajes, c='blue', edgecolors='black', s=100)
+
+    # Etiquetas sobre los puntos
+    for i, nombre in enumerate(algoritmos):
+        plt.text(niveles[i], puntajes[i] + 10, nombre.upper(), ha='center')
+
+    # Configuración de ejes y título
+    plt.xlabel('Nivel alcanzado')
+    plt.ylabel('Puntaje obtenido')
+    plt.title('Nivel alcanzado vs Puntaje por Algoritmo')
+    plt.grid(True)
+    plt.tight_layout()
+
+    # Guardar imagen
+    plt.savefig(imagen)
+    plt.close()
+
+def grafico_lineas_eliminadas(resultados, imagen):
+    # Datos
+    algoritmos = []
+    singles = []
+    doubles = []
+    triples = []
+
+    for nombre, datos in resultados:
+        algoritmos.append(nombre)
+        singles.append(datos.get('singles',0))
+        doubles.append(datos.get('doubles',0))
+        triples.append(datos.get('triples',0))
+
+    # Configuración para barras agrupadas
+    x = np.arange(len(algoritmos))
+    ancho = 0.25
+
+    plt.figure(figsize=(8, 6))
+    plt.bar(x - ancho, singles, width=ancho, label='Singles', color='skyblue')
+    plt.bar(x, doubles, width=ancho, label='Doubles', color='orange')
+    plt.bar(x + ancho, triples, width=ancho, label='Triples', color='green')
+
+    # Etiquetas y título
+    plt.xlabel('Algoritmos')
+    plt.ylabel('Cantidad de líneas eliminadas')
+    plt.title('Comparación de Singles, Doubles y Triples por Algoritmo')
+    plt.xticks(x, algoritmos)
+    plt.legend()
+    plt.grid(axis='y', linestyle='--', alpha=0.7)
+    plt.tight_layout()
+
+    # Guardar gráfico
+    plt.savefig(imagen)
+    plt.close()
+

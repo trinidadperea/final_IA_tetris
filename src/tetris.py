@@ -3,6 +3,7 @@ from tablero import *
 from tetromino import *
 from piezas import *
 import random
+import numpy as np
 
 
 class Tetris:
@@ -24,6 +25,7 @@ class Tetris:
         self.tetrises = 0
         self.game_over = False
         self.nueva_pieza = True
+
 
     def actualizar_estado(self): #actualiza nivel, puntuacion, lineas eliminadas,...
 
@@ -62,16 +64,15 @@ class Tetris:
         return True
         
     # Generar piezas (actual y fantasma) ----------------------------------------
-    def generar_cola(self): # COMENTO ESTO PARA PROBAR HC -----------------
-        #nums = random.sample(range(0,7),7) 
-        #for i in range(7):
-        #    self.next_queue.append(self.bag[nums[i]])
-
-        # Utilizamos piezas predeterminadas para la prueba para que sea parejo para los 3 algoritmos
+    def generar_cola(self): 
+        #manejo la cola de manera random para utilizar la semilla
+        nums = random.sample(range(0,7),7) 
         for i in range(7):
-            self.next_queue.append(self.bag[i])
+            self.next_queue.append(self.bag[nums[i]])
     
-    #implementar funcion para manejo de semillas ...
+    # funcion para manejo de semillas 
+    def generar_semilla(self, seed):
+        random.seed(seed)
 
 
     def agregar_pieza_nueva(self):
@@ -129,10 +130,13 @@ class Tetris:
             if lineas < 4:
                 if lineas == 1:
                     self.puntaje += (100 * self.nivel)
+                    self.singles += 1
                 elif lineas == 2:
                     self.puntaje += (200 * self.nivel)
+                    self.doubles += 1
                 elif lineas == 3:
                     self.puntaje += (400 * self.nivel)
+                    self.triples += 1
                 return
             else: 
                 self.puntaje += (800 * self.nivel)

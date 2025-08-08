@@ -9,7 +9,7 @@ from pruebas.evaluar import evaluar
 import pygame
 import time
 
-def controlador(algoritmo):
+def controlador(algoritmo, semilla):
     # por aca se realiza el juego y las pruebas
     pygame.init()
     
@@ -17,15 +17,18 @@ def controlador(algoritmo):
     ancho = 300 + 200 # 10 columnas * 30px + 150 del panel
     alto = 660   # 20 filas * 30px
     screen = pygame.display.set_mode((ancho, alto))
-    pygame.display.set_caption("Tetris")
+    pygame.display.set_caption(f"Tetris - {algoritmo}")
     
     # Estado incial del juego
     tablero = Tablero(22,10,30) 
     tablero.estado_actual = tablero.generar_matriz()
     juego = Tetris(tablero)
+    # implemento semilla anes de agregar pieza nueva para que sea igual en los 3 algoritmos
+    juego.generar_semilla(semilla) 
     juego.agregar_pieza_nueva()
     juego.nueva_pieza = True
     juego.set_nivel(1)
+    
     
     # Interfaz
     interfaz = Interfaz(juego, screen)
@@ -40,7 +43,7 @@ def controlador(algoritmo):
 
     # agente
     jugador = Agente()
-    #contar_piezas = 0
+    contar_piezas = 0
 
     # para calcular el tiempo en la toma de decisiones
     tiempos = []
@@ -58,14 +61,13 @@ def controlador(algoritmo):
                 juego.nueva_pieza = False
 
                 # manejo de iteraciones para pruebas
-                #contar_piezas += 1
-                #if contar_piezas >= 30:
-               #    corriendo = False 
+                contar_piezas += 1
+                if contar_piezas >= 40:
+                    corriendo = False 
                 # manejo de iteraciones por nivel para pruebas
-                if juego.nivel >= 2: 
-                    corriendo = False
+                #if juego.nivel >= 2: 
+                #    corriendo = False
             
-
             nueva_fantasma = juego.actualizar_pieza_fantasma()
             interfaz.dibujar_pieza(nueva_fantasma, True)
             juego.actualizar_estado()
