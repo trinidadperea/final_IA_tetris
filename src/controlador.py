@@ -62,7 +62,7 @@ def controlador(algoritmo, semilla):
 
                 # manejo de iteraciones para pruebas
                 contar_piezas += 1
-                if contar_piezas >= 40:
+                if contar_piezas >= 100:
                     corriendo = False 
                 # manejo de iteraciones por nivel para pruebas
                 #if juego.nivel >= 2: 
