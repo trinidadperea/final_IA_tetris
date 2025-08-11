@@ -1,4 +1,4 @@
 Algoritmo|iteracionPuntaje total|Lineas eliminadas|Altura maxima|Cantidad huecos|Tetrises|Nivel alcanzado|Tiempo promedio|Singles|Dobles|Triples
-Hill Climbing|1|400|4|2|0|0|1|0.00330942017691476|4|0|0
-Simulated Annealing|1|300|3|4|0|0|1|0.0034515346799577984|3|0|0
-Genetico|1|300|3|4|0|0|1|0.0037162985120500836|3|0|0
+Hill Climbing|1|9500|37|5|0|0|4|0.010523209571838379|24|0|1
+Simulated Annealing|1|4800|22|22|12|0|3|0.010887811183929444|9|0|3
+Genetico|1|7900|31|11|4|1|4|0.013858323097229003|19|0|2
