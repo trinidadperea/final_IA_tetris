@@ -29,14 +29,14 @@ def hill_climbing(juego:Tetris):
                     pos_x = simulacion.pieza_actual.x
                     pos_y = simulacion.pieza_actual.y
                     
-                    simulacion.actualizar_estado()
+                    simulacion.actualizar_estado_simulacion()
                     #print(f"Calculo funcion heuristica para: pos_x = {pos_x}, pos_y = {pos_y}, pieza = {pieza}")
                     #print(f"Cant de huecos actualizada: {simulacion.tablero.cant_huecos}")
                     puntaje = heuristica(simulacion)
                     #print(f"resultado heuristica: {puntaje,pos_x,pos_y,rot,pieza}")
                     
                     if puntaje > puntaje_max:
-                       #print(f"puntaje:p{puntaje}, puntaje_max: {puntaje_max}, pieza: {pieza}, rotacion: {rot}")
+                        #print(f"puntaje:p{puntaje}, puntaje_max: {puntaje_max}, pieza: {pieza}, rotacion: {rot}")
                         hay_vecino = True
                         mejor_rot = rot
                         mejor_pos_x = pos_x

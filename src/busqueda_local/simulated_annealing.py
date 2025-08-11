@@ -7,9 +7,6 @@ from busqueda_local.heuristica import *
 
 def simulated_annealing(juego: Tetris, enfriamiento=0.95, T_min=0.1, max_iter=100):
     
-    pieza = juego.pieza_actual.pieza
-    #print(f"Pieza actual: ", pieza)
-
     # Temperaruras ------
     T_inicial = -4 / math.log(0.6) # si delta = -4 la probabilidad de aceptacion es del 60%
     T_max = T_inicial
@@ -48,14 +45,3 @@ def simulated_annealing(juego: Tetris, enfriamiento=0.95, T_min=0.1, max_iter=10
         #print(" ")
 
     return estado_actual[:2]
-
-'''
-
-# funciones probabilidades
-def logarithmic(k):
-    return 100 / (1 + k)
-
-def exponential(k, n):
-    t0 = 10 * n
-    alpha = 0.95
-    return t0 * (alpha ** k) '''

@@ -25,7 +25,7 @@ def genetico(juego:Tetris, iteraciones: int):
         # Devuelve un dict con los individuos mas aptos de cada grupo
         # [(p1,r1,f1),...]
         seleccion = seleccionar_individuos(poblacion)
-        #$print(f"Individuos seleccionados: {seleccion}")
+        #print(f"Individuos seleccionados: {seleccion}")
         # Genero la poblacion nueva haciendo cruce entre los mas aptos
         # [(p1,r1,f1),...]
 
@@ -59,8 +59,7 @@ def genetico(juego:Tetris, iteraciones: int):
         i += 1
         #print("")
         #print(f"Iteraciones: {iteraciones}")
-
-
+    
     #return best_state, i, h_variation
     return mejor_combinacion[:2]
     # (pos,rot,fit)
@@ -92,8 +91,6 @@ def seleccionar_individuos(poblacion):
         n = 2
     else:
         n = 3
-
-    #print("AQUI")
 
     grupos = agrupar_random(poblacion,n)
     # [[(pos1,rot1,fit1), (pos2,rot2,fit2)], [(), ()],...]
@@ -129,10 +126,6 @@ def agrupar_random(poblacion, n):
 def cruce(seleccion: list, combinaciones_validas):
 
     nueva_poblacion = []
-    # [(p1,r1,f1), (p2,r2,f2), (p3,r3,f3)]
-    # (p1,r1,f1), (p2,r2,f2)
-    # (p1,r1,f1), (p3,r3,f3)
-    # (p2,r2,f2), (p3,r3,f3)
     for i in range(len(seleccion)):
         for j in range(len(seleccion)):
             if i != j:
@@ -167,7 +160,7 @@ def cruzar_estados(padre1 ,padre2, combinaciones_validas):
     hijo = random.choice([padre1,padre2])
 
     return hijo
-    # (pos,rot,fit)"""
+    # (pos,rot,fit)
     
 
 # 0.1 -> 50% de probabilidad por gen
@@ -177,6 +170,7 @@ def mutacion(poblacion, pieza_actual: Tetromino, combinaciones_validas, tasa_mut
     nuevos_individuos = []
     num_rotaciones = len(pieza_actual.formas)
     for (pos,_,_) in poblacion:
+        
         # Solo alteramos de manera aleatoria la rotacion de cada hijo
         if random.random() < tasa_mutacion:
             rot_nueva = random.randint(0,num_rotaciones-1)
@@ -193,10 +187,5 @@ def mutacion(poblacion, pieza_actual: Tetromino, combinaciones_validas, tasa_mut
                         nuevos_individuos.append(combinacion) 
                         # (pos,rot,fit)
             
-        """    if not es_combinacion_valida:
-                nuevos_individuos.append((pos,rot,fit))
-        else:
-            nuevos_individuos.append((pos,rot,fit))"""
-
     return poblacion + nuevos_individuos
     # [(p1,r1,f1), (p2,r2,f2), ...]

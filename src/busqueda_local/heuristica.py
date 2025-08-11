@@ -102,7 +102,7 @@ def combinaciones_validas(juego:Tetris):
                     rot = simulacion.pieza_actual.rotacion
                     pos_x = simulacion.pieza_actual.x
                     
-                    simulacion.actualizar_estado()
+                    simulacion.actualizar_estado_simulacion()
                     puntaje = heuristica(simulacion)
                     
                     combinaciones.append((pos_x,rot,puntaje))

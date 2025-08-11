@@ -1,7 +1,7 @@
 import csv
 
 def comparar(resultados_totales, nombre_archivo = "resultados_algoritmos.csv"):
-    cabecera = ["Algoritmo", "Puntaje total", "Lineas eliminadas", 
+    cabecera = ["Algoritmo", "iteracion" "Puntaje total", "Lineas eliminadas", 
                 "Altura maxima", "Cantidad huecos", "Tetrises", "Nivel alcanzado", 
                 "Tiempo promedio", "Singles", "Dobles", "Triples"]
 
@@ -11,10 +11,12 @@ def comparar(resultados_totales, nombre_archivo = "resultados_algoritmos.csv"):
 
         for resultado in resultados_totales:
             algoritmo = resultado[0]
-            datos = resultado[1]
+            iter = resultado[1]
+            datos = resultado[2]
 
             fila = [
                 algoritmo,
+                iter,
                 datos.get("puntaje obtenido",0),
                 datos.get("lineas eliminadas",0),
                 datos.get("altura maxima",0),

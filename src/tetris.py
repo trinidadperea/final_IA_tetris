@@ -27,7 +27,7 @@ class Tetris:
         self.nueva_pieza = True
 
 
-    def actualizar_estado(self): #actualiza nivel, puntuacion, lineas eliminadas,...
+    def actualizar_estado(self, num_iter, semilla): #actualiza nivel, puntuacion, lineas eliminadas,...
 
         if not self.mover_si_valido(self.pieza_actual,0,1, "vertical"):
             
@@ -38,10 +38,22 @@ class Tetris:
                 self.actualizar_puntos(lineas)
                 
             if not self.is_game_over():
-                self.agregar_pieza_nueva()
+                self.agregar_pieza_nueva(num_iter, semilla)
                 self.nueva_pieza = True
             else:
                 self.game_over = True
+    
+    def actualizar_estado_simulacion(self): #actualiza nivel, puntuacion, lineas eliminadas,...
+
+        if not self.mover_si_valido(self.pieza_actual,0,1, "vertical"):
+            
+            self.tablero.fijar_pieza(self.pieza_actual)
+            lineas = self.tablero.eliminar_lineas()
+            if lineas != 0:
+                self.actualizar_lineas(lineas)
+                self.actualizar_puntos(lineas)
+                
+            
     
     # Operaciones con piezas ---------------------------------------------------
     def mover_si_valido(self, pieza: Tetromino, dx, dy, mov):
@@ -51,7 +63,6 @@ class Tetris:
             return False
         return True
     
-
     def rotar_si_valido(self):
         self.pieza_actual.rotar()
         for x, y in self.pieza_actual.obtener_forma_actual():
@@ -64,20 +75,20 @@ class Tetris:
         return True
         
     # Generar piezas (actual y fantasma) ----------------------------------------
-    def generar_cola(self): 
+    def generar_cola(self, num_iter, semilla): 
         #manejo la cola de manera random para utilizar la semilla
+        random.seed(semilla + num_iter)
         nums = random.sample(range(0,7),7) 
         for i in range(7):
             self.next_queue.append(self.bag[nums[i]])
     
     # funcion para manejo de semillas 
-    def generar_semilla(self, seed):
-        random.seed(seed)
+    #def generar_semilla(self, seed):
+        #random.seed(seed)
 
-
-    def agregar_pieza_nueva(self):
+    def agregar_pieza_nueva(self, num_iter, semilla):
         if len(self.next_queue) < 2:
-            self.generar_cola()
+            self.generar_cola(num_iter, semilla)
         
         self.pieza_actual = Tetromino(self.next_queue.pop(0))
         self.actualizar_pieza_fantasma()

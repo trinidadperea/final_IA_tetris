@@ -24,8 +24,10 @@ def controlador(algoritmo, semilla):
     tablero.estado_actual = tablero.generar_matriz()
     juego = Tetris(tablero)
     # implemento semilla anes de agregar pieza nueva para que sea igual en los 3 algoritmos
-    juego.generar_semilla(semilla) 
-    juego.agregar_pieza_nueva()
+    #juego.generar_semilla(semilla) 
+    random.seed(semilla)
+    contar_piezas = 0
+    juego.agregar_pieza_nueva(contar_piezas,semilla)
     juego.nueva_pieza = True
     juego.set_nivel(1)
     
@@ -43,12 +45,13 @@ def controlador(algoritmo, semilla):
 
     # agente
     jugador = Agente()
-    contar_piezas = 0
+    
+    
 
     # para calcular el tiempo en la toma de decisiones
     tiempos = []
     while corriendo:
-
+        
         ahora = pygame.time.get_ticks()
         if ahora - tiempo_ultimo_movimiento > intervalo_bajada:
         
@@ -64,13 +67,10 @@ def controlador(algoritmo, semilla):
                 contar_piezas += 1
                 if contar_piezas >= 100:
                     corriendo = False 
-                # manejo de iteraciones por nivel para pruebas
-                #if juego.nivel >= 2: 
-                #    corriendo = False
-            
+                            
             nueva_fantasma = juego.actualizar_pieza_fantasma()
             interfaz.dibujar_pieza(nueva_fantasma, True)
-            juego.actualizar_estado()
+            juego.actualizar_estado(contar_piezas, semilla)
 
             if juego.vel_caida != intervalo_bajada:
                 intervalo_bajada = juego.vel_caida

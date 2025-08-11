@@ -18,7 +18,7 @@ def grafico_dispersion(resultados, imagen):
     puntajes = []
     tiempos = []
 
-    for nombre, datos in resultados:
+    for nombre, _, datos in resultados:
         algoritmos.append(nombre)
         puntajes.append(datos['puntaje obtenido'])
         tiempos.append(datos['tiempo promedio toma decision'])
@@ -48,7 +48,7 @@ def grafico_puntaje_total(resultados, imagen):
     algoritmos = []
     puntajes = []
 
-    for nombre, datos in resultados:
+    for nombre, _, datos in resultados:
         algoritmos.append(nombre)
         puntajes.append(datos['puntaje obtenido'])
 
@@ -76,7 +76,7 @@ def grafico_nivel_puntaje(resultados, imagen):
     niveles = []
     puntajes = []
 
-    for nombre, datos in resultados:
+    for nombre, _, datos in resultados:
         algoritmos.append(nombre)
         niveles.append(datos['nivel alcanzado'])
         puntajes.append(datos['puntaje obtenido'])
@@ -107,7 +107,7 @@ def grafico_lineas_eliminadas(resultados, imagen):
     doubles = []
     triples = []
 
-    for nombre, datos in resultados:
+    for nombre, _, datos in resultados:
         algoritmos.append(nombre)
         singles.append(datos.get('singles',0))
         doubles.append(datos.get('doubles',0))
