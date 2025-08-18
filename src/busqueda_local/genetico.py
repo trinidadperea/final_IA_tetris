@@ -5,7 +5,7 @@ from busqueda_local.heuristica import *
 def genetico(juego:Tetris, iteraciones: int):
 
     # [(pos,rot,fit), ...]
-    combinaciones = combinaciones_validas(juego)
+    combinaciones = combinaciones_validas(juego, "GA")
 
     tamaño_poblacion = min(len(combinaciones), 20)
     
@@ -19,34 +19,35 @@ def genetico(juego:Tetris, iteraciones: int):
     h_variation = []
 
     i = 0
-    print(f"Iteraciones: {iteraciones}")
+    #print(f"Iteraciones: {iteraciones}")
     while iteraciones > 0:
         # Selecciono los individuos mas aptos 
         # Devuelve un dict con los individuos mas aptos de cada grupo
         # [(p1,r1,f1),...]
         seleccion = seleccionar_individuos(poblacion)
-        print(f"Individuos seleccionados: {seleccion}")
+        #print(f"Individuos seleccionados: {seleccion}")
         # Genero la poblacion nueva haciendo cruce entre los mas aptos
         # [(p1,r1,f1),...]
 
-        #nueva_poblacion = cruce(seleccion, combinaciones)
+        nueva_poblacion = cruce(seleccion, combinaciones)
         #print(f"Nueva poblacion, cruce: {nueva_poblacion}")
 
         # [(p1,r1,f1),...]
-        nueva_poblacion = mutacion(seleccion, juego.pieza_actual, combinaciones)
-        print(f"Mutacion: {nueva_poblacion}")
+        #nueva_poblacion = mutacion(seleccion, juego.pieza_actual, combinaciones)
+        nueva_poblacion = mutacion(nueva_poblacion, juego.pieza_actual, combinaciones)
+        #print(f"Mutacion: {nueva_poblacion}")
 
         descendencia = sorted(nueva_poblacion, key=lambda x: x[2], reverse=True)[:len(nueva_poblacion) - elite_size]
-        print(f"Descendencia: {descendencia}")
+        #print(f"Descendencia: {descendencia}")
 
         elites = sorted(poblacion, key=lambda x: x[2], reverse=True)[:elite_size]
-        print(f"Elites: {elites}")
+        #print(f"Elites: {elites}")
         
         nueva_poblacion = elites + descendencia
-        print(f"Nueva poblacion(elites + descendencia): {nueva_poblacion}")
+        #print(f"Nueva poblacion(elites + descendencia): {nueva_poblacion}")
 
         mejor_combinacion = mejor_fitness(nueva_poblacion)
-        print(f"Mejor fitness: {mejor_combinacion}")
+        #print(f"Mejor fitness: {mejor_combinacion}")
 
         h_variation.append(mejor_combinacion[:2])
         if mejor_combinacion[2] == 0:
@@ -57,10 +58,9 @@ def genetico(juego:Tetris, iteraciones: int):
         poblacion = nueva_poblacion
         iteraciones -= 1
         i += 1
-        print("")
-        print(f"Iteraciones: {iteraciones}")
-
-
+        #print("")
+        #print(f"Iteraciones: {iteraciones}")
+    
     #return best_state, i, h_variation
     return mejor_combinacion[:2]
     # (pos,rot,fit)
@@ -93,12 +93,10 @@ def seleccionar_individuos(poblacion):
     else:
         n = 3
 
-    print("AQUI")
-
     grupos = agrupar_random(poblacion,n)
     # [[(pos1,rot1,fit1), (pos2,rot2,fit2)], [(), ()],...]
-    print("")
-    print(f"grupos: {grupos}")
+    #print("")
+    #print(f"grupos: {grupos}")
 
     # Se toma de cada grupo el individuo con mejor fitness
     for grupo in grupos:
@@ -108,10 +106,16 @@ def seleccionar_individuos(poblacion):
         # mejor_ind = [(pos1,rot1,fit1), ...]
 
         if (len(mejor_ind)) > 1:
-
-            k = random.randint(0,len(mejor_ind)-1)
-            individuos.append(mejor_ind[k])            
             
+            mejor_y = max(mejor_ind, key = lambda t: t[1])[1]
+            mejor_ind = [ind for ind in mejor_ind if ind[1] == mejor_y]
+
+            if len(mejor_ind) > 1:
+                k = random.randint(0,len(mejor_ind)-1)
+                individuos.append(mejor_ind[k])   
+            else:
+                individuos.append(mejor_ind[0])
+
         else:
             individuos.append(mejor_ind[0])
                 
@@ -128,20 +132,16 @@ def agrupar_random(poblacion, n):
 # seleccion = [(pos,rot,fit), ...]
 def cruce(seleccion: list, combinaciones_validas):
 
-    nueva_poblacion = []
-    # [(p1,r1,f1), (p2,r2,f2), (p3,r3,f3)]
-    # (p1,r1,f1), (p2,r2,f2)
-    # (p1,r1,f1), (p3,r3,f3)
-    # (p2,r2,f2), (p3,r3,f3)
+    #nueva_poblacion = []
     for i in range(len(seleccion)):
         for j in range(len(seleccion)):
             if i != j:
                 # hijo = (pos,rot,fit)
                 hijo = cruzar_estados(seleccion[i],seleccion[j], combinaciones_validas)
-                if hijo not in nueva_poblacion:
-                    nueva_poblacion.append(hijo)
+                if hijo not in seleccion:
+                    seleccion.append(hijo)
     
-    return nueva_poblacion
+    return seleccion
     # [(pos,rot,fit), ...]
     
 
@@ -167,36 +167,50 @@ def cruzar_estados(padre1 ,padre2, combinaciones_validas):
     hijo = random.choice([padre1,padre2])
 
     return hijo
-    # (pos,rot,fit)"""
+    # (pos,rot,fit)
     
 
 # 0.1 -> 50% de probabilidad por gen
 # poblacion = [(p1,r1,f1),...]
-def mutacion(poblacion, pieza_actual: Tetromino, combinaciones_validas, tasa_mutacion: int = 0.6):
+def mutacion(poblacion, pieza_actual: Tetromino, combinaciones_validas, tasa_mutacion: int = 0.5):
 
     nuevos_individuos = []
     num_rotaciones = len(pieza_actual.formas)
     for (pos,_,_) in poblacion:
+        
         # Solo alteramos de manera aleatoria la rotacion de cada hijo
         if random.random() < tasa_mutacion:
             rot_nueva = random.randint(0,num_rotaciones-1)
+            # (pos,rot,fit)
+            #max(mejor_vecino, key = lambda t: t[1])[1]
+            hijos = [comb for comb in combinaciones_validas if comb[1] == rot_nueva]
+
+
+            if len(hijos) > 1:
+                hijo = hijos[random.randint(0,len(hijos)-1)]
+            else:
+                if len(hijos) == 0:
+                    hijo = (pos,rot_nueva)
+                    for combinacion in combinaciones_validas:
+                        if combinacion[:2] == hijo:
+                            if hijo not in poblacion:
+                                nuevos_individuos.append(hijo) 
+                else:
+                    hijo = hijos[0]
+
+
             #pos_nueva = random.randint(0,9)
 
-            hijo = (pos,rot_nueva)
+            #hijo = (pos,rot_nueva)
             #hijo = (pos_nueva,rot_nueva)
+
+            #if hijo not in combinaciones_validas:
+                #hijo = (pos,rot_nueva)
+            
             #es_combinacion_valida = False
 
-            for combinacion in combinaciones_validas:
-                if combinacion[:2] == hijo:
-                    #es_combinacion_valida = True
-                    if hijo not in poblacion:
-                        nuevos_individuos.append(combinacion) 
-                        # (pos,rot,fit)
             
-        """    if not es_combinacion_valida:
-                nuevos_individuos.append((pos,rot,fit))
-        else:
-            nuevos_individuos.append((pos,rot,fit))"""
-
+                # (pos,rot,fit)
+            
     return poblacion + nuevos_individuos
     # [(p1,r1,f1), (p2,r2,f2), ...]

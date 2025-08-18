@@ -1,110 +1,34 @@
-from busqueda_local import *
-from tetris import Tetris
-from tetromino import Tetromino
-from tablero import Tablero
-from interfaz import *
-from agente import *
-import pygame
-
+from controlador import *
+from pruebas.graficar import graficar
+from pruebas.registrar_resultados import *
+import pruebas.tablas as tabla
+import random
 
 def main():
-   
-    pygame.init()
     
-    # Screen
-    ancho = 300 + 200 # 10 columnas * 30px + 150 del panel
-    alto = 660   # 20 filas * 30px
-    screen = pygame.display.set_mode((ancho, alto))
-    pygame.display.set_caption("Tetris")
+    # algoritmos
+    algoritmos = ["Hill Climbing", "Simulated Annealing", "Genetico"]
+    piezas_totales = 400
+    resultados_totales = []
+    semillas = random.sample(range(0,1000000),15)
     
-    # Estado incial del juego
-    tablero = Tablero(22,10,30) 
-    tablero.estado_actual = tablero.generar_matriz()
-    juego = Tetris(tablero)
-    juego.agregar_pieza_nueva()
-    juego.nueva_pieza = True
-    juego.set_nivel(1)
-    
-    # Interfaz
-    interfaz = Interfaz(juego, screen)
-    
-    # Tiempos
-    reloj = pygame.time.Clock()
-    corriendo = True
-    juego.tiempo_inicio = pygame.time.get_ticks()
-    tiempo_ultimo_movimiento = pygame.time.get_ticks()
-    juego.set_vel_caida()
-    intervalo_bajada = juego.get_vel_caida()  # ms
-
-    # agente
-    jugador = Agente()
-    
-    while corriendo:
+    for i in range(len(semillas)):
         
-        ahora = pygame.time.get_ticks()
-        if ahora - tiempo_ultimo_movimiento > intervalo_bajada:
-            
+        for algoritmo in algoritmos:
+            print(f"Algoritmo {algoritmo}, iteracion: {i}")
+            resultado = controlador(algoritmo, semillas[i], piezas_totales)
+            resultados_totales.append((algoritmo, i+1, resultado))
+        print("")
 
-            if juego.nueva_pieza:
-                # "hc", "sa", "gen"
-                jugador.jugar(juego,"hc")
-                juego.nueva_pieza = False
-            
-
-            nueva_fantasma = juego.actualizar_pieza_fantasma()
-            interfaz.dibujar_pieza(nueva_fantasma, True)
-            juego.actualizar_estado()
-
-            if juego.vel_caida != intervalo_bajada:
-                intervalo_bajada = juego.vel_caida
-            
-            
-            if juego.game_over:
-                corriendo = False
-
-            tiempo_ultimo_movimiento = ahora
-                        
-        """    
-        for evento in pygame.event.get():
-            if evento.type == pygame.QUIT:
-                corriendo = False
-            # muevo la pieza con las teclas izq, der
-            if evento.type == pygame.KEYDOWN:
-                # si quieremos que acelere el tiempo podemos dejar que toque para abajo, sino lo sacamos
-                if evento.key == pygame.K_DOWN:
-                    juego.set_vel_caida("soft")
-                    intervalo_bajada = juego.get_vel_caida()
-                    juego.mover_si_valido(juego.pieza_actual,0,-1) 
-                    
-                if evento.key == pygame.K_LEFT:
-                    juego.mover_si_valido(juego.pieza_actual,-1,0)
-                    nueva_fantasma = juego.actualizar_pieza_fantasma()
-                    interfaz.dibujar_pieza(nueva_fantasma, True)
-                if evento.key == pygame.K_RIGHT:
-                    juego.mover_si_valido(juego.pieza_actual,1,0)
-                    nueva_fantasma = juego.actualizar_pieza_fantasma()
-                    interfaz.dibujar_pieza(nueva_fantasma, True)
-                # si quiero rotar la pieza toco espacio
-                if evento.key == pygame.K_SPACE:
-                    juego.rotar_si_valido()
-                    nueva_fantasma = juego.actualizar_pieza_fantasma()
-                    interfaz.dibujar_pieza(nueva_fantasma, True)
-
-            if evento.type == pygame.KEYUP:
-                if evento.key == pygame.K_DOWN:
-                    juego.set_vel_caida()
-                    intervalo_bajada = juego.get_vel_caida()
-        """
-                
-        interfaz.dibujar_gui() 
-        pygame.display.update()
-        reloj.tick(60)  # 60 FPS
-
-
-
-    pygame.quit()    
-
-
+    print("Res total: ",resultados_totales)
+    registrar_resultados(resultados_totales)
+    tabla.consistencia()
+    tabla.promedio_de_eliminaciones()
+    tabla.relacion_piezas_lineas()
+    tabla.promedios()
+    
+    graficar()
+    
 
 if __name__ == "__main__":
     main()

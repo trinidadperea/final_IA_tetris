@@ -5,23 +5,23 @@ from busqueda_local.genetico import *
 
 class Agente():
         
-    
     def jugar(self, juego:Tetris, algoritmo):
 
-        if algoritmo == "hc":
+        if algoritmo == "Hill Climbing":
             (mejor_pos,_,mejor_rot) = hill_climbing(juego)
         
-        if algoritmo == "gen":
-            (mejor_pos,mejor_rot) = genetico(juego, 9)
+        if algoritmo == "Genetico":
+            (mejor_pos,mejor_rot) = genetico(juego, 100)
 
-        if algoritmo == "sa":
+        if algoritmo == "Simulated Annealing":
             (mejor_pos,mejor_rot) = simulated_annealing(juego)
 
         
         while juego.pieza_actual.y < 0:
                 juego.pieza_actual.mover(0,1)
         
-        print(f"Agente: moviendo a x={mejor_pos}, rot={mejor_rot}")
+        #print(f"Agente: moviendo a x={mejor_pos}, rot={mejor_rot}")
+        #print("")
         
         #roto hasta la mejor pos
         cont = 0
@@ -43,35 +43,5 @@ class Agente():
                 break
             pos_actual += 1
         
-        print(f"Pos actual: {juego.pieza_actual.x}, rot: {juego.pieza_actual.rotacion}")
+        #print(f"Pos actual: {juego.pieza_actual.x}, rot: {juego.pieza_actual.rotacion}")
 
-    # para jugar con simulated annealing
-"""def jugarSA(self, juego: Tetris):
-
-        movimiento = simulated_annealing(juego)
-        print(f"Movimiento sugerido: ", movimiento)
-
-        #no hay movimientos validos
-        if movimiento is None: 
-            return
-        
-        x, rot = movimiento
-
-        # Reiniciamos rotación
-        juego.pieza_actual.rotacion = 0
-        for _ in range(rot):
-            juego.rotar_si_valido()
-
-        # Mover a la columna deseada
-        mover_a_columna(juego, x)
-
-        # Fijar y actualizar el estado
-        juego.actualizar_estado()
-        print(f"estado del juego: ",juego.actualizar_estado())
-        
-
-    def jugar(self, juego, metodo):
-        if metodo == "HC":
-            self.jugarHC(juego)
-        elif metodo == "SA":
-            self.jugarSA(juego)"""

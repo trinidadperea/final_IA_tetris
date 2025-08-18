@@ -3,6 +3,7 @@ from tablero import *
 from tetromino import *
 from piezas import *
 import random
+import numpy as np
 
 
 class Tetris:
@@ -18,11 +19,15 @@ class Tetris:
         self.lineas_eliminadas = 0
         self.lineas_nivel = 0
         self.puntaje = 0
+        self.singles = 0
+        self.doubles = 0
+        self.triples = 0
         self.tetrises = 0
         self.game_over = False
         self.nueva_pieza = True
 
-    def actualizar_estado(self): #actualiza nivel, puntuacion, lineas eliminadas,...
+
+    def actualizar_estado(self, num_iter, semilla): #actualiza nivel, puntuacion, lineas eliminadas,...
 
         if not self.mover_si_valido(self.pieza_actual,0,1, "vertical"):
             
@@ -33,10 +38,22 @@ class Tetris:
                 self.actualizar_puntos(lineas)
                 
             if not self.is_game_over():
-                self.agregar_pieza_nueva()
+                self.agregar_pieza_nueva(num_iter, semilla)
                 self.nueva_pieza = True
             else:
                 self.game_over = True
+    
+    def actualizar_estado_simulacion(self): #actualiza nivel, puntuacion, lineas eliminadas,...
+
+        if not self.mover_si_valido(self.pieza_actual,0,1, "vertical"):
+            
+            self.tablero.fijar_pieza(self.pieza_actual)
+            lineas = self.tablero.eliminar_lineas()
+            if lineas != 0:
+                self.actualizar_lineas(lineas)
+                self.actualizar_puntos(lineas)
+                
+            
     
     # Operaciones con piezas ---------------------------------------------------
     def mover_si_valido(self, pieza: Tetromino, dx, dy, mov):
@@ -46,7 +63,6 @@ class Tetris:
             return False
         return True
     
-
     def rotar_si_valido(self):
         self.pieza_actual.rotar()
         for x, y in self.pieza_actual.obtener_forma_actual():
@@ -59,17 +75,20 @@ class Tetris:
         return True
         
     # Generar piezas (actual y fantasma) ----------------------------------------
-    def generar_cola(self): # COMENTO ESTO PARA PROBAR HC -----------------
+    def generar_cola(self, num_iter, semilla): 
+        #manejo la cola de manera random para utilizar la semilla
+        random.seed(semilla + num_iter)
         nums = random.sample(range(0,7),7) 
         for i in range(7):
             self.next_queue.append(self.bag[nums[i]])
-        
-        #for i in range(7):
-            #self.next_queue.append(self.bag[i])
     
-    def agregar_pieza_nueva(self):
+    # funcion para manejo de semillas 
+    #def generar_semilla(self, seed):
+        #random.seed(seed)
+
+    def agregar_pieza_nueva(self, num_iter, semilla):
         if len(self.next_queue) < 2:
-            self.generar_cola()
+            self.generar_cola(num_iter, semilla)
         
         self.pieza_actual = Tetromino(self.next_queue.pop(0))
         self.actualizar_pieza_fantasma()
@@ -122,10 +141,13 @@ class Tetris:
             if lineas < 4:
                 if lineas == 1:
                     self.puntaje += (100 * self.nivel)
+                    self.singles += 1
                 elif lineas == 2:
                     self.puntaje += (200 * self.nivel)
+                    self.doubles += 1
                 elif lineas == 3:
                     self.puntaje += (400 * self.nivel)
+                    self.triples += 1
                 return
             else: 
                 self.puntaje += (800 * self.nivel)
@@ -160,6 +182,10 @@ class Tetris:
         copia.nivel = self.nivel
         copia.lineas_eliminadas = self.lineas_eliminadas
         copia.puntaje = self.puntaje
+        copia.singles = self.singles
+        copia.doubles = self.doubles 
+        copia.triples = self.triples
+        copia.tetrises = self.tetrises
         copia.game_over = self.game_over
         return copia
     
