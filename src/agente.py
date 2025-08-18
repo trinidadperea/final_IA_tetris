@@ -11,7 +11,7 @@ class Agente():
             (mejor_pos,_,mejor_rot) = hill_climbing(juego)
         
         if algoritmo == "Genetico":
-            (mejor_pos,mejor_rot) = genetico(juego, 9)
+            (mejor_pos,mejor_rot) = genetico(juego, 100)
 
         if algoritmo == "Simulated Annealing":
             (mejor_pos,mejor_rot) = simulated_annealing(juego)
@@ -21,6 +21,7 @@ class Agente():
                 juego.pieza_actual.mover(0,1)
         
         #print(f"Agente: moviendo a x={mejor_pos}, rot={mejor_rot}")
+        #print("")
         
         #roto hasta la mejor pos
         cont = 0

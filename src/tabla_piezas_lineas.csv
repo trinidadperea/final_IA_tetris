@@ -1,0 +1,4 @@
+Algoritmo,Piezas totales,Lineas eliminadas,Lineas/pieza
+Genetico,400,2000,5.0
+Hill Climbing,400,2119,5.2975
+Simulated Annealing,400,1927,4.8175

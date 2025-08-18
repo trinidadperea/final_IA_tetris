@@ -2,32 +2,34 @@ from busqueda_local import *
 from tetris import *
 from tablero import *
 
-def evaluar(juego: Tetris, lista_tiempos):
+def evaluar(juego: Tetris, lista_tiempos, piezas):
 
-    juego = juego.copy()
+    #juego = juego.copy()
 
-    tiempo_decision = sum(lista_tiempos) / len(lista_tiempos)
+    piezas_totales = piezas
     puntaje = juego.puntaje
+    tiempo_decision = sum(lista_tiempos) / len(lista_tiempos)
     lineas_eliminadas = juego.lineas_eliminadas
+    altura_max = juego.tablero.calcular_altura()
+    huecos = juego.tablero.contar_huecos()
     singles = juego.singles
     doubles = juego.doubles
     triples = juego.triples
-    altura_max = juego.tablero.calcular_altura()
-    huecos = juego.tablero.contar_huecos()
     tetrises = juego.tetrises
     nivel_alcanzado = juego.nivel
 
     return {
+        "piezas totales": piezas_totales,
         "puntaje obtenido": puntaje,
+        "tiempo promedio toma decision": tiempo_decision,
         "lineas eliminadas": lineas_eliminadas,
         "altura maxima": altura_max,
         "cantidad de huecos": huecos,
-        "cantidad de tetrises": tetrises,
-        "nivel alcanzado": nivel_alcanzado,
-        "tiempo promedio toma decision": tiempo_decision,
         "singles": singles,
-        "dobles": doubles, 
-        "triples": triples
+        "doubles": doubles, 
+        "triples": triples,
+        "tetrises": tetrises,
+        "nivel alcanzado": nivel_alcanzado
     }
 
 

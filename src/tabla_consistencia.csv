@@ -1,0 +1,7 @@
+Algoritmo,Métrica,Promedio,Desv. Estandar,Cv%
+Genetico,Puntaje,117340.0,42855.58,36.52%
+Genetico,Lineas eliminadas,133.33,30.07,22.55%
+Hill Climbing,Puntaje,124880.0,37070.34,29.68%
+Hill Climbing,Lineas eliminadas,141.27,33.38,23.63%
+Simulated Annealing,Puntaje,106700.0,48658.75,45.6%
+Simulated Annealing,Lineas eliminadas,128.47,36.84,28.68%

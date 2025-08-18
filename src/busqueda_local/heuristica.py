@@ -1,16 +1,21 @@
 from tetris import * 
 
-def heuristica(juego: Tetris):
+def heuristica(juego: Tetris, algo = None):
     # Que valores deben tener los pesos para que la funcion me devuelva la mejor posición posible?? 
     #print("")
     #print(" heuristica")
     #print("")
-    peso_lineas = 0.76
-    peso_altura = 0.35
-    #peso_altura = 0.8
-    peso_hueco = 2
-    #peso_hueco = 1.5
-    peso_desnivel = 0.15
+    if algo == "GA":
+        peso_lineas = 0.8
+        peso_hueco = 3.5
+        peso_desnivel = 0.5
+        peso_altura_prom = 0.3
+        
+    else:
+        peso_lineas = 3.5
+        peso_hueco = 5
+        peso_desnivel = 0.5
+        peso_altura_prom = 2
 
     lineas_eliminadas = juego.lineas_eliminadas
     puntaje = peso_lineas * lineas_eliminadas
@@ -32,10 +37,8 @@ def heuristica(juego: Tetris):
     
     alturas_por_columnas = calcular_altura_por_columna(juego)
     altura_maxima = max(alturas_por_columnas)
-    altura_minima = min(alturas_por_columnas)
     
-    
-    puntaje -= peso_altura * altura_maxima
+    #puntaje -= peso_altura * altura_maxima
     #print(f"alturas por columna = {alturas_por_columnas}")
     #print(f"altura_maxima: {altura_maxima}")
     #print(f"puntaje = {puntaje}")
@@ -49,7 +52,7 @@ def heuristica(juego: Tetris):
     #print(f"puntaje = {puntaje}")
 
     altura_prom = sum(alturas_por_columnas) / len(alturas_por_columnas)
-    puntaje -= 0.5 * (altura_maxima - altura_prom)
+    puntaje -= peso_altura_prom * (altura_maxima - altura_prom)
     #print(f"altura promedio = {altura_prom}")
     #print(f"puntaje = {puntaje}")
 
@@ -57,7 +60,6 @@ def heuristica(juego: Tetris):
     #puntaje -= 0.8 * diferencia_altura
 
     return puntaje
-
 
 def calcular_altura_por_columna(juego: Tetris):
     alturas = []
@@ -82,7 +84,7 @@ def calcular_desnivel(alturas):
 
     return desnivel
 
-def combinaciones_validas(juego:Tetris):
+def combinaciones_validas(juego:Tetris, algo = None):
     combinaciones = []
     for columna in range(juego.tablero.columnas):
 
@@ -103,7 +105,10 @@ def combinaciones_validas(juego:Tetris):
                     pos_x = simulacion.pieza_actual.x
                     
                     simulacion.actualizar_estado_simulacion()
-                    puntaje = heuristica(simulacion)
+                    if algo == "GA":
+                        puntaje = heuristica(simulacion, "GA")
+                    else:
+                        puntaje = heuristica(simulacion)
                     
                     combinaciones.append((pos_x,rot,puntaje))
     return combinaciones

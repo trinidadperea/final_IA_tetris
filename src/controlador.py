@@ -9,7 +9,7 @@ from pruebas.evaluar import evaluar
 import pygame
 import time
 
-def controlador(algoritmo, semilla):
+def controlador(algoritmo, semilla, piezas_totales):
     # por aca se realiza el juego y las pruebas
     pygame.init()
     
@@ -31,7 +31,6 @@ def controlador(algoritmo, semilla):
     juego.nueva_pieza = True
     juego.set_nivel(1)
     
-    
     # Interfaz
     interfaz = Interfaz(juego, screen)
     
@@ -40,14 +39,12 @@ def controlador(algoritmo, semilla):
     corriendo = True
     juego.tiempo_inicio = pygame.time.get_ticks()
     tiempo_ultimo_movimiento = pygame.time.get_ticks()
-    juego.set_vel_caida()
-    intervalo_bajada = juego.get_vel_caida()  # ms
-
+    #juego.set_vel_caida()
+    #intervalo_bajada = juego.get_vel_caida()  # ms
+    intervalo_bajada = 10
     # agente
     jugador = Agente()
     
-    
-
     # para calcular el tiempo en la toma de decisiones
     tiempos = []
     while corriendo:
@@ -65,15 +62,15 @@ def controlador(algoritmo, semilla):
 
                 # manejo de iteraciones para pruebas
                 contar_piezas += 1
-                if contar_piezas >= 100:
+                if juego.game_over or contar_piezas >= piezas_totales:
                     corriendo = False 
                             
             nueva_fantasma = juego.actualizar_pieza_fantasma()
             interfaz.dibujar_pieza(nueva_fantasma, True)
             juego.actualizar_estado(contar_piezas, semilla)
 
-            if juego.vel_caida != intervalo_bajada:
-                intervalo_bajada = juego.vel_caida
+            #if juego.vel_caida != intervalo_bajada:
+                #intervalo_bajada = juego.vel_caida
 
             if juego.game_over:
                 corriendo = False
@@ -88,9 +85,12 @@ def controlador(algoritmo, semilla):
         pygame.display.update()
         reloj.tick(60)  # 60 FPS
 
-    resultados = evaluar(juego, tiempos)
+    resultados = evaluar(juego, tiempos, contar_piezas)
     #print(resultados)
     pygame.quit()    
+
+    #print(f"Piezas: {contar_piezas}, Algoritmo: {algoritmo}, tetrises: {juego.tetrises}")
+    #print(f"Resultados: {resultados}")
 
     return resultados
 

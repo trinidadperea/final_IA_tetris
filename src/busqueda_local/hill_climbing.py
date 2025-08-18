@@ -22,7 +22,7 @@ def hill_climbing(juego:Tetris):
                     break
             else:
                 
-                #print(f"combinacion({columna, simulacion.pieza_actual.rotacion})")
+                #print(f"combinacion({columna, simulacion.pieza_actual.rotacion, pieza})")
                 if mover_a_columna(simulacion, columna):
                     bajar_pieza(simulacion)
                     rot = simulacion.pieza_actual.rotacion
@@ -56,16 +56,16 @@ def hill_climbing(juego:Tetris):
     
     # [(x,y,rot), (), ...]
     mejor_vecino = [vecino for vecino, puntaje in vecinos.items() if puntaje == puntaje_max]
-
-    mejor_y = max(mejor_vecino, key = lambda t: t[1])[1]
+    #print(f"mejor veciono = {mejor_vecino}")
+    #mejor_y = max(mejor_vecino, key = lambda t: t[1])[1]
     #print(f"mejor y = {mejor_y}")
 
-    if len(mejor_vecino) > 1:
-        mejor_vecino = [vecino for vecino in mejor_vecino if vecino[1] == mejor_y]
+    #if len(mejor_vecino) > 1:
+        #mejor_vecino = [vecino for vecino in mejor_vecino if vecino[1] == mejor_y]
         #print("")
         #print(f"vecinos con mejor y: {mejor_vecino}")
-        if len(mejor_vecino) > 1:
-            return mejor_vecino[random.randint(0,len(mejor_vecino)-1)]
+    if len(mejor_vecino) > 1:
+        return mejor_vecino[random.randint(0,len(mejor_vecino)-1)]
     
 
     #print(" ")

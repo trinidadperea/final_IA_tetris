@@ -4,8 +4,8 @@ import random
 from tetris import *
 from busqueda_local.heuristica import *
 
-
-def simulated_annealing(juego: Tetris, enfriamiento=0.95, T_min=0.1, max_iter=100):
+#0.95
+def simulated_annealing(juego: Tetris, enfriamiento=0.95, T_min=0.1, max_iter=300):
     
     # Temperaruras ------
     T_inicial = -4 / math.log(0.6) # si delta = -4 la probabilidad de aceptacion es del 60%
@@ -23,8 +23,12 @@ def simulated_annealing(juego: Tetris, enfriamiento=0.95, T_min=0.1, max_iter=10
     #print(f"Movimiento a realizar: ", estado_actual)
 
     while T_max > T_min and iteracion < max_iter:
-                
-        estado_nuevo = random.choice(combinaciones)
+        
+        k = min(3, len(combinaciones))
+        opciones = random.sample(combinaciones, k=k)
+        #opciones = random.sample(combinaciones,k=3) 
+        estado_nuevo = max(opciones, key=lambda t : t[2])
+        #estado_nuevo = random.choice(opciones)
         h_estado_nuevo = estado_nuevo[-1]
 
         delta = h_estado_nuevo - h_estado_actual
