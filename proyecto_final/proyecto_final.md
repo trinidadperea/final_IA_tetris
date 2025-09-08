@@ -1,4 +1,4 @@
-Algoritmos de Búsqueda local para jugar "Tetris"
+# **Algoritmos de Búsqueda local para jugar "Tetris"**
 
 ![Imagen inicio](images/img_inicio.jpg)
 
@@ -8,7 +8,9 @@ Integrantes:
 
 - Perea, Trinidad
 
-**Introducción**
+___
+
+## **Introducción**
 
 El presente proyecto tiene como finalidad aplicar y poner en práctica
 los conceptos de algoritmos de búsqueda local estudiados en la materia,
@@ -36,10 +38,11 @@ estrategias de búsqueda local. Este informe presenta el proceso de
 desarrollo, la metodología empleada, los resultados obtenidos y un
 análisis comparativo del rendimiento de cada algoritmo.
 
-![tetris](images/img_tetris.png){width="6.458333333333333in"
-height="3.595138888888889in"}
+![tetris](images/img_tetris.png)
 
-**Descripción del juego**
+___
+
+## **Descripción del juego**
 
 Tetris es un videojuego de tipo puzzle en el que piezas compuestas por
 bloques cuadrados denominadas tetrominos descienden desde la parte
@@ -61,14 +64,15 @@ descender más rápidamente, con el fin de colocarlas en la posición
 óptima para maximizar la puntuación y evitar huecos innecesarios en la
 estructura de bloques.
 
-![Tetrominos](images/img_tetrominos.png){width="6.1375in" height="0.6944444444444444in"}
+![Tetrominos](images/img_tetrominos.png)
 
 En esta implementación, se adoptó un sistema de puntuación clásico que
 otorga diferentes cantidades de puntos según el número de líneas
 eliminadas de forma simultánea: una línea (singles), dos (doubles), tres
 (triples) o cuatro (tetrises).
+___ 
 
-**Juego Autónomo y su implementación**
+## **Juego Autónomo y su implementación**
 
 Para este proyecto, el Tetris fue adaptado para ser jugado por un agente
 autónomo. Este agente toma decisiones en tiempo real sobre cómo colocar
@@ -100,10 +104,11 @@ Los algoritmos que se implementaron en el proyecto son:
 - Simulated Annealing
 
 - Algoritmo Genético
+___
 
-**Marco Teorico**
+## **Marco Teorico**
 
-**Hill Climbing**
+### **Hill Climbing**
 
 La manera en la que este algoritmo funciona es explorando todas las
 posiciones y rotaciones válidas para la pieza actual, y elige aquella
@@ -128,7 +133,7 @@ Su funcionamiento a través del agente es el siguiente:
   probable que no se llegue a la mejor solución a largo plazo en el
   transcurso del juego Tetris
 
-**Simulated Annealing**
+### **Simulated Annealing**
 
 El algoritmo Simulated Annealing se inspira en el proceso físico de
 enfriamiento de metales, en el que la temperatura de un material se
@@ -162,7 +167,7 @@ Annealing (SA), logrando un equilibrio en el juego del Tetris en este
 caso, haciéndolo menos predecible que simplemente eligiendo el mejor
 movimiento inmediato.
 
-**Algoritmo Genético**
+### **Algoritmo Genético**
 
 El Algoritmo Genético es una técnica inspirada en la evolución
 biológica, que busca soluciones de calidad mediante la selección,
@@ -191,79 +196,23 @@ Gracias a este enfoque, el algoritmo genético permite explorar de forma
 amplia el espacio de posibles jugadas y combinar características
 exitosas de soluciones previas, lo que puede producir decisiones más
 estratégicas que las de algoritmos puramente deterministas.
+___ 
 
-**Cuadro Comparativo entre algoritmos de búsqueda local aplicados**
+## **Cuadro Comparativo entre algoritmos de búsqueda local aplicados**
 
-  ------------------------------------------------------------------------
-  parámetro          Hill Climbing     Simulated         Algoritmo
-									   Annealing         Genético
-  ------------------ ----------------- ----------------- -----------------
-  **Tipo de          Búsqueda local    Búsqueda local    Búsqueda
-  búsqueda**         determinística:   probabilística:   poblacional
-					 Siempre elige la  permite aceptar   inspirada en la
-					 mejor opción      soluciones peores evolución
-					 inmediata         al inicio,        biológica:
-									   simulando el      trabaja con una
-									   enfriamiento de   población de
-									   metales           soluciones que
-														 evolucionan
+| Parámetro                | Hill Climbing                                                                 | Simulated Annealing                                                                 | Algoritmo Genético                                                                 |
+|---------------------------|-------------------------------------------------------------------------------|-------------------------------------------------------------------------------------|------------------------------------------------------------------------------------|
+| **Tipo de búsqueda**      | Búsqueda local determinística: siempre elige la mejor opción inmediata        | Búsqueda local probabilística: permite aceptar soluciones peores al inicio, simulando el enfriamiento de metales | Búsqueda poblacional inspirada en la evolución biológica: trabaja con una población de soluciones que evolucionan |
+| **Capacidad de escapar de óptimos locales** | Baja: se queda atrapado si no hay vecinos mejores                          | Alta: puede aceptar soluciones peores para escapar de óptimos locales               | Alta: la diversidad genética permite explorar múltiples regiones del espacio de búsqueda |
+| **Exploración vs explotación** | Explotación fuerte: enfocado solo en mejorar                               | Equilibrio controlado por la temperatura: más exploración al principio, más explotación al final | Alta exploración: combina cruce y mutación para generar variedad                    |
+| **Uso de aleatoriedad**   | Mínimo: solo si se elige aleatoriamente entre vecinos iguales                 | Moderado: usa aleatoriedad para seleccionar vecinos y aceptar soluciones peores     | Alto: selección, cruce y mutación son procesos estocásticos                         |
+| **Dependencia de parámetros** | Baja: solo depende de la función heurística                                | Media: necesita definir temperatura inicial, tasa de enfriamiento y criterio de parada | Alta: muchos parámetros influyen (tamaño de población, tasas de mutación/cruce, elitismo, etc.) |
+| **Costo computacional**   | Bajo: rápido, simple, apto para decisiones en tiempo real                     | Medio: más costoso por evaluar múltiples vecinos y usar funciones probabilísticas   | Alto: evalúa múltiples soluciones por generación y realiza operaciones genéticas     |
+| **Aplicabilidad en tiempo real** | Alta: ideal para entornos con decisiones rápidas como Tetris             | Media: puede adaptarse, pero necesita buen ajuste de parámetros para ser ágil       | Baja-Media: requiere optimización o simplificación para usarse en tiempo real       |
+| **Complejidad de implementación** | Baja: se implementa fácilmente con pocos pasos                          | Media: requiere lógica de temperatura, aceptación probabilística y enfriamiento     | Alta: implica manejar estructuras de población, operadores genéticos y ciclos evolutivos |
 
-  **Capacidad de     Baja: se queda    Alta: puede       Alta: la
-  escapar de óptimos atrapado si no    aceptar           diversidad
-  locales**          hay vecinos       soluciones peores genética permite
-					 mejores           parda escapar de  explorar
-									   óptimos locales   múltiples
-														 regiones del
-														 espacio de
-														 búsqueda
-
-  **Exploración vs   Explotación       Equilibrio        Alta exploración:
-  explotación**      fuerte: enfocado  controlado por la combina cruce y
-					 solo en mejorar   temperatura: más  mutación para
-									   exploración al    generar variedad
-									   principio, mas    
-									   explotación al    
-									   final             
-
-  **Uso de           Mínimo: solo si   Moderado: usa     Alto: a
-  aleatoriedad**     se elige          aleatoriedad para selección, cruce
-					 aleatoriamente    seleccionar       y mutación son
-					 entre vecinos     vecinos y aceptar procesos
-					 iguales           soluciones peores estocásticos
-
-  **Dependencia de   Baja: solo        Media: necesita   Alta: muchos
-  parámetros**       depende de la     definir           parámetros
-					 función           temperatura       influyen (tamaño
-					 heurística        inicial, tasa de  de población,
-									   enfriamiento,     tasas de
-									   criterio de       mutación/cruce,
-									   parada.           elitismo, etc.)
-
-  **Costo            Bajo: rápido,     Medio: mas        Alta: evalúa
-  computacional**    simple, apto para costoso por       múltiples
-					 decisiones en     evaluar múltiples soluciones por
-					 tiempo real       vecinos y usar    generación y
-									   funciones         realiza
-									   probabilísticas   operaciones
-														 genéticas
-
-  **Aplicabilidad en Alta: ideal para  Media: puede      Baja-Media:
-  tiempo real**      entornos con      adaptarse, pero   requiere
-					 decisiones        necesita buena    optimización o
-					 rápidas como      juste de          simplificación
-					 Tetris            parámetros para   para usarse en
-									   que sea ágil      tiempo real.
-
-  **Complejidad de   Baja: se          Media: requiere   Alta: implica
-  implementación**   implementa        lógica de         manejar
-					 fácilmente con    temperatura,      estructuras de
-					 pocos pasos       aceptación        población,
-									   probabilística y  operadores
-									   enfriamiento      genéticos y
-														 ciclos evolutivos
-  ------------------------------------------------------------------------
-
-**Objetivos del Juego**
+___
+## **Objetivos del Juego**
 
 El objetivo principal del Tetris, tanto en la versión tradicional, como
 en la implementada en este proyecto, es maximizar la puntuación e ir
@@ -295,8 +244,9 @@ para reducir el riesgo de perder.
 A medida que se va avanzando en el juego, es decir, se va subiendo de
 nivel, el tiempo de caída de las piezas va aumentando, lo que va
 dificultando a la hora de tomar decisiones.
+___ 
 
-**Diseño Experimental**
+## **Diseño Experimental**
 
 Para llevar a cabo el análisis comparativo de los tres algoritmos
 implementados, se utilizó una semilla aleatoria que garantiza la
@@ -343,29 +293,29 @@ Estas métricas permiten un análisis integral, considerando tanto el
 desempeño cuantitativo (puntaje, líneas eliminadas) como cualitativo
 (eficiencia de decisiones y consistencia), proporcionando una visión
 completa sobre las fortalezas y debilidades de cada algoritmo.
+___
 
-**Análisis individual de cada Grafico**
+## **Análisis individual de cada Grafico**
 
-[Singles, Dobles, Triples y Tetrises]{.underline}
+### Singles, Dobles, Triples y Tetrises
 
-![Analisis Singles, Dobles, Triples y Tetrises](images/singles_dobles_triples.png){width="4.381944444444445in"
-height="2.629166666666667in"}Hill Climbing es el algoritmo más efectivo
+![Analisis Singles, Dobles, Triples y Tetrises](images/singles_dobles_triples.png)
+Hill Climbing es el algoritmo más efectivo
 en eliminar líneas constantemente, pero en su mayoría singles. El
 algoritmo Genético apuesta a jugadas de mayor riesgo, con menos singles
 pero más tetrises y triples puntuando muy alto en algunas partidas. Y
 por último Simulated Annealing queda en el medio.
 
-[Nivel alcanzado vs puntaje obtenido]{.underline}
+### Nivel alcanzado vs puntaje obtenido
 
 Este grafico relacione el nivel alcanzado con el puntaje promedio. Se
 observa que Hill Climbing es el que mejor desempeño global obtiene, el
 genético logra un rendimiento aceptable, y Simulated Annealing queda con
 el peor resultado.
 
-![Nivel vos Tiempo de Decision](images/nivel_vs_puntaje.png){width="4.506774934383202in"
-height="2.7041666666666666in"}
+![Nivel vos Tiempo de Decision](images/nivel_vs_puntaje.png)
 
-[Puntaje total por algoritmo]{.underline}
+### Puntaje total por algoritmo
 
 Gráfico de cajas que muestra la distribución de los puntajes obtenidos
 por los tres algoritmos. Hill Climbing resulta ser el más estable y
@@ -374,9 +324,9 @@ y el Simulated Annealing muestran mayor dispersión, si bien alcanzan
 puntajes elevados, la variabilidad es alta y los resultados no son
 predecibles.
 
-![Puntaje Total Algoritmo](images/puntaje_total.png){width="3.9375in" height="2.9533475503062117in"}
+![Puntaje Total Algoritmo](images/puntaje_total.png)
 
-[Puntaje obtenido vs Tiempo de toma de decisión]{.underline}
+### Puntaje obtenido vs Tiempo de toma de decisión
 
 Gráfico de comparación entre el puntaje promedio y el tiempo promedio de
 decisión para cada algoritmo. Hill Climbing es el más rápido con mejores
@@ -384,9 +334,9 @@ resultados, luego le sigue el Genético que consume más tiempo y no
 obtiene los mejores resultados, y luego está el Simulated Annealing que
 es el que peor rinde, ni con buenos resultados ni puntajes.
 
-![Puntaje vs tiempo de decision](images/puntaje_vs_tiempoDecision.png){width="6.1375in" height="3.06875in"}
+![Puntaje vs tiempo de decision](images/puntaje_vs_tiempoDecision.png)
 
-[Consistencia por algoritmo]{.underline}
+### Consistencia por algoritmo
 
 El siguiente grafico representa la consistencia de los algoritmos medida
 a través del coeficiente de variación tanto para el puntaje como para
@@ -400,10 +350,9 @@ líneas eliminadas pero es más variable en cuanto al puntaje. Por último
 el algoritmo Simulated Annealing es el menos consistente de los tres con
 mucha variabilidad entre ejecuciones.
 
-![Consistencia por algoritmo](images/consistencia.png){width="4.046893044619423in"
-height="3.035398075240595in"}
+![Consistencia por algoritmo](images/consistencia.png)
 
-[Cantidad de líneas eliminadas por piezas colocadas]{.underline}
+### Cantidad de líneas eliminadas por piezas colocadas
 
 Lo que nos devuelve esta grafica es que el algoritmo Hill Climbing logra
 un uso más eficiente de cada pieza, sacando más provecho al juego, el
@@ -411,16 +360,15 @@ algoritmo genético también se comporta bien pero un poco menos, y en
 cuanto al Simulated Annealing no optimiza tan bien la colocación de
 piezas en el entorno Tetris.
 
-![Lineas eliminadas por piezas colocadas](images/cant_lineas_eliminadas.png){width="3.5388888888888888in"
-height="2.6543667979002623in"}
+![Lineas eliminadas por piezas colocadas](images/cant_lineas_eliminadas.png)
 
+___
+## **Conclusión**
 
-**Conclusión**
+### Matriz de métricas como conclusión
 
-[Matriz de métricas como conclusión]{.underline}
-
-![Matiz de metricas de conclusion](images/matriz_metricas.png){width="8.094209317585301in" height="2.3125in"}Se
-realizó una matriz de métricas para evaluar y poder comparar todos los
+![Matiz de metricas de conclusion](images/matriz_metricas.png)
+Se realizó una matriz de métricas para evaluar y poder comparar todos los
 resultados, no solo a nivel de puntaje sino también en eficiencia y
 calidad de juego.
 
@@ -433,8 +381,9 @@ de tetrises, aunque con mayor variabilidad en los resultados. Por
 último, Simulated Annealing presento el desempeño más bajo en casi todas
 las métricas mostrando poca consistencia y eficiencia en comparación a
 los otros algoritmos.
+___
 
-**Bibliografía y Referencias**
+## **Bibliografía y Referencias**
 
 Talbi, E. --G. (2009). Metaheuristics: From design to implementation.
 Wiley.
