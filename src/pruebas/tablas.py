@@ -52,6 +52,47 @@ def promedio_de_eliminaciones():
 
     tabla.to_csv("tabla_promedio_eliminaciones.csv")
 
+def estadisticas_eliminaciones():
+    df = pd.read_csv("resultados_algoritmos.csv", sep='|')
+
+    columnas = ['Singles', 'Doubles', 'Triples', 'Tetrises']
+
+    # medias por algoritmo
+    medias = df.groupby("Algoritmo")[columnas].mean().T
+    medias.index.name = "Métrica"
+    medias.to_csv("tabla_promedio_eliminaciones.csv")
+
+    # desviaciones estándar por algoritmo
+    desvios = df.groupby("Algoritmo")[columnas].std().T
+    desvios.index.name = "Métrica"
+    desvios.to_csv("tabla_desviacion_eliminaciones.csv")
+
+def tabla_promedio_desviacion_nivel_puntaje():
+    df = pd.read_csv("resultados_algoritmos.csv", sep='|')
+
+    # Calcular promedio y desviación estándar
+    tabla = df.groupby('Algoritmo')[['Nivel', 'Puntaje']].agg(['mean', 'std'])
+
+    # Acomodar formato
+    tabla.columns = ['Nivel_promedio', 'Nivel_std', 'Puntaje_promedio', 'Puntaje_std']
+    tabla = tabla.reset_index()
+
+    # Guardar CSV
+    tabla.to_csv("tabla_nivel_puntaje.csv", index=False)
+
+    return tabla
+
+def tabla_puntaje_tiempo():
+    df = pd.read_csv("resultados_algoritmos.csv", sep='|')
+
+    tabla = df.groupby("Algoritmo")[["Puntaje", "Tiempo promedio"]].agg(['mean', 'std'])
+    tabla.columns = ["Puntaje_promedio", "Puntaje_std", "Tiempo_promedio", "Tiempo_std"]
+    tabla = tabla.reset_index()
+
+    tabla.to_csv("tabla_puntaje_tiempo.csv", index=False)
+    return tabla
+
+
 def consistencia():
     # promedio, desv estandarm coeficiente de variacion de los puntajes
     # cv bajo = resultados mas consistentes

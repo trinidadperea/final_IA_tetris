@@ -11,9 +11,15 @@ def graficar():
 
     #
     grafico_dispersion(os.path.join(carpeta_dir, "puntaje_vs_tiempo.png"))
+    #agregado
+    grafico_dispersion_con_desv(os.path.join(carpeta_dir, "puntaje_vs_tiempo_con_desv.png"))
     grafico_puntaje_total(os.path.join(carpeta_dir, "puntaje_total.png"))
     grafico_nivel_puntaje(os.path.join(carpeta_dir, "nivel_vs_puntaje.png"))
+    #agregado
+    grafico_nivel_puntaje_con_desv(os.path.join(carpeta_dir, "nivel_vs_puntaje_con_desv.png"))
     grafico_lineas_eliminadas(os.path.join(carpeta_dir, "lineas_eliminadas.png"))
+    #agregado
+    grafico_lineas_eliminadas_con_errorbars(os.path.join(carpeta_dir,"lineas_eliminadas_con_errorbars.png"))
     grafico_consistencia(os.path.join(carpeta_dir, "consistencia.png"))
     grafico_piezas_lineas(os.path.join(carpeta_dir, "piezas_lineas.png"))
     heatmap(os.path.join(carpeta_dir, "heatmap.png"))
@@ -49,6 +55,53 @@ def grafico_dispersion(imagen):
     plt.tight_layout()
     plt.savefig(imagen)
     plt.close()
+
+def grafico_dispersion_con_desv(imagen):
+    # Cargar datos
+    df = pd.read_csv('resultados_algoritmos.csv', sep='|')
+
+    # Calcular promedio y desviación estándar
+    stats = df.groupby('Algoritmo')[['Puntaje', 'Tiempo promedio']].agg(['mean', 'std'])
+    stats.columns = ['Puntaje_prom', 'Puntaje_std', 'Tiempo_prom', 'Tiempo_std']
+    stats = stats.reset_index()
+
+    # Configuración visual
+    colores = {'Hill Climbing':'blue', 'Simulated Annealing':'green', 'Genetico':'red'}
+    markers = {'Hill Climbing':'o', 'Simulated Annealing':'s', 'Genetico':'^'}
+
+    plt.figure(figsize=(12, 6))
+
+    for _, row in stats.iterrows():
+        plt.errorbar(
+            row['Tiempo_prom'],
+            row['Puntaje_prom'],
+            xerr=row['Tiempo_std'],
+            yerr=row['Puntaje_std'],
+            fmt=markers[row['Algoritmo']],
+            ecolor='black',
+            elinewidth=1.2,
+            capsize=5,
+            markersize=12,
+            color=colores[row['Algoritmo']]
+        )
+
+        plt.text(
+            row['Tiempo_prom'],
+            row['Puntaje_prom'] + 150,
+            row['Algoritmo'],
+            fontsize=11,
+            ha='center',
+            fontweight='bold'
+        )
+
+    plt.xlabel('Tiempo promedio de decisión (s)')
+    plt.ylabel('Puntaje obtenido')
+    plt.title('Puntaje vs Tiempo por Algoritmo (promedio ± desviación estándar)', pad=20)
+    plt.grid(True, linestyle='--', alpha=0.4)
+    plt.tight_layout()
+    plt.savefig(imagen)
+    plt.close()
+
 
 def grafico_puntaje_total(imagen):
     
@@ -95,6 +148,50 @@ def grafico_nivel_puntaje(imagen):
     plt.savefig(imagen)
     plt.close()
 
+def grafico_nivel_puntaje_con_desv(imagen):
+    df = pd.read_csv("resultados_algoritmos.csv", sep='|')
+
+    # Promedio y std
+    stats = df.groupby('Algoritmo')[['Nivel', 'Puntaje']].agg(['mean', 'std'])
+    stats.columns = ['Nivel_promedio', 'Nivel_std', 'Puntaje_promedio', 'Puntaje_std']
+    stats = stats.reset_index()
+
+    colores = {'Hill Climbing':'blue', 'Simulated Annealing':'green', 'Genetico':'red'}
+
+    plt.figure(figsize=(10, 6))
+
+    for _, row in stats.iterrows():
+        plt.errorbar(
+            row['Nivel_promedio'],
+            row['Puntaje_promedio'],
+            xerr=row['Nivel_std'],
+            yerr=row['Puntaje_std'],
+            fmt='o',
+            ecolor='black',
+            elinewidth=1.2,
+            capsize=5,
+            markersize=12,
+            color=colores[row['Algoritmo']]
+        )
+
+        # Etiqueta del algoritmo
+        plt.text(
+            row['Nivel_promedio'] + 0.03,
+            row['Puntaje_promedio'] + 200,
+            row['Algoritmo'],
+            fontsize=11,
+            fontweight='bold'
+        )
+
+    plt.xlabel('Nivel alcanzado (promedio)')
+    plt.ylabel('Puntaje obtenido (promedio)')
+    plt.title('Nivel vs Puntaje por Algoritmo (promedio ± desviación estándar)')
+    plt.grid(True, linestyle='--', alpha=0.4)
+    plt.tight_layout()
+    plt.savefig(imagen)
+    plt.close()
+
+
 def grafico_lineas_eliminadas(imagen):
     # Cargar CSV
     df = pd.read_csv("tabla_promedio_eliminaciones.csv")
@@ -122,6 +219,45 @@ def grafico_lineas_eliminadas(imagen):
     plt.tight_layout()
     plt.savefig(imagen)
     plt.close()
+
+def grafico_lineas_eliminadas_con_errorbars(imagen):
+    # leer medias
+    df_media = pd.read_csv("tabla_promedio_eliminaciones.csv")
+    # leer desviaciones estándar
+    df_std = pd.read_csv("tabla_desviacion_eliminaciones.csv")
+
+    tipos = ['Singles', 'Doubles', 'Triples', 'Tetrises']
+    algoritmos = df_media.columns[1:]
+
+    x = np.arange(len(algoritmos)) * 2
+    width = 0.3
+
+    fig, ax = plt.subplots(figsize=(10,6))
+
+    for i, tipo in enumerate(tipos):
+        valores = df_media.loc[df_media['Métrica'] == tipo, algoritmos].values.flatten()
+        errores = df_std.loc[df_std['Métrica'] == tipo, algoritmos].values.flatten()
+
+        ax.bar(
+            x + i*width - (width*1.5),
+            valores,
+            width,
+            yerr=errores,
+            capsize=5,
+            label=tipo
+        )
+
+    ax.set_xlabel('Algoritmo')
+    ax.set_ylabel('Promedio por partida')
+    ax.set_title('Promedio de Eliminaciones por Tipo y Algoritmo (con Desviación Estándar)')
+    ax.set_xticks(x)
+    ax.set_xticklabels(algoritmos)
+    ax.legend(title='Tipo de Eliminación')
+
+    plt.tight_layout()
+    plt.savefig(imagen)
+    plt.close()
+
 
 def grafico_consistencia(imagen):
 

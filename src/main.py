@@ -7,7 +7,8 @@ import random
 def main():
     
     # algoritmos
-    algoritmos = ["Hill Climbing", "Simulated Annealing", "Genetico"]
+    #algoritmos = ["Hill Climbing", "Simulated Annealing", "Genetico"]
+    algoritmos = ["Simulated Annealing", "Genetico"]
     piezas_totales = 400
     resultados_totales = []
     semillas = random.sample(range(0,1000000),15)
@@ -24,7 +25,13 @@ def main():
     registrar_resultados(resultados_totales)
     tabla.consistencia()
     tabla.promedio_de_eliminaciones()
+    #agregado
+    tabla.estadisticas_eliminaciones()
+    #agregado
+    tabla.tabla_promedio_desviacion_nivel_puntaje()
     tabla.relacion_piezas_lineas()
+    #agregado
+    tabla.tabla_puntaje_tiempo()
     tabla.promedios()
     
     graficar()
