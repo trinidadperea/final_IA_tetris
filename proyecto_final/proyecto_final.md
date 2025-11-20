@@ -256,7 +256,12 @@ El proceso de decisión se estructura de forma secuencial: cada vez que aparece 
 
 El entorno de Tetris fue modelado como una matriz de 22 filas por 10 columnas, donde las 2 primeras filas se utilizan para posicionar las piezas cuando aparecen por primera vez en el tablero por encima de la línea skyline, donde cada celda puede encontrarse ocupada o libre. Las piezas corresponden a los siete tetrominós estándar (I, O, T, L, J, S, Z), cada uno implementado con todas sus rotaciones válidas y con su color característico, siguiendo la convención del Tetris clásico.
 
-![Tablero](images/tablero.png)
+<div align="center">
+    <img src="images/tablero.png" alt="Tablero del juego Tetris" style="max-width: 70%; height: auto; border: 1px solid #ccc;">
+    <p style="font-style: italic; font-size: 0.9em; margin-top: 5px;">
+        Figura 1: Tablero del juego.
+    </p>
+</div>
 
 ---
 
@@ -296,7 +301,12 @@ En caso de que se eliminen más de 4 lineas se toma el numero de líneas elimina
 
 La partida finaliza cuando una pieza queda fijada en la parte superior del tablero, es decir, cuando se produce un top out.
 
-![Tablero top out](images/top_out.png)
+<div align="center">
+    <img src="images/top_out.png" alt="Finalizacion de juego por top out" style="max-width: 70%; height: auto; border: 1px solid #ccc;">
+    <p style="font-style: italic; font-size: 0.9em; margin-top: 5px;">
+        Figura 2: Finalización de juego por top out.
+    </p>
+</div>
 
 ---
 
@@ -322,11 +332,21 @@ A continuación, se detallan las razones de la eleccion de cada peso:
 
 En Hill Climbing y Simulated Annealing se asignó un peso alto (3.5) porque eliminar líneas es la principal forma de puntuar y evitar que el tablero colapse.
 
-![Explotacion_hc](images/hc_explotacion.png)
+<div align="center">
+    <img src="images/hc_explotacion.png" alt="Hill climbing explotacion" style="max-width: 70%; height: auto; border: 1px solid #ccc;">
+    <p style="font-style: italic; font-size: 0.9em; margin-top: 5px;">
+        Figura 3: Añgoritmo Hill Climbing.
+    </p>
+</div>
 
 En el Algoritmo Genético se redujo a 0.8 porque el GA explora combinaciones de piezas y, si la recompensa por líneas es demasiado grande, el algoritmo converge rápido a soluciones sesgadas que sólo priorizan limpiezas inmediatas y no construyen jugadas estables a largo plazo. La presión selectiva debe ser menor para permitir diversidad de estrategias.
 
-![Exploracion_ga](images/ga_exploracion.png)
+<div align="center">
+    <img src="images/ga_exploracion.png" alt="GA exploracion" style="max-width: 70%; height: auto; border: 1px solid #ccc;">
+    <p style="font-style: italic; font-size: 0.9em; margin-top: 5px;">
+        Figura 4: Algoritmo Genético.
+    </p>
+</div>
 
 ### 3.8.2 Huecos
 
@@ -336,11 +356,21 @@ Los huecos son la característica negativa más costosa en Tetris; siempre deben
 
 En Hill climbing y simulated annealing se usa un peso muy alto (5) para evitar movimientos que creen huecos casi de manera absoluta.
 
-![Algoritmo SA](images/sa_sin_huecos.png)
+<div align="center">
+    <img src="images/sa_sin_huecos.png" alt="Sa minimizando huecos" style="max-width: 70%; height: auto; border: 1px solid #ccc;">
+    <p style="font-style: italic; font-size: 0.9em; margin-top: 5px;">
+        Figura 5: Algoritmo Simulated Annealing minimizando huecos en partida.
+    </p>
+</div>
 
 En GA se usa un valor medio-alto (3.5) para permitir que en generaciones tempranas el algoritmo explore configuraciones que podrían ser útiles aunque tengan huecos, evitando que la población se estanque. Sin embargo, sigue siendo alto para evitar la finalizacion del juego al aceptar muchas pocisiones que generen huecos.
 
-![Algoritmo Genético](images/ga_huecos.png)
+<div align="center">
+    <img src="images/ga_huecos.png" alt="Ga huecos" style="max-width: 70%; height: auto; border: 1px solid #ccc;">
+    <p style="font-style: italic; font-size: 0.9em; margin-top: 5px;">
+        Figura 6: Algoritmo genético.
+    </p>
+</div>
 
 ### 3.8.3 Desnivel
 
@@ -350,7 +380,12 @@ En ambas versiones se mantuvo un peso moderado (0.5).
 
 La razón es que el desnivel es importante, pero no tan decisivo como los huecos o la limpieza. Un desnivel alto suele impedir colocar futuras piezas pero a nivel estrategico permite resevar posiciones para piezas que encajan perfectamente y permiten eliminar mayor cantidad de lineas.Por eso se penaliza, pero no con extrema agresividad.
 
-![Algoritmo SA desnivel](images/ga_desnivel.png)
+<div align="center">
+    <img src="images/ga_desnivel.png" alt="desnivel" style="max-width: 70%; height: auto; border: 1px solid #ccc;">
+    <p style="font-style: italic; font-size: 0.9em; margin-top: 5px;">
+    	Figura 7: Desnivel en partida de algortimo genético.
+    </p>
+</div>
 
 ### 3.8.4 Altura promedio
 
@@ -481,9 +516,14 @@ La desviación estándar permite evaluar la estabilidad del rendimiento de cada 
 
 Finalmente, en la figura correspondiente se incorporaron barras de error sobre cada barra, representando gráficamente estas desviaciones. Esto permite una comparación más rigurosa entre algoritmos, ya que no solo se observa la media sino también la dispersión de los resultados.
 
-![Analisis Singles, Dobles, Triples y Tetrises](images/singles_dobles_triples.png)
+<div align="center">
+    <img src="images/singles_dobles_triples.png" alt="Singles, doubles, triples" style="max-width: 70%; height: auto; border: 1px solid #ccc;">
+    <p style="font-style: italic; font-size: 0.9em; margin-top: 5px;">
+        Figura 8: Diagrama de barras con promedio de lineas eliminadas para cada tipo de eliminación.
+    </p>
+</div>
 
-En la figura 1 puede observarse que Hill Climbing es el algoritmo que más singles completa en promedio. Esto es consistente con su naturaleza determinista y fuertemente explotativa: en cada decisión selecciona la opción que maximiza la ganancia inmediata, lo cual conduce a una estrategia que elimina líneas con mayor frecuencia pero de forma individual, sin priorizar la acumulación necesaria para eliminaciones múltiples.
+En la figura 8 puede observarse que Hill Climbing es el algoritmo que más singles completa en promedio. Esto es consistente con su naturaleza determinista y fuertemente explotativa: en cada decisión selecciona la opción que maximiza la ganancia inmediata, lo cual conduce a una estrategia que elimina líneas con mayor frecuencia pero de forma individual, sin priorizar la acumulación necesaria para eliminaciones múltiples.
 
 En contraste, el algoritmo Genético presenta mayores valores en doubles, triples y tetrises. Esto se alinea con su comportamiento explorativo: al trabajar con una población de soluciones y operadores estocásticos como mutación y cruce, el agente tiende a permitir configuraciones más diversas y con mayor altura, lo que favorece la generación de eliminaciones múltiples cuando se estabiliza la estructura.
 
@@ -494,7 +534,7 @@ Por otro lado, Simulated Annealing muestra la mayor variabilidad, especialmente 
 ### Nivel alcanzado vs puntaje obtenido
 
 Para poder evaluar la eficiencia en la toma de decisiones y el desempeño de cada algoritmo hemos construido un gráfico de dispersión con barras de error.
-En el gráfico 2 se representan los resultados obtenidos tras ejecutar cada algoritmo en un total de 15 partidas de 400 piezas cada una:
+En la figura 9 se representan los resultados obtenidos tras ejecutar cada algoritmo en un total de 15 partidas de 400 piezas cada una:
 
 El eje Y (vertical) muestra el Puntaje Obtenido (promedio), indicando la calidad de la solución encontrada (mejor desempeño).
 
@@ -502,9 +542,14 @@ El eje X (horizontal) muestra el Nivel Alcanzado (promedio), que es una métrica
 
 Además, se incorporaron barras de error (desviaciones estándar) en ambos ejes. Estas barras nos permiten visualizar la variabilidad o consistencia de cada algoritmo, ofreciendo un panorama más amplio de los resultados obtenidos.
 
-![Nivel vos Tiempo de Decision](images/nivel_vs_puntaje.png)
+<div align="center">
+    <img src="images/nivel_vs_puntaje.png" alt="resultado nivel vs puntaje" style="max-width: 70%; height: auto; border: 1px solid #ccc;">
+    <p style="font-style: italic; font-size: 0.9em; margin-top: 5px;">
+        Figura 9: Gráfico de dispersion de nivel alcanzado vs puntaje obtenido.
+    </p>
+</div>
 
-En la figura 2 se puede observar como el algortimo Hill Climbing (punto azul) presenta un desempeño superior, destacándose en tres aspectos clave:
+En la figura 9 se puede observar como el algortimo Hill Climbing (punto azul) presenta un desempeño superior, destacándose en tres aspectos clave:
 
 * Mayor Puntaje y Nivel Alcanzado: logra el promedio de puntaje más alto (aproximadamente 128.000) y el promedio de nivel más alto (aproximadamente 15.5).
 
@@ -526,9 +571,14 @@ Para complementar el análisis anterior, se construyó un diagrama de caja que p
 
 Al analizar este gráfico, podremos evaluar no solo el rendimiento medio (mediana) de cada algoritmo, sino también su consistencia (qué tan estrecha es la caja) y su rango de resultados (la longitud total de los bigotes).
 
-![Puntaje Total Algoritmo](images/puntaje_total.png)
+<div align="center">
+    <img src="images/puntaje_total.png" alt="Resultado puntaje total" style="max-width: 70%; height: auto; border: 1px solid #ccc;">
+    <p style="font-style: italic; font-size: 0.9em; margin-top: 5px;">
+        Figura 10: Diagrama de caja con puntaje total.
+    </p>
+</div>
 
-En el grafico 3 se puede observar como el algoritmo Hill climbing es el mas consistente respaldando los resultados anteriores, más especificamente:
+En la figura 10 se puede observar como el algoritmo Hill climbing es el mas consistente respaldando los resultados anteriores, más especificamente:
 
 * Su caja es la más estrecha y está ubicada en el nivel de puntajes más alto (la mediana se encuentra cerca de $\text{138.000}$).
 * El 50% central de sus partidas se concentra en un rango muy pequeño, lo que prueba su alta consistencia.
@@ -561,9 +611,14 @@ El Eje X (Tiempo Promedio de Decisión en segundos) mide la velocidad con la que
 
 Las barras de error (desviaciones estándar) en ambos ejes nos permiten analizar la consistencia del algoritmo tanto en el desempeño del puntaje como en la estabilidad de su velocidad de procesamiento.
 
-![Puntaje vs tiempo de decision](images/puntaje_vs_tiempoDecision.png)
+<div align="center">
+    <img src="images/puntaje_vs_tiempoDecision.png" alt="Puntaje vs tiempo decision" style="max-width: 70%; height: auto; border: 1px solid #ccc;">
+    <p style="font-style: italic; font-size: 0.9em; margin-top: 5px;">
+        Figura 11: Gráfico de dispersión de puntaje vs tiempo de decisión.
+    </p>
+</div>
 
-En el grafico 4 podemos observar que el HC (azul) es el algoritmo que consigue el mejor resultado en la recion tiempo de decision - puntaje obtenido y esto es esperable ya que si bien analiza todos los vecinos y escoge el que devuelve mejores resultados, no realiza cálculos probabilísticos o poblacionales, lo que resulta en una baja complejidad computacional por paso. 
+En el figura 11 podemos observar que el HC (azul) es el algoritmo que consigue el mejor resultado en la recion tiempo de decision - puntaje obtenido y esto es esperable ya que si bien analiza todos los vecinos y escoge el que devuelve mejores resultados, no realiza cálculos probabilísticos o poblacionales, lo que resulta en una baja complejidad computacional por paso. 
 
 Por otro lado, tanto el Simulated Annealing (SA) como el algoritmo Genético (GA) incurren en un mayor tiempo de decisión debido a la naturaleza de sus procesos exploratorios, lo que los penaliza en el eje del tiempo de decision:
 
@@ -601,9 +656,14 @@ Tomamos la relacion entre el puntaje obtenido en cada partida y la cantidad de l
 * Un algoritmo que prioriza la explotación de la mejor solución inmediata tenderá a repetir patrones de juego exitosos, lo que se traduce en baja variabilidad en el puntaje y en las líneas eliminadas (punto cercano al origen).
 
 * Un algoritmo que prioriza la exploración tomará riesgos en algunas partidas que fallarán, pero tendrá éxito en otras. Esto resulta en una alta variabilidad en ambas métricas (punto lejano al origen).
-  
-![Consistencia por algoritmo](images/consistencia.png)
 
+<div align="center">
+    <img src="images/consistencia.png" alt="Consistencia" style="max-width: 70%; height: auto; border: 1px solid #ccc;">
+    <p style="font-style: italic; font-size: 0.9em; margin-top: 5px;">
+        Figura 12: Consistencia.
+    </p>
+</div>
+  
 Hill climbing: Se ubica más cerca del origen, confirmando su naturaleza de Explotación. Su búsqueda greedy constante produce resultados muy estables tanto en la cantidad de líneas que limpia como en el puntaje final.
 
 Genetic: Muestra una variabilidad moderada en ambos ejes. Su CV en líneas eliminadas es relativamente bajo, pero su CV de puntaje es alto, lo que sugiere que su estrategia de juego (líneas eliminadas) es más estable que su resultado final (puntaje).
