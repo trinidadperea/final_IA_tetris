@@ -47,6 +47,8 @@ def controlador(algoritmo, semilla, piezas_totales):
     
     # para calcular el tiempo en la toma de decisiones
     tiempos = []
+    # calculo alturas parciales
+    altura_parcial = []
     while corriendo:
         
         ahora = pygame.time.get_ticks()
@@ -62,6 +64,11 @@ def controlador(algoritmo, semilla, piezas_totales):
 
                 # manejo de iteraciones para pruebas
                 contar_piezas += 1
+
+                # actualizo altura parcial
+                if contar_piezas % 21 == 0:
+                    altura_parcial.append(juego.tablero.calcular_altura())
+
                 if juego.game_over or contar_piezas >= piezas_totales:
                     corriendo = False 
                             
@@ -86,6 +93,10 @@ def controlador(algoritmo, semilla, piezas_totales):
         reloj.tick(60)  # 60 FPS
 
     resultados = evaluar(juego, tiempos, contar_piezas)
+
+    # le agrego a resultados las alturas parciales
+    resultados["alturas_parciales"] = altura_parcial
+
     #print(resultados)
     pygame.quit()    
 

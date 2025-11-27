@@ -52,7 +52,8 @@ def heuristica(juego: Tetris, algo = None):
     #print(f"puntaje = {puntaje}")
 
     altura_prom = sum(alturas_por_columnas) / len(alturas_por_columnas)
-    puntaje -= peso_altura_prom * (altura_maxima - altura_prom)
+    puntaje -= peso_altura_prom * altura_prom
+    #puntaje -= peso_altura_prom * (altura_maxima - altura_prom)
     #print(f"altura promedio = {altura_prom}")
     #print(f"puntaje = {puntaje}")
 

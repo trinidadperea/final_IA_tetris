@@ -3,6 +3,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import seaborn as sns
+import json
 
 def graficar():
     # creo carpeta
@@ -18,12 +19,57 @@ def graficar():
     grafico_piezas_lineas(os.path.join(carpeta_dir, "piezas_lineas.png"))
     heatmap(os.path.join(carpeta_dir, "heatmap.png"))
 
+    # grafico alturas parciales con genetico nuevo
+    grafico_alturas_parciales(os.path.join(carpeta_dir, "alturas_parciales.png"))
+
     #-----TABLAS-----------------------------------------------
     graficar_tabla("tabla_consistencia.csv",os.path.join(carpeta_dir, "tabla_consistencia.png"))
     graficar_tabla("tabla_promedio_eliminaciones.csv",os.path.join(carpeta_dir, "tabla_promedio_eliminaciones.png"))
     graficar_tabla("tabla_piezas_lineas.csv",os.path.join(carpeta_dir, "tabla_piezas_lineas.png"))
     graficar_tabla("tabla_promedio_metricas.csv",os.path.join(carpeta_dir, "tabla_promedio_metricas.png"))
 
+def grafico_alturas_parciales(ruta_salida, archivo_csv="resultados_alturas_parciales.csv"):
+    # Leer el CSV
+    df = pd.read_csv(archivo_csv, delimiter="|")
+
+    # Convertir la cadena JSON a lista
+    df["Alturas parciales"] = df["Alturas parciales"].apply(json.loads)
+
+    # Crear figura
+    plt.figure(figsize=(10,6))
+
+    algoritmos = df["Algoritmo"].unique()
+
+    # Para cada algoritmo, promediar las alturas sobre las iteraciones
+    for alg in algoritmos:
+        df_alg = df[df["Algoritmo"] == alg]
+
+        # Obtenemos la longitud máxima de alturas
+        max_len = df_alg["Alturas parciales"].apply(len).max()
+
+        # Promediamos altura por índice (0=pieza21, 1=pieza42, etc.)
+        promedios = []
+        for i in range(max_len):
+            valores_i = []
+            for lista in df_alg["Alturas parciales"]:
+                if i < len(lista):
+                    valores_i.append(lista[i])
+            if valores_i:
+                promedios.append(sum(valores_i) / len(valores_i))
+
+        # Eje X = piezas cada 21
+        x = [(i+1)*21 for i in range(len(promedios))]
+
+        plt.plot(x, promedios, marker="o", label=alg)
+
+    plt.title("Altura parcial cada 21 piezas por algoritmo")
+    plt.xlabel("Número de piezas")
+    plt.ylabel("Altura")
+    plt.legend()
+    plt.grid(True)
+
+    plt.savefig(ruta_salida)
+    plt.close()
 
 def grafico_dispersion(imagen):
     # Cargar datos y calcular promedio por algoritmo

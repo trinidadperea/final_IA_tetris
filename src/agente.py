@@ -2,6 +2,7 @@ from tetris import *
 from busqueda_local.hill_climbing import *
 from busqueda_local.simulated_annealing import *
 from busqueda_local.genetico import *
+from busqueda_local.genetico2 import *
 
 class Agente():
         
@@ -12,6 +13,9 @@ class Agente():
         
         if algoritmo == "Genetico":
             (mejor_pos,mejor_rot) = genetico(juego, 100)
+
+        if algoritmo == "Genetico nuevo":
+            (mejor_pos,mejor_rot) = genetico2(juego, 100)
 
         if algoritmo == "Simulated Annealing":
             (mejor_pos,mejor_rot) = simulated_annealing(juego)
