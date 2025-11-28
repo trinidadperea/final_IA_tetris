@@ -639,38 +639,67 @@ El tiempo de decisión elevado es resultado directo de su alta complejidad algor
 
 ---
 
-### Consistencia por algortimo
+### Altura parcial 
 
-Para poder tener una estadistica pura de la variabilidad de cada algortimo con respecto al puntaje vs lineas eliminadas, presentamos un gráfico de dispersión que utiliza el Coeficiente de Variación (CV) en ambos ejes.
+Para analizar la manera en que cada agente utiliza el espacio del tablero a medida que avanza la partida, se construyó un gráfico que muestra la evolución de la altura del tablero en función del número de piezas procesadas.
 
-- Interpretacion de los ejes:
+Este gráfico nos permite comparar cómo evoluciona la ocupación del tablero a lo largo de la partida y evaluar qué tan eficientemente cada agente logra mantener baja la altura, lo cual está directamente relacionado con su capacidad para sobrevivir y limpiar líneas de manera estable.
 
-Eje X (CV Puntaje - %): Mide la variabilidad en los puntajes obtenidos.
-* Un CV de Puntaje bajo indica que las diferencias entre el puntaje más alto y el más bajo de las partidas es pequeña en relación con el puntaje promedio.
+En el eje X se representa la cantidad total de piezas que han ingresado al juego, evaluada en intervalos de 21 piezas (3 bolsas).
+En el eje Y se muestra la altura promedio ocupada del tablero, medida desde la base hacia arriba, donde valores más altos indican que el tablero está más lleno.
 
-Eje Y (CV Líneas Eliminadas - %): Mide la variabilidad en la cantidad de líneas eliminadas en las partidas.
-* Un CV de Líneas bajo indica que el número de líneas que el algoritmo logra eliminar es muy similar en cada partida.
+La lectura es la siguiente:
 
-Tomamos la relacion entre el puntaje obtenido en cada partida y la cantidad de lineas eliminadas porque esto nos permite entender como se manifiestan las estrategias de exploración y explotacion en la estabilidad de los resultados 
+- Curvas más bajas representan algoritmos que mantienen el tablero despejado, minimizando la acumulación de bloques.
 
-* Un algoritmo que prioriza la explotación de la mejor solución inmediata tenderá a repetir patrones de juego exitosos, lo que se traduce en baja variabilidad en el puntaje y en las líneas eliminadas (punto cercano al origen).
+- Curvas más altas representan algoritmos que llenan el tablero más rápidamente, indicando peor aprovechamiento del espacio y mayor riesgo de top-out.
 
-* Un algoritmo que prioriza la exploración tomará riesgos en algunas partidas que fallarán, pero tendrá éxito en otras. Esto resulta en una alta variabilidad en ambas métricas (punto lejano al origen).
-
-<div align="center">
-    <img src="images/consistencia.png" alt="Consistencia" style="max-width: 70%; height: auto; border: 1px solid #ccc;">
+  <div align="center">
+    <img src="images/alturas_parciales.png" alt="alturas parciales" style="max-width: 70%; height: auto; border: 1px solid #ccc;">
     <p style="font-style: italic; font-size: 0.9em; margin-top: 5px;">
-        Figura 12: Consistencia.
+        Figura 12: alturas parciales
     </p>
 </div>
-  
-Hill climbing: Se ubica más cerca del origen, confirmando su naturaleza de Explotación. Su búsqueda greedy constante produce resultados muy estables tanto en la cantidad de líneas que limpia como en el puntaje final.
 
-Genetic: Muestra una variabilidad moderada en ambos ejes. Su CV en líneas eliminadas es relativamente bajo, pero su CV de puntaje es alto, lo que sugiere que su estrategia de juego (líneas eliminadas) es más estable que su resultado final (puntaje).
+Genético Nuevo: muestra un crecimiento de altura considerablemente más acelerado que el resto. Desde las primeras bolsas de piezas la altura sube de manera casi monótona, alcanzando valores cercanos a 20–22 filas hacia el final de la partida. Esto indica que esta variante tiende a apilar piezas sin lograr limpiar líneas con frecuencia, por lo que su uso del espacio es poco eficiente y tiende a acercarse rápidamente al top-out.
 
-Simulated annealing: Se ubica en el punto más alejado del origen, lo que confirma su alta tendencia a la Exploración. Esta variabilidad es el precio de su búsqueda global: en ocasiones encuentra soluciones óptimas, pero en muchas otras termina la partida rápidamente con resultados erráticos.
+Genético clásico: muestra una tendencia creciente pero más moderada. Aunque aumenta la altura con el paso de las piezas, sus valores finales rondan las 15–17 filas en promedio, lo que implica que, si bien acumula bloques, mantiene un mayor control que la versión nueva.
 
-___
+Hill Climbing y Simulated Annealing: muestran curvas más estables y con menor crecimiento. 
+* Hill Climbing mantiene alturas relativamente bajas durante toda la partida (entre 5 y 10 filas), lo que sugiere un comportamiento más conservador orientado a preservar un tablero despejado.
+* Simulated Annealing sigue un patrón similar, aunque con un leve incremento hacia el final, pero sin acercarse a alturas críticas.
+
+---
+
+### Tasa de top out y altura máxima
+
+Para complementar los resultados anteriores, incorporamos dos gráficos adicionales que permiten analizar el riesgo de top-out y el comportamiento de la altura máxima alcanzada por cada algoritmo durante la partida.
+
+1. Tasa de top-out
+Este gráfico muestra el porcentaje de partidas en las que cada algoritmo perdió por alcanzar la altura máxima del tablero (top-out). (Figura 13)
+
+<div align="center">
+    <img src="images/tasa_top_out.png" alt="tasa top out" style="max-width: 70%; height: auto; border: 1px solid #ccc;">
+    <p style="font-style: italic; font-size: 0.9em; margin-top: 5px;">
+        Figura 13: Tasa de finalización por tablero lleno
+    </p>
+</div>
+
+
+3. Distribución de la altura máxima por algoritmo
+Se presenta un diagrama de cajas que muestra cómo se distribuyen las alturas máximas alcanzadas por los algoritmos en todas las simulaciones. También se incluye una línea horizontal indicando la altura crítica asociada al top-out. (Figura 14)
+
+<div align="center">
+    <img src="images/boxplot_altura_max.png" alt="diagrama de caja altura maxima" style="max-width: 70%; height: auto; border: 1px solid #ccc;">
+    <p style="font-style: italic; font-size: 0.9em; margin-top: 5px;">
+        Figura 14: Diagrama de caja altura maxima por algoritmo
+    </p>
+</div>
+
+En la Figura 13 se observa que el algoritmo Genético clásico alcanza aproximadamente un 60% de partidas terminadas por top-out, lo cual es un resultado significativo. Esto indica que, al ser un algoritmo con una fuerte componente exploratoria, tiende a generar configuraciones de tablero que rápidamente llevan a situaciones de riesgo y pérdida. En entornos como el Tetris, donde la estabilidad del tablero es clave para lograr puntajes altos, esta tendencia se traduce directamente en menor supervivencia y menor puntaje total alcanzado.
+
+Por otro lado, en la Figura 14, se aprecia que la mediana del algoritmo Genético clásico se encuentra muy cerca de la zona crítica del top-out, y su diagrama de caja muestra una gran variabilidad y valores extremos muy altos. Esto contrasta fuertemente con los algoritmos Hill Climbing y Simulated Annealing, cuyos diagramas presentan medianas más bajas, dispersiones menores y alturas máximas lejos de la zona de riesgo.
+Esta diferencia evidencia que los métodos de búsqueda local mantienen un mejor control del espacio del tablero, evitando acumulaciones peligrosas y reduciendo la probabilidad de perder rápidamente.
 
 ## 5. Conclusion
 
