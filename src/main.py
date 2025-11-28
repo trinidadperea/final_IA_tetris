@@ -7,17 +7,16 @@ import random
 
 def main():
     
-    # algoritmos
-    #algoritmos = ["Hill Climbing", "Simulated Annealing", "Genetico"]
     # algoritmos + genetico nuevo
-    algoritmos_nuevo = ["Hill Climbing", "Simulated Annealing", "Genetico", "Genetico nuevo"]
+    algoritmos = ["Hill Climbing", "Simulated Annealing", "Genetico", "Genetico nuevo"]
+    
     piezas_totales = 400
     resultados_totales = []
     semillas = random.sample(range(0,1000000),15)
     
     for i in range(len(semillas)):
         
-        for algoritmo in algoritmos_nuevo:
+        for algoritmo in algoritmos:
             print(f"Algoritmo {algoritmo}, iteracion: {i}")
             resultado = controlador(algoritmo, semillas[i], piezas_totales)
             resultados_totales.append((algoritmo, i+1, resultado))
@@ -28,7 +27,13 @@ def main():
     registrar_resultados2(resultados_totales)
     tabla.consistencia()
     tabla.promedio_de_eliminaciones()
+    #agregado
+    tabla.estadisticas_eliminaciones()
+    #agregado
+    tabla.tabla_promedio_desviacion_nivel_puntaje()
     tabla.relacion_piezas_lineas()
+    #agregado
+    tabla.tabla_puntaje_tiempo()
     tabla.promedios()
     
     graficar()
