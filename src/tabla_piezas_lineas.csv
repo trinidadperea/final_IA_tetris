@@ -1,4 +1,5 @@
 Algoritmo,Piezas totales,Lineas eliminadas,Lineas/pieza
-Genetico,400,1823,4.5575
-Hill Climbing,400,2190,5.475
-Simulated Annealing,400,1866,4.665
+Genetico,400,1656,4.14
+Genetico nuevo,400,727,1.8175
+Hill Climbing,400,2148,5.37
+Simulated Annealing,400,1952,4.88

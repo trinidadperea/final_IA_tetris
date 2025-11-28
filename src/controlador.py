@@ -41,7 +41,7 @@ def controlador(algoritmo, semilla, piezas_totales):
     tiempo_ultimo_movimiento = pygame.time.get_ticks()
     #juego.set_vel_caida()
     #intervalo_bajada = juego.get_vel_caida()  # ms
-    intervalo_bajada = 10
+    intervalo_bajada = 7
     # agente
     jugador = Agente()
     
@@ -80,6 +80,8 @@ def controlador(algoritmo, semilla, piezas_totales):
                 #intervalo_bajada = juego.vel_caida
 
             if juego.game_over:
+                altura_parcial.append(juego.tablero.calcular_altura())
+                print(f"PERDIO: {algoritmo}")
                 corriendo = False
 
             tiempo_ultimo_movimiento = ahora

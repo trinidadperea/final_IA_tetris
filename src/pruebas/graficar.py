@@ -28,13 +28,19 @@ def graficar():
     # grafico alturas parciales con genetico nuevo
     grafico_alturas_parciales(os.path.join(carpeta_dir, "alturas_parciales.png"))
 
+    grafico_tasa_top_out(os.path.join(carpeta_dir, "tasa_top_out.png"))
+    grafico_altura_max_por_partida(os.path.join(carpeta_dir, "altura_max_partida.png"))
+    boxplot_altura_max(os.path.join(carpeta_dir, "bocplot_altura_max.png"))
+
+
+
     #-----TABLAS-----------------------------------------------
     graficar_tabla("tabla_consistencia.csv",os.path.join(carpeta_dir, "tabla_consistencia.png"))
     graficar_tabla("tabla_promedio_eliminaciones.csv",os.path.join(carpeta_dir, "tabla_promedio_eliminaciones.png"))
     graficar_tabla("tabla_piezas_lineas.csv",os.path.join(carpeta_dir, "tabla_piezas_lineas.png"))
     graficar_tabla("tabla_promedio_metricas.csv",os.path.join(carpeta_dir, "tabla_promedio_metricas.png"))
 
-def grafico_alturas_parciales(ruta_salida, archivo_csv="resultados_alturas_parciales.csv"):
+def grafico_alturas_parciales(ruta_salida, archivo_csv="resultados_algoritmos2.csv"):
     # Leer el CSV
     df = pd.read_csv(archivo_csv, delimiter="|")
 
@@ -53,15 +59,28 @@ def grafico_alturas_parciales(ruta_salida, archivo_csv="resultados_alturas_parci
         # Obtenemos la longitud máxima de alturas
         max_len = df_alg["Alturas parciales"].apply(len).max()
 
+        # padding de listas
+        listas_padded = []
+        for lista in df_alg["Alturas parciales"]:
+            if len(lista) < max_len:
+                lista = lista + [lista[-1]] * (max_len - len(lista))
+            listas_padded.append(lista)
+        
         # Promediamos altura por índice (0=pieza21, 1=pieza42, etc.)
+        # promedios = []
+        # for i in range(max_len):
+        #     valores_i = []
+        #     for lista in df_alg["Alturas parciales"]:
+        #         if i < len(lista):
+        #             valores_i.append(lista[i])
+        #     if valores_i:
+        #         promedios.append(sum(valores_i) / len(valores_i))
+        
+        # promediar verticalmente
         promedios = []
         for i in range(max_len):
-            valores_i = []
-            for lista in df_alg["Alturas parciales"]:
-                if i < len(lista):
-                    valores_i.append(lista[i])
-            if valores_i:
-                promedios.append(sum(valores_i) / len(valores_i))
+            valores_i = [lista[i] for lista in listas_padded]
+            promedios.append(sum(valores_i) / len(valores_i))
 
         # Eje X = piezas cada 21
         x = [(i+1)*21 for i in range(len(promedios))]
@@ -77,14 +96,82 @@ def grafico_alturas_parciales(ruta_salida, archivo_csv="resultados_alturas_parci
     plt.savefig(ruta_salida)
     plt.close()
 
+def grafico_altura_max_por_partida(ruta_salida, archivo_csv="resultados_algoritmos2.csv"):
+    df = pd.read_csv(archivo_csv, delimiter="|")
+
+    plt.figure(figsize=(10,6))
+
+    algoritmos = df["Algoritmo"].unique()
+
+    for alg in algoritmos:
+        df_alg = df[df["Algoritmo"] == alg]
+        plt.plot(df_alg["Iteracion"], df_alg["Altura max"], marker="o", label=alg)
+
+    plt.axhline(22, color="red", linestyle="--", label="Top-out (22)")
+    plt.axhline(20, color="orange", linestyle="--", label="Zona peligrosa (20)")
+
+    plt.title("Altura máxima por partida")
+    plt.xlabel("Iteración")
+    plt.ylabel("Altura máxima alcanzada")
+    plt.legend()
+    plt.grid(True)
+
+    plt.savefig(ruta_salida)
+    plt.close()
+
+def boxplot_altura_max(ruta_salida, archivo_csv="resultados_algoritmos2.csv"):
+    df = pd.read_csv(archivo_csv, delimiter="|")
+
+    plt.figure(figsize=(10,6))
+
+    df.boxplot(column="Altura max", by="Algoritmo")
+    plt.axhline(22, color="red", linestyle="--")
+    plt.axhline(20, color="orange", linestyle="--")
+
+    plt.title("Distribución de altura máxima por algoritmo")
+    plt.suptitle("")  # elimina título duplicado de pandas
+    plt.xlabel("Algoritmo")
+    plt.ylabel("Altura máxima")
+
+    plt.grid(True, axis='y')
+
+    plt.savefig(ruta_salida)
+    plt.close()
+
+def grafico_tasa_top_out(ruta_salida, archivo_csv="resultados_algoritmos2.csv"):
+    df = pd.read_csv(archivo_csv, delimiter="|")
+
+    algoritmos = df["Algoritmo"].unique()
+    tasas = []
+
+    for alg in algoritmos:
+        df_alg = df[df["Algoritmo"] == alg]
+        total = len(df_alg)
+        topouts = (df_alg["Altura max"] == 22).sum()
+        tasa = topouts / total * 100
+        tasas.append(tasa)
+
+    plt.figure(figsize=(8,5))
+    plt.bar(algoritmos, tasas)
+
+    plt.title("Porcentaje de top-out por algoritmo")
+    plt.ylabel("% de partidas con top-out")
+    plt.xlabel("Algoritmo")
+
+    plt.grid(axis="y")
+
+    plt.savefig(ruta_salida)
+    plt.close()
+
+
 def grafico_dispersion(imagen):
     # Cargar datos y calcular promedio por algoritmo
-    df = pd.read_csv('resultados_algoritmos.csv', sep='|')
+    df = pd.read_csv('resultados_algoritmos2.csv', sep='|')
     df_prom = df.groupby('Algoritmo')[['Puntaje', 'Tiempo promedio']].mean().reset_index()
 
     # Colores y marcadores por algoritmo
-    colores = {'Hill Climbing':'blue', 'Simulated Annealing':'green', 'Genetico':'red'}
-    markers = {'Hill Climbing':'o', 'Simulated Annealing':'s', 'Genetico':'^'}
+    colores = {'Hill Climbing':'blue', 'Simulated Annealing':'yellow', 'Genetico':'green', 'Genetico nuevo': 'red' }
+    markers = {'Hill Climbing':'o', 'Simulated Annealing':'s', 'Genetico':'^', 'Genetico nuevo': 'D'}
 
     plt.figure(figsize=(12, 6))
     for _, row in df_prom.iterrows():
@@ -104,7 +191,7 @@ def grafico_dispersion(imagen):
 
 def grafico_dispersion_con_desv(imagen):
     # Cargar datos
-    df = pd.read_csv('resultados_algoritmos.csv', sep='|')
+    df = pd.read_csv('resultados_algoritmos2.csv', sep='|')
 
     # Calcular promedio y desviación estándar
     stats = df.groupby('Algoritmo')[['Puntaje', 'Tiempo promedio']].agg(['mean', 'std'])
@@ -112,8 +199,9 @@ def grafico_dispersion_con_desv(imagen):
     stats = stats.reset_index()
 
     # Configuración visual
-    colores = {'Hill Climbing':'blue', 'Simulated Annealing':'green', 'Genetico':'red'}
-    markers = {'Hill Climbing':'o', 'Simulated Annealing':'s', 'Genetico':'^'}
+    colores = {'Hill Climbing':'blue', 'Simulated Annealing':'yellow', 'Genetico':'green', 'Genetico nuevo': 'red' }
+    markers = {'Hill Climbing':'o', 'Simulated Annealing':'s', 'Genetico':'^', 'Genetico nuevo': 'D'}
+
 
     plt.figure(figsize=(12, 6))
 
@@ -151,7 +239,7 @@ def grafico_dispersion_con_desv(imagen):
 
 def grafico_puntaje_total(imagen):
     
-    df = pd.read_csv("resultados_algoritmos.csv", sep='|')
+    df = pd.read_csv("resultados_algoritmos2.csv", sep='|')
 
     # Crear boxplot
     plt.figure(figsize=(12, 6))
@@ -170,15 +258,15 @@ def grafico_puntaje_total(imagen):
     plt.close()
 
 def grafico_nivel_puntaje(imagen):
-    df = pd.read_csv('resultados_algoritmos.csv', sep='|')
+    df = pd.read_csv('resultados_algoritmos2.csv', sep='|')
 
     # Calcular promedio por algoritmo
     df_prom = df.groupby('Algoritmo')[['Nivel', 'Puntaje']].mean().reset_index()
 
     # Crear gráfico
     plt.figure(figsize=(10, 6))
-    colores = {'Hill Climbing':'blue', 'Simulated Annealing':'green', 'Genetico':'red'}
-
+    colores = {'Hill Climbing':'blue', 'Simulated Annealing':'yellow', 'Genetico':'green', 'Genetico nuevo': 'red' }
+    
     for _, row in df_prom.iterrows():
         plt.scatter(row['Nivel'], row['Puntaje'], color=colores[row['Algoritmo']], s=200)
         plt.text(row['Nivel'], row['Puntaje'] + 200, row['Algoritmo'], ha='center', fontweight='bold')
@@ -195,14 +283,16 @@ def grafico_nivel_puntaje(imagen):
     plt.close()
 
 def grafico_nivel_puntaje_con_desv(imagen):
-    df = pd.read_csv("resultados_algoritmos.csv", sep='|')
+    df = pd.read_csv("resultados_algoritmos2.csv", sep='|')
 
     # Promedio y std
     stats = df.groupby('Algoritmo')[['Nivel', 'Puntaje']].agg(['mean', 'std'])
     stats.columns = ['Nivel_promedio', 'Nivel_std', 'Puntaje_promedio', 'Puntaje_std']
     stats = stats.reset_index()
 
-    colores = {'Hill Climbing':'blue', 'Simulated Annealing':'green', 'Genetico':'red'}
+    colores = {'Hill Climbing':'blue', 'Simulated Annealing':'yellow', 'Genetico':'green', 'Genetico nuevo': 'red' }
+    markers = {'Hill Climbing':'o', 'Simulated Annealing':'s', 'Genetico':'^', 'Genetico nuevo': 'D'}
+
 
     plt.figure(figsize=(10, 6))
 

@@ -1,7 +1,7 @@
 import csv
 import json
 
-def registrar_resultados2(resultados_totales, nombre_archivo = "resultados_alturas_parciales.csv"):
+def registrar_resultados2(resultados_totales, nombre_archivo = "resultados_algoritmos2.csv"):
     cabecera = [
         "Algoritmo", "Iteracion", "Piezas totales", "Puntaje", "Tiempo promedio",
         "Lineas eliminadas", "Altura max", "Huecos",

@@ -10,21 +10,24 @@ def main():
     # algoritmos + genetico nuevo
     algoritmos = ["Hill Climbing", "Simulated Annealing", "Genetico", "Genetico nuevo"]
     
-    piezas_totales = 400
-    resultados_totales = []
-    semillas = random.sample(range(0,1000000),15)
-    
-    for i in range(len(semillas)):
-        
-        for algoritmo in algoritmos:
-            print(f"Algoritmo {algoritmo}, iteracion: {i}")
-            resultado = controlador(algoritmo, semillas[i], piezas_totales)
-            resultados_totales.append((algoritmo, i+1, resultado))
-        print("")
+    # comentar: ctrl + k ctrl + c
+    # descomentar: ctrl + k ctrl + u
 
-    print("Res total: ",resultados_totales)
+    # piezas_totales = 400
+    # resultados_totales = []
+    # semillas = random.sample(range(0,1000000),15)
+    
+    # for i in range(len(semillas)):
+        
+    #     for algoritmo in algoritmos:
+    #         print(f"Algoritmo {algoritmo}, iteracion: {i}")
+    #         resultado = controlador(algoritmo, semillas[i], piezas_totales)
+    #         resultados_totales.append((algoritmo, i+1, resultado))
+    #     print("")
+
+    # print("Res total: ",resultados_totales)
     #registrar_resultados(resultados_totales)
-    registrar_resultados2(resultados_totales)
+    #registrar_resultados2(resultados_totales)
     tabla.consistencia()
     tabla.promedio_de_eliminaciones()
     #agregado
