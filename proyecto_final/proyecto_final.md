@@ -322,7 +322,7 @@ Las piezas se modelan como listas de coordenadas que representan las celdas ocup
 
 La función heurística utilizada por los agentes evalúa cada estado posible del tablero según cuatro características clave: la cantidad de líneas eliminadas, la generación de huecos, el desnivel entre columnas y la altura promedio de la estructura. Cada característica se pondera mediante un peso, cuyo valor determina la relevancia relativa que tendrá dentro del cálculo de la calidad del estado.
 
-La selección de estos pesos responde a criterios estratégicos del juego, a pruebas empíricas y, en el caso del Algoritmo Genético, al hecho de que dicho agente evoluciona sus decisiones a lo largo del tiempo. Para establecer valores iniciales coherentes, partimos de una base de pesos, propuesto por Pierre Dellacherie en “The (Near) Perfect Tetris Bot”, del cual derivan la mayoría de los agentes clásicos de Tetris. Estos valores fueron luego ajustados para adaptarse a nuestra representación del tablero y a las necesidades específicas de cada algoritmo de búsqueda.
+La selección de estos pesos responde a criterios estratégicos del juego, a pruebas empíricas y, en el caso del Algoritmo Genético, al hecho de que dicho agente evoluciona sus decisiones a lo largo del tiempo. Para establecer valores iniciales coherentes, partimos de una base de pesos, propuesto por Pierre Dellacherie en “The (Near) Perfect Tetris Bot” [2], del cual derivan la mayoría de los agentes clásicos de Tetris. Estos valores fueron luego ajustados para adaptarse a nuestra representación del tablero y a las necesidades específicas de cada algoritmo de búsqueda.
 
 A continuación, se detallan las razones de la eleccion de cada peso:
 
@@ -504,6 +504,51 @@ Luego del cruce y la mutación:
 2. Se combinan con la descendencia generada, que es ordenada por fitness y truncada para mantener el mismo tamaño poblacional.
 
 3. La nueva población queda formada por elite + descendencia.
+
+### 3.9.4 Genetico "Nuevo"
+
+Nuevo Algoritmo Genetico basado en la seleccion aleatoria del mejor vecino.
+
+El "Genetico Nuevo" constituye una variante simplificada del Algoritmo Genetico tradicional, previamente implementado. A diferencia del Algoritmo Genetico, esta version no incorpora operadores geneticos de evolucion, como seleccion competitiva, cruce ni mutcion. En su lugar, se basa unicamente en:
+
+1. Generacion aleatoria de una poblacion inicial
+2. Seleccion del mejor individuo dentro de dicha poblacion, determinado por su funcion fitness.
+
+El agente no produce descendencia ni explora combinaciones nuevas mediante variaciones. Simplemente elige el mejor movimiento entre un conjunto limitado de vecinos generados, al igual que el genetico tradicional, en cada turno.
+
+### Representacion de los individuos
+
+Cada individuo se modela como una tupla (posicion, rotacion, fitness), corresponiente a una combinacion valida de movimientos para la pieza actual del Tetris.
+
+### Inicializacion
+
+En cada turno del juego:
+- Se generan todas las combinaciones validas posibles (pos, rot, fit).
+- A partir de este conjunto, se seleccionan de manera aleatoria una poblacion de tamaño fijo de 20 individuos (o menos si existen menos movimientos posibles).
+- No se aplica ningun mecanismo de diversidad adicional.
+
+### Seleccion del mejor Individuo
+
+A diferencia del GA clasico, previamente implementado, no existe un ciclo evolutivo.
+El proceso consiste en:
+
+1. Evaluar el fitness de cada individuo en la poblacion inicial.
+2. Seleccionar directamente el individuo con mayor valor de fitness.
+3. En caso de empate se resuelve de manera aleatoria.
+
+El individuo seleccionado se ejecuta como movimiento final para la pieza.
+
+### Ausencia de Cruce y Mutacion
+La principal caracteristica de esta variante es la eliminacion completa de:
+- Seleccion por torneo
+- Operador de cruce, encargado en el GA clasico de explorar combinaciones nuevas.
+- Mutacion, que tradicionalmente introduce variabilidad y evita el estancamiento.
+
+Como resultado el algoritmo no realiza la busqueda evolutiva, unicamente elige uno de los vecinos inmediatos generados aleatoriamente, sin aprendizaje ni mejora progresiva a lo largo de la partida.
+
+### Motivacion del Nuevo Algoritmo Genetico
+
+La incorporación del Genético Nuevo se realizó principalmente con un propósito experimental: analizar cómo se comporta la altura del tablero cuando se reemplaza el proceso evolutivo completo de un Algoritmo Genético por una selección aleatoria y directa del mejor vecino disponible. El objetivo fue observar, de manera aislada, qué ocurre con la ocupación del tablero cuando el agente deja de generar y refinar soluciones mediante selección, cruce y mutación, y en su lugar opera únicamente evaluando movimientos al azar. Para ello, el análisis se centró específicamente en comparar la altura alcanzada cada cierto número de piezas y la cantidad de puntos acumulados por cada algoritmo a lo largo de la partida. Este enfoque permitió estudiar no solo cuán eficientemente cada agente mantenía bajo el nivel de bloques (indicador clave para evitar el top-out) sino también cómo afectan las decisiones de cada estrategia en la estabilidad del tablero a medida que avanzan las bolsas de piezas. Los resultados muestran con claridad las diferencias estructurales entre métodos evolutivos, búsquedas locales y esta variante simplificada basada en aleatoriedad.
 
 ___
 
@@ -720,10 +765,10 @@ ___
 
 ## **Bibliografía y Referencias**
 
-Talbi, E. --G. (2009). Metaheuristics: From design to implementation.
+1- Talbi, E. --G. (2009). Metaheuristics: From design to implementation.
 Wiley.
 
-Dellacherie, P. (2003). The (Near) Perfect Tetris Bot.
+2- Dellacherie, P. (2003). The (Near) Perfect Tetris Bot.
 
-Russell, S., & Norvig, P. (2010). \_Artificial intelligence: A modern
+3- Russell, S., & Norvig, P. (2010). \_Artificial intelligence: A modern
 approach\_ (3rd ed.). Prentice Hall.
